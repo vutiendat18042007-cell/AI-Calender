@@ -1,0 +1,2815 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNXHKH · Học liệu — Chương 1: Nhập môn CNXHKH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+<style>
+/* ============ THEME TOKENS (đồng bộ với mindmap preview) ============ */
+:root[data-theme="light"]{
+  --bg:#F2ECDF;
+  --bg-paper:#F8F3E7;
+  --bg-elev:#FBF7EC;
+  --bg-card:#FFFEF8;
+  --ink:#1F1A14;
+  --ink-soft:#3D3530;
+  --ink-mute:#7B6D5E;
+  --ink-fade:#A89B8A;
+  --rule:#DDD3BE;
+  --rule-soft:#E8DFCB;
+  --accent:#7C1D1D;
+  --accent-soft:#B91C1C;
+  --accent-bg:#F2D8D8;
+  --accent-bg-soft:#F7E6E6;
+  --success:#166534;
+  --success-bg:#DCFCE7;
+  --success-bg-soft:#EDFBF1;
+  --danger:#991B1B;
+  --danger-bg:#FEE2E2;
+  --warn:#92400E;
+  --warn-bg:#FEF3C7;
+  --gold:#A87F2C;
+  --gold-bg:#F5EBC8;
+  --shadow:0 1px 2px rgba(31,26,20,.04),0 4px 12px rgba(31,26,20,.06);
+  --shadow-lg:0 8px 24px rgba(31,26,20,.10),0 2px 6px rgba(31,26,20,.05);
+  --shadow-xl:0 16px 40px rgba(31,26,20,.14),0 4px 10px rgba(31,26,20,.06);
+  --grain:.025;
+}
+:root[data-theme="dark"]{
+  --bg:#15110E;
+  --bg-paper:#1C1813;
+  --bg-elev:#211C16;
+  --bg-card:#26201A;
+  --ink:#F0E7D5;
+  --ink-soft:#D6CBB6;
+  --ink-mute:#9B8E7A;
+  --ink-fade:#6B6051;
+  --rule:#3A3128;
+  --rule-soft:#2D261F;
+  --accent:#DC2626;
+  --accent-soft:#EF4444;
+  --accent-bg:#3A1414;
+  --accent-bg-soft:#2A0E0E;
+  --success:#4ADE80;
+  --success-bg:#14361E;
+  --success-bg-soft:#0E2814;
+  --danger:#F87171;
+  --danger-bg:#3A1414;
+  --warn:#FBBF24;
+  --warn-bg:#3D2B0A;
+  --gold:#D4A845;
+  --gold-bg:#3A2D14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.4);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
+  --shadow-xl:0 16px 40px rgba(0,0,0,.6),0 4px 10px rgba(0,0,0,.4);
+  --grain:.05;
+}
+
+/* ============ BASE ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Manrope',-apple-system,sans-serif;
+  font-weight:400;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.6;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  overflow-x:hidden;
+  transition:background .3s,color .3s;
+  font-feature-settings:"ss01","cv11";
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  opacity:var(--grain);mix-blend-mode:multiply;
+}
+button{font-family:inherit;font-size:inherit;color:inherit;background:none;border:none;cursor:pointer;outline:none}
+input,textarea{font-family:inherit;font-size:inherit;color:inherit}
+
+/* ============ TYPOGRAPHY ============ */
+.serif{font-family:'Fraunces',Georgia,serif;font-variation-settings:"SOFT" 50,"opsz" 144}
+.eyebrow{
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-mute);font-weight:600;
+}
+.tnum{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum","lnum"}
+h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:400;line-height:1.15;color:var(--ink);font-variation-settings:"SOFT" 50,"opsz" 144}
+h1{font-size:clamp(2rem,4vw,3.4rem);letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,2.5vw,2.1rem);letter-spacing:-.015em}
+h3{font-size:1.25rem;letter-spacing:-.01em}
+
+/* ============ LAYOUT ============ */
+.page{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:3rem clamp(1.25rem,4vw,3rem) 5rem}
+@media (max-width:920px){.page{padding:1.5rem 1.25rem 4rem}}
+
+/* ============ HEAD ============ */
+.head{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding-bottom:2rem;margin-bottom:2rem;
+  border-bottom:1px solid var(--rule);position:relative;gap:2rem;flex-wrap:wrap;
+}
+.head::after{
+  content:'';position:absolute;bottom:-1px;left:0;width:80px;height:2px;background:var(--accent);
+}
+.head-left{flex:1;min-width:280px}
+.brand-line{display:flex;align-items:baseline;gap:.7rem;margin-bottom:1.5rem}
+.brand-logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:500;color:var(--accent);font-variation-settings:"SOFT" 100,"opsz" 144;letter-spacing:-.02em}
+.brand-sub{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:600}
+.head h1{margin-top:.25rem;max-width:700px}
+.head .sub{margin-top:.85rem;font-size:1.02rem;color:var(--ink-soft);max-width:600px;line-height:1.55}
+.head-right{display:flex;align-items:flex-start;gap:.5rem}
+.head-meta{display:flex;flex-direction:column;align-items:flex-end;gap:.4rem}
+.head-meta .ch-num{font-family:'Fraunces',serif;font-size:3.5rem;line-height:1;font-weight:300;color:var(--accent);font-variation-settings:"opsz" 144;font-variant-numeric:tabular-nums}
+.head-meta .ch-lbl{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);font-weight:600}
+.theme-btn{
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--rule);transition:all .2s;color:var(--ink-soft);
+}
+.theme-btn:hover{background:var(--rule-soft);transform:rotate(15deg)}
+.theme-btn svg{width:18px;height:18px}
+
+/* ============ MAIN NAV (TABS) ============ */
+.main-nav{
+  display:flex;gap:.4rem;margin-bottom:2rem;
+  padding:.4rem;background:var(--bg-paper);
+  border:1px solid var(--rule);border-radius:14px;
+  flex-wrap:wrap;
+}
+.main-nav button{
+  flex:1;min-width:140px;
+  padding:.85rem 1.2rem;border-radius:10px;
+  font-size:.92rem;font-weight:500;color:var(--ink-mute);
+  transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  white-space:nowrap;
+}
+.main-nav button:hover:not(.active){color:var(--ink);background:var(--rule-soft)}
+.main-nav button.active{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
+.main-nav button .ico{width:18px;height:18px;flex-shrink:0}
+.main-nav button .lbl-sm{font-size:.68rem;opacity:.7;letter-spacing:.05em;font-variant-numeric:tabular-nums;display:block;margin-top:.1rem}
+.main-nav button.active .lbl-sm{opacity:.85}
+.main-nav .lbl-stack{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+@media (max-width:680px){
+  .main-nav button{min-width:0;padding:.7rem .5rem;font-size:.8rem}
+  .main-nav button .ico{width:16px;height:16px}
+}
+
+/* ============ VIEW CONTAINER ============ */
+.view{display:none}
+.view.active{display:block;animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ============ HOME VIEW ============ */
+.home-hero{
+  position:relative;
+  background:
+    radial-gradient(circle at 15% 0%, var(--accent-bg-soft) 0%, transparent 50%),
+    radial-gradient(circle at 90% 100%, var(--gold-bg) 0%, transparent 55%),
+    var(--bg-card);
+  border:1px solid var(--rule);border-radius:14px;
+  padding:clamp(1.75rem,4vw,2.75rem);box-shadow:var(--shadow);
+  margin-bottom:2rem;overflow:hidden;
+}
+.home-hero h2{margin-bottom:.6rem;max-width:720px}
+.home-hero .lead{
+  color:var(--ink-soft);font-size:1.05rem;line-height:1.6;max-width:680px;
+}
+.home-hero .lead em{color:var(--accent);font-style:normal;font-weight:600}
+.home-progress-mini{
+  margin-top:1.5rem;padding-top:1.25rem;border-top:1px dashed var(--rule);
+  display:flex;gap:1.5rem;flex-wrap:wrap;
+}
+.home-progress-mini .pm-item{display:flex;flex-direction:column;gap:.15rem;min-width:120px}
+.home-progress-mini .pm-val{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:500;color:var(--accent);font-variation-settings:"opsz" 144;line-height:1;font-variant-numeric:tabular-nums}
+.home-progress-mini .pm-lbl{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:600}
+
+.home-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2rem}
+@media (max-width:920px){.home-cards{grid-template-columns:1fr}}
+.home-card{
+  background:var(--bg-paper);border:1px solid var(--rule);border-radius:12px;
+  padding:1.5rem 1.4rem;cursor:pointer;transition:all .2s;
+  border-top:3px solid var(--accent);position:relative;overflow:hidden;
+  display:flex;flex-direction:column;gap:.7rem;
+  text-align:left;
+}
+.home-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);background:var(--bg-card)}
+.home-card .hc-ico{
+  width:44px;height:44px;border-radius:10px;
+  background:var(--accent-bg);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+}
+.home-card .hc-ico svg{width:22px;height:22px}
+.home-card .hc-title{
+  font-family:'Fraunces',serif;font-size:1.25rem;font-weight:500;color:var(--ink);
+  font-variation-settings:"opsz" 144;letter-spacing:-.005em;
+}
+.home-card .hc-desc{font-size:.88rem;color:var(--ink-soft);line-height:1.55}
+.home-card .hc-meta{
+  margin-top:auto;padding-top:.85rem;border-top:1px dashed var(--rule);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:.78rem;color:var(--ink-mute);
+}
+.home-card .hc-meta b{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
+.home-card .hc-meta .arrow{color:var(--accent);transition:transform .2s}
+.home-card:hover .hc-meta .arrow{transform:translateX(4px)}
+
+.home-chapters{
+  background:var(--bg-paper);border:1px solid var(--rule);border-radius:12px;
+  padding:1.5rem clamp(1rem,2vw,1.75rem);
+}
+.home-chapters .hc-h{
+  display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;
+  padding-bottom:.85rem;border-bottom:1px dashed var(--rule);
+}
+.home-chapters .hc-h h3{font-size:1.05rem;font-family:'Fraunces',serif;font-weight:500}
+.home-chapters .hc-h .badge{
+  font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:.2rem .55rem;background:var(--gold-bg);color:var(--gold);border-radius:4px;
+}
+.chap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.65rem}
+.chap-item{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.7rem .9rem;border:1px solid var(--rule);border-radius:8px;
+  background:var(--bg-card);transition:all .15s;
+  cursor:default;
+}
+.chap-item.active{border-color:var(--accent);background:var(--accent-bg-soft);cursor:pointer}
+.chap-item.active:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.chap-item .chap-num{
+  font-family:'Fraunces',serif;font-size:1.5rem;font-weight:500;
+  color:var(--ink-fade);font-variation-settings:"opsz" 144;
+  font-variant-numeric:tabular-nums;line-height:1;width:32px;flex-shrink:0;
+}
+.chap-item.active .chap-num{color:var(--accent)}
+.chap-item .chap-info{display:flex;flex-direction:column;gap:.1rem;min-width:0}
+.chap-item .chap-name{font-size:.82rem;font-weight:500;color:var(--ink);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chap-item:not(.active) .chap-name{color:var(--ink-mute)}
+.chap-item .chap-state{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-fade);font-weight:600}
+.chap-item.active .chap-state{color:var(--success)}
+
+/* ============ FLASHCARDS VIEW ============ */
+.fc-stage{
+  position:relative;
+  background:
+    radial-gradient(circle at 20% 0%, var(--accent-bg-soft) 0%, transparent 50%),
+    radial-gradient(circle at 80% 100%, var(--gold-bg) 0%, transparent 50%),
+    var(--bg-card);
+  border:1px solid var(--rule);border-radius:14px;
+  padding:clamp(1.25rem,3vw,2rem);
+  box-shadow:var(--shadow);
+}
+.fc-toolbar{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  padding-bottom:1.25rem;margin-bottom:1.25rem;border-bottom:1px dashed var(--rule);
+  justify-content:space-between;
+}
+.fc-filter{
+  display:inline-flex;gap:.25rem;padding:.3rem;background:var(--bg-paper);
+  border:1px solid var(--rule);border-radius:99px;flex-wrap:wrap;
+}
+.fc-filter button{
+  padding:.45rem .95rem;border-radius:99px;
+  font-size:.82rem;font-weight:500;color:var(--ink-mute);
+  transition:all .15s;white-space:nowrap;
+}
+.fc-filter button:hover:not(.active){color:var(--ink)}
+.fc-filter button.active{background:var(--accent);color:#fff}
+.fc-filter button .cnt{
+  font-size:.7rem;opacity:.7;margin-left:.3rem;font-variant-numeric:tabular-nums;
+}
+.fc-filter button.active .cnt{opacity:.9}
+.fc-tools{display:inline-flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+.fc-tools .icon-btn{
+  width:38px;height:38px;border-radius:8px;border:1px solid var(--rule);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--ink-soft);transition:all .15s;background:var(--bg-paper);
+}
+.fc-tools .icon-btn:hover{background:var(--accent-bg-soft);color:var(--accent);border-color:var(--accent-bg)}
+.fc-tools .icon-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fc-tools .icon-btn svg{width:16px;height:16px}
+.fc-tools .icon-btn .lbl{font-size:.78rem;font-weight:500;margin-left:.4rem}
+.fc-tools .icon-btn.has-lbl{width:auto;padding:0 .85rem;gap:.4rem}
+
+.fc-progress-bar{
+  height:6px;background:var(--rule-soft);border-radius:3px;
+  overflow:hidden;position:relative;margin-bottom:1.25rem;
+}
+.fc-progress-bar .fill{
+  height:100%;background:linear-gradient(to right,var(--accent),var(--gold));
+  transition:width .3s ease;border-radius:3px;
+}
+.fc-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:.8rem;color:var(--ink-mute);margin-bottom:1.5rem;
+  font-variant-numeric:tabular-nums;
+}
+.fc-meta .pos b{color:var(--accent);font-weight:600;font-size:.92rem}
+.fc-meta .part-tag{
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:.18rem .55rem;background:var(--accent-bg);color:var(--accent);border-radius:3px;
+}
+
+/* Card flip */
+.fc-card-wrap{
+  perspective:2000px;
+  margin:0 auto 1.5rem;max-width:780px;
+  min-height:380px;
+}
+.fc-card{
+  position:relative;width:100%;min-height:380px;
+  transform-style:preserve-3d;transition:transform .55s cubic-bezier(.25,.8,.25,1);
+  cursor:pointer;
+}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-face{
+  position:absolute;inset:0;
+  -webkit-backface-visibility:hidden;backface-visibility:hidden;
+  background:var(--bg-paper);border:1px solid var(--rule);border-radius:14px;
+  padding:clamp(1.5rem,3vw,2.5rem);
+  display:flex;flex-direction:column;
+  box-shadow:var(--shadow-lg);overflow:hidden;
+}
+.fc-face::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,var(--accent),var(--gold));
+}
+.fc-face.back{transform:rotateY(180deg);background:var(--bg-card)}
+.fc-face-tag{
+  display:inline-flex;align-items:center;gap:.4rem;font-size:.68rem;
+  letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  color:var(--ink-mute);margin-bottom:1rem;
+}
+.fc-face-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.fc-face-tag .num{
+  padding:.15rem .5rem;background:var(--accent);color:#fff;
+  border-radius:3px;font-variant-numeric:tabular-nums;letter-spacing:.04em;
+}
+.fc-front-title{
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  text-align:center;font-family:'Fraunces',serif;font-weight:500;
+  font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.25;color:var(--ink);
+  font-variation-settings:"opsz" 144;letter-spacing:-.005em;
+  padding:1rem 0;
+}
+.fc-hint{
+  text-align:center;font-size:.78rem;color:var(--ink-fade);
+  font-style:italic;margin-top:auto;
+  display:flex;align-items:center;justify-content:center;gap:.4rem;
+}
+.fc-hint .kbd{
+  font-family:'Manrope',sans-serif;font-style:normal;
+  font-size:.7rem;font-weight:600;padding:.15rem .4rem;
+  background:var(--bg-elev);border:1px solid var(--rule);border-radius:4px;
+  color:var(--ink-mute);
+}
+.fc-back-body{
+  flex:1;overflow-y:auto;font-size:.92rem;line-height:1.65;color:var(--ink-soft);
+  padding-right:.5rem;
+}
+.fc-back-body::-webkit-scrollbar{width:6px}
+.fc-back-body::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
+.fc-back-body strong{color:var(--ink);font-weight:600}
+.fc-back-body em{color:var(--accent);font-style:italic;font-weight:500}
+.fc-back-body ul,.fc-back-body ol{margin-left:1.2rem;margin-top:.4rem;margin-bottom:.6rem}
+.fc-back-body li{margin-bottom:.3rem}
+.fc-back-body p{margin-bottom:.7rem}
+.fc-back-body p:last-child{margin-bottom:0}
+.fc-back-body blockquote{
+  margin:.85rem 0;padding:.75rem 1rem;background:var(--accent-bg-soft);
+  border-left:3px solid var(--accent);border-radius:0 6px 6px 0;
+  font-style:italic;color:var(--ink-soft);font-size:.88rem;
+}
+.fc-back-body blockquote em{color:var(--ink-soft)}
+.fc-back-body .arrow-out{color:var(--accent);font-weight:600}
+
+.fc-known-badge{
+  position:absolute;top:1rem;right:1.25rem;
+  font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  padding:.2rem .55rem;border-radius:4px;
+  background:var(--success-bg);color:var(--success);
+  display:none;
+}
+.fc-card.is-known .fc-known-badge{display:inline-block}
+
+/* Controls */
+.fc-controls{
+  display:flex;align-items:center;justify-content:center;gap:.75rem;
+  flex-wrap:wrap;
+}
+.fc-nav-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.7rem 1.4rem;border-radius:10px;
+  font-size:.88rem;font-weight:500;color:var(--ink);
+  background:var(--bg-paper);border:1px solid var(--rule);
+  transition:all .15s;
+}
+.fc-nav-btn:hover:not(:disabled){background:var(--bg-card);border-color:var(--accent);color:var(--accent);transform:translateY(-1px);box-shadow:var(--shadow)}
+.fc-nav-btn:disabled{opacity:.4;cursor:not-allowed}
+.fc-nav-btn svg{width:14px;height:14px}
+.fc-nav-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fc-nav-btn.primary:hover:not(:disabled){background:var(--accent-soft);color:#fff;border-color:var(--accent-soft)}
+
+.fc-mark-btn{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.55rem 1rem;border-radius:8px;
+  font-size:.83rem;font-weight:500;
+  background:var(--bg-paper);border:1px solid var(--rule);
+  color:var(--ink-soft);transition:all .15s;
+}
+.fc-mark-btn:hover{background:var(--success-bg-soft);color:var(--success);border-color:var(--success)}
+.fc-mark-btn.active{background:var(--success-bg);color:var(--success);border-color:var(--success)}
+.fc-mark-btn svg{width:14px;height:14px}
+
+.fc-empty{
+  text-align:center;padding:3rem 1.5rem;color:var(--ink-mute);
+}
+.fc-empty .ico{font-size:2.5rem;margin-bottom:.75rem;display:block}
+.fc-empty h3{color:var(--ink);margin-bottom:.5rem}
+.fc-empty p{font-size:.9rem;line-height:1.55;max-width:380px;margin:0 auto}
+
+/* ============ QUIZ VIEW ============ */
+.qz-stage{
+  position:relative;
+  background:
+    radial-gradient(circle at 80% 0%, var(--accent-bg-soft) 0%, transparent 50%),
+    radial-gradient(circle at 10% 100%, var(--gold-bg) 0%, transparent 50%),
+    var(--bg-card);
+  border:1px solid var(--rule);border-radius:14px;
+  padding:clamp(1.25rem,3vw,2rem);
+  min-height:500px;box-shadow:var(--shadow);
+}
+.qz-screen{display:none}
+.qz-screen.active{display:block;animation:fadeIn .35s ease}
+
+/* SETUP screen */
+.qz-setup-h{text-align:center;margin-bottom:2rem}
+.qz-setup-h .ico{
+  width:54px;height:54px;border-radius:14px;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;
+  box-shadow:var(--shadow);
+}
+.qz-setup-h .ico svg{width:28px;height:28px}
+.qz-setup-h h2{margin-bottom:.4rem}
+.qz-setup-h .sub{font-size:.95rem;color:var(--ink-mute);max-width:520px;margin:0 auto;line-height:1.55}
+
+.qz-setup-grid{
+  display:grid;gap:1.25rem;margin-bottom:2rem;max-width:720px;margin-left:auto;margin-right:auto;
+}
+.qz-setup-block{
+  background:var(--bg-paper);border:1px solid var(--rule);border-radius:12px;
+  padding:1.25rem 1.4rem;
+}
+.qz-setup-block .blk-h{
+  display:flex;align-items:center;gap:.55rem;margin-bottom:.85rem;
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent);
+}
+.qz-setup-block .blk-h .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.qz-opt-row{
+  display:flex;gap:.5rem;flex-wrap:wrap;
+}
+.qz-opt-btn{
+  flex:1;min-width:120px;
+  padding:.7rem .95rem;border-radius:8px;
+  font-size:.85rem;font-weight:500;color:var(--ink-soft);
+  background:var(--bg-card);border:1px solid var(--rule);
+  transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:.15rem;
+  text-align:center;line-height:1.3;
+}
+.qz-opt-btn:hover:not(.active){border-color:var(--accent);color:var(--ink)}
+.qz-opt-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.qz-opt-btn .cnt{font-size:.7rem;opacity:.7;font-variant-numeric:tabular-nums}
+.qz-opt-btn.active .cnt{opacity:.85}
+
+.qz-start-row{
+  display:flex;justify-content:center;align-items:center;gap:1rem;
+  flex-wrap:wrap;margin-top:.5rem;
+}
+.qz-start-btn{
+  padding:.95rem 2.25rem;border-radius:10px;
+  font-size:.95rem;font-weight:600;color:#fff;background:var(--accent);
+  display:inline-flex;align-items:center;gap:.6rem;
+  transition:all .15s;box-shadow:var(--shadow);letter-spacing:.01em;
+}
+.qz-start-btn:hover{background:var(--accent-soft);transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+.qz-start-btn svg{width:16px;height:16px}
+.qz-shuffle-toggle{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.82rem;color:var(--ink-mute);font-weight:500;cursor:pointer;
+}
+.qz-shuffle-toggle input{display:none}
+.qz-shuffle-toggle .box{
+  width:18px;height:18px;border-radius:4px;border:1.5px solid var(--rule);
+  background:var(--bg-card);position:relative;transition:all .15s;
+}
+.qz-shuffle-toggle .box::after{
+  content:'';position:absolute;inset:3px;border-radius:2px;
+  background:var(--accent);transform:scale(0);transition:transform .15s;
+}
+.qz-shuffle-toggle input:checked + .box{border-color:var(--accent)}
+.qz-shuffle-toggle input:checked + .box::after{transform:scale(1)}
+
+/* QUIZ screen */
+.qz-top{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;
+}
+.qz-progress{
+  flex:1;min-width:200px;display:flex;align-items:center;gap:.85rem;
+}
+.qz-progress .num{
+  font-family:'Fraunces',serif;font-size:1.25rem;font-weight:500;color:var(--accent);
+  font-variation-settings:"opsz" 144;font-variant-numeric:tabular-nums;flex-shrink:0;
+}
+.qz-progress .bar{
+  flex:1;height:6px;background:var(--rule-soft);border-radius:3px;overflow:hidden;
+}
+.qz-progress .bar .fill{
+  height:100%;background:linear-gradient(to right,var(--accent),var(--gold));
+  transition:width .3s ease;border-radius:3px;
+}
+.qz-quit{
+  font-size:.8rem;color:var(--ink-mute);font-weight:500;
+  padding:.45rem .85rem;border-radius:6px;border:1px solid var(--rule);
+  display:inline-flex;align-items:center;gap:.4rem;transition:all .15s;
+}
+.qz-quit:hover{background:var(--danger-bg);color:var(--danger);border-color:var(--danger)}
+.qz-quit svg{width:13px;height:13px}
+
+.qz-q{
+  background:var(--bg-paper);border:1px solid var(--rule);border-radius:12px;
+  padding:1.5rem clamp(1rem,2vw,1.75rem);margin-bottom:1.25rem;
+  position:relative;overflow:hidden;
+}
+.qz-q::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,var(--accent),var(--gold));
+}
+.qz-q-tags{display:flex;gap:.4rem;margin-bottom:.85rem;flex-wrap:wrap}
+.qz-q-tag{
+  font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:.18rem .55rem;border-radius:3px;
+}
+.qz-q-tag.type{background:var(--accent);color:#fff}
+.qz-q-tag.topic{background:var(--gold-bg);color:var(--gold)}
+.qz-q-text{
+  font-family:'Fraunces',serif;font-size:clamp(1.1rem,2vw,1.35rem);font-weight:500;
+  color:var(--ink);line-height:1.4;font-variation-settings:"opsz" 144;
+  margin-bottom:1.25rem;letter-spacing:-.005em;
+}
+.qz-q-text strong{font-weight:700;color:var(--accent)}
+
+/* MC options */
+.qz-options{display:flex;flex-direction:column;gap:.55rem}
+.qz-option{
+  display:flex;align-items:flex-start;gap:.75rem;
+  padding:.85rem 1rem;border-radius:8px;
+  background:var(--bg-card);border:1px solid var(--rule);
+  font-size:.92rem;line-height:1.5;color:var(--ink-soft);
+  cursor:pointer;transition:all .15s;text-align:left;
+}
+.qz-option:hover:not(:disabled):not(.locked){border-color:var(--accent);background:var(--accent-bg-soft);color:var(--ink)}
+.qz-option:disabled,.qz-option.locked{cursor:default}
+.qz-option .letter{
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:.78rem;font-weight:700;color:var(--ink-mute);
+  background:var(--bg-paper);border:1px solid var(--rule);font-variant-numeric:tabular-nums;
+  transition:all .15s;
+}
+.qz-option:hover:not(:disabled):not(.locked) .letter{background:var(--accent);color:#fff;border-color:var(--accent)}
+.qz-option.correct{background:var(--success-bg);border-color:var(--success);color:var(--ink)}
+.qz-option.correct .letter{background:var(--success);color:#fff;border-color:var(--success)}
+.qz-option.wrong{background:var(--danger-bg);border-color:var(--danger);color:var(--ink)}
+.qz-option.wrong .letter{background:var(--danger);color:#fff;border-color:var(--danger)}
+.qz-option .icon-end{margin-left:auto;flex-shrink:0;width:18px;height:18px;opacity:0;transition:opacity .15s}
+.qz-option.correct .icon-end,.qz-option.wrong .icon-end{opacity:1}
+.qz-option.correct .icon-end{color:var(--success)}
+.qz-option.wrong .icon-end{color:var(--danger)}
+
+/* TF options */
+.qz-tf{display:flex;gap:.75rem}
+.qz-tf-btn{
+  flex:1;padding:1.1rem 1rem;border-radius:10px;
+  background:var(--bg-card);border:1.5px solid var(--rule);
+  font-size:1rem;font-weight:600;color:var(--ink-soft);
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  transition:all .15s;cursor:pointer;
+}
+.qz-tf-btn:hover:not(:disabled):not(.locked){border-color:var(--accent);background:var(--accent-bg-soft);color:var(--ink)}
+.qz-tf-btn:disabled,.qz-tf-btn.locked{cursor:default}
+.qz-tf-btn svg{width:18px;height:18px;flex-shrink:0}
+.qz-tf-btn.correct{background:var(--success-bg);border-color:var(--success);color:var(--success)}
+.qz-tf-btn.wrong{background:var(--danger-bg);border-color:var(--danger);color:var(--danger)}
+
+/* FILL */
+.qz-fill-wrap{display:flex;flex-direction:column;gap:.85rem}
+.qz-fill-input{
+  width:100%;padding:.85rem 1.1rem;border-radius:8px;
+  border:1.5px solid var(--rule);background:var(--bg-card);
+  font-size:1rem;color:var(--ink);transition:all .15s;line-height:1.4;
+}
+.qz-fill-input:focus{outline:none;border-color:var(--accent);background:var(--bg-paper);box-shadow:0 0 0 3px var(--accent-bg-soft)}
+.qz-fill-input.correct{border-color:var(--success);background:var(--success-bg)}
+.qz-fill-input.wrong{border-color:var(--danger);background:var(--danger-bg)}
+.qz-fill-submit{
+  padding:.75rem 1.5rem;border-radius:8px;background:var(--accent);color:#fff;
+  font-size:.88rem;font-weight:600;align-self:flex-start;
+  transition:all .15s;display:inline-flex;align-items:center;gap:.4rem;
+}
+.qz-fill-submit:hover{background:var(--accent-soft);transform:translateY(-1px)}
+.qz-fill-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* SIDE */
+.qz-side-wrap{display:flex;flex-direction:column;gap:.85rem}
+.qz-side-textarea{
+  width:100%;padding:.85rem 1.1rem;border-radius:8px;
+  border:1.5px solid var(--rule);background:var(--bg-card);
+  font-size:.92rem;color:var(--ink);min-height:120px;resize:vertical;line-height:1.55;font-family:inherit;
+}
+.qz-side-textarea:focus{outline:none;border-color:var(--accent);background:var(--bg-paper);box-shadow:0 0 0 3px var(--accent-bg-soft)}
+.qz-side-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.qz-side-reveal{
+  padding:.7rem 1.25rem;border-radius:8px;background:var(--accent);color:#fff;
+  font-size:.86rem;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;
+  transition:all .15s;
+}
+.qz-side-reveal:hover{background:var(--accent-soft)}
+.qz-side-skip{
+  padding:.7rem 1.25rem;border-radius:8px;background:var(--bg-card);color:var(--ink-soft);
+  font-size:.86rem;font-weight:500;border:1px solid var(--rule);
+  transition:all .15s;
+}
+.qz-side-skip:hover{border-color:var(--accent);color:var(--accent)}
+.qz-side-eval{
+  display:flex;gap:.5rem;margin-top:.75rem;padding-top:.85rem;border-top:1px dashed var(--rule);
+  flex-wrap:wrap;align-items:center;
+}
+.qz-side-eval-lbl{font-size:.78rem;color:var(--ink-mute);font-weight:500;margin-right:.25rem}
+.qz-side-eval-btn{
+  padding:.45rem .85rem;border-radius:6px;background:var(--bg-card);
+  font-size:.78rem;font-weight:500;border:1px solid var(--rule);
+  display:inline-flex;align-items:center;gap:.3rem;transition:all .15s;
+}
+.qz-side-eval-btn:hover{transform:translateY(-1px)}
+.qz-side-eval-btn.good:hover,.qz-side-eval-btn.good.active{background:var(--success-bg);color:var(--success);border-color:var(--success)}
+.qz-side-eval-btn.meh:hover,.qz-side-eval-btn.meh.active{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
+.qz-side-eval-btn.bad:hover,.qz-side-eval-btn.bad.active{background:var(--danger-bg);color:var(--danger);border-color:var(--danger)}
+
+/* Feedback / Explain */
+.qz-feedback{
+  margin-top:1.25rem;padding:1rem 1.2rem;border-radius:8px;
+  border-left:3px solid var(--accent);
+  background:var(--accent-bg-soft);font-size:.88rem;line-height:1.6;color:var(--ink-soft);
+  display:none;
+}
+.qz-feedback.show{display:block;animation:fadeIn .25s ease}
+.qz-feedback.correct{background:var(--success-bg-soft);border-left-color:var(--success)}
+.qz-feedback.wrong{background:var(--danger-bg);border-left-color:var(--danger)}
+.qz-feedback .fb-h{
+  display:flex;align-items:center;gap:.45rem;
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+  color:var(--accent);margin-bottom:.45rem;
+}
+.qz-feedback.correct .fb-h{color:var(--success)}
+.qz-feedback.wrong .fb-h{color:var(--danger)}
+.qz-feedback strong{color:var(--ink);font-weight:600}
+.qz-feedback em{font-style:italic;color:var(--ink-soft);font-weight:500}
+.qz-feedback table{width:100%;border-collapse:collapse;margin:.65rem 0;font-size:.85rem}
+.qz-feedback th,.qz-feedback td{
+  padding:.5rem .65rem;border:1px solid var(--rule);
+  text-align:left;vertical-align:top;background:var(--bg-card);
+}
+.qz-feedback th{background:var(--bg-elev);font-weight:600;color:var(--ink);font-size:.78rem;letter-spacing:.04em}
+.qz-feedback ul,.qz-feedback ol{margin-left:1.25rem;margin-top:.4rem;margin-bottom:.4rem}
+.qz-feedback li{margin-bottom:.25rem}
+.qz-feedback p{margin-bottom:.55rem}
+.qz-feedback p:last-child{margin-bottom:0}
+
+/* Next button */
+.qz-actions{
+  margin-top:1.25rem;display:flex;justify-content:flex-end;gap:.6rem;
+}
+.qz-next-btn{
+  padding:.75rem 1.6rem;border-radius:8px;background:var(--accent);color:#fff;
+  font-size:.88rem;font-weight:600;display:inline-flex;align-items:center;gap:.5rem;
+  transition:all .15s;box-shadow:var(--shadow);
+}
+.qz-next-btn:hover{background:var(--accent-soft);transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+.qz-next-btn svg{width:14px;height:14px}
+
+/* RESULT screen */
+.qz-result-h{text-align:center;margin-bottom:1.75rem}
+.qz-score-ring{
+  position:relative;width:180px;height:180px;margin:0 auto 1rem;
+}
+.qz-score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.qz-score-ring .track{fill:none;stroke:var(--rule-soft);stroke-width:10}
+.qz-score-ring .progress{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.qz-score-ring .progress.high{stroke:var(--success)}
+.qz-score-ring .progress.mid{stroke:var(--gold)}
+.qz-score-ring .progress.low{stroke:var(--danger)}
+.qz-score-ring .inner{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.qz-score-ring .inner .pct{
+  font-family:'Fraunces',serif;font-size:2.5rem;font-weight:500;line-height:1;
+  font-variation-settings:"opsz" 144;color:var(--accent);font-variant-numeric:tabular-nums;
+}
+.qz-score-ring .inner .pct.high{color:var(--success)}
+.qz-score-ring .inner .pct.mid{color:var(--gold)}
+.qz-score-ring .inner .pct.low{color:var(--danger)}
+.qz-score-ring .inner .frac{
+  font-size:.78rem;color:var(--ink-mute);letter-spacing:.08em;font-variant-numeric:tabular-nums;
+  margin-top:.25rem;font-weight:600;
+}
+.qz-result-h h2{margin-bottom:.35rem}
+.qz-result-h .sub{font-size:.95rem;color:var(--ink-soft);line-height:1.5}
+
+.qz-result-stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.85rem;
+  margin-bottom:1.75rem;max-width:600px;margin-left:auto;margin-right:auto;
+}
+.qz-stat{
+  background:var(--bg-paper);border:1px solid var(--rule);border-radius:10px;
+  padding:.95rem 1rem;text-align:center;
+}
+.qz-stat .val{
+  font-family:'Fraunces',serif;font-size:1.6rem;font-weight:500;line-height:1;
+  font-variation-settings:"opsz" 144;font-variant-numeric:tabular-nums;
+}
+.qz-stat .val.good{color:var(--success)}
+.qz-stat .val.bad{color:var(--danger)}
+.qz-stat .val.neu{color:var(--ink)}
+.qz-stat .val.warn{color:var(--gold)}
+.qz-stat .lbl{
+  font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-mute);font-weight:600;margin-top:.35rem;
+}
+
+.qz-result-actions{
+  display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-bottom:1.75rem;
+}
+.qz-result-btn{
+  padding:.75rem 1.4rem;border-radius:8px;
+  font-size:.86rem;font-weight:500;
+  display:inline-flex;align-items:center;gap:.5rem;
+  transition:all .15s;border:1px solid var(--rule);background:var(--bg-card);color:var(--ink-soft);
+}
+.qz-result-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:var(--accent);color:var(--accent)}
+.qz-result-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.qz-result-btn.primary:hover{background:var(--accent-soft);color:#fff;border-color:var(--accent-soft)}
+.qz-result-btn svg{width:14px;height:14px}
+
+.qz-review{
+  display:flex;flex-direction:column;gap:.6rem;
+}
+.qz-review-h{
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;
+  margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;
+}
+.qz-review-h::before{content:'';flex:1;height:1px;background:var(--rule)}
+.qz-review-h::after{content:'';flex:1;height:1px;background:var(--rule)}
+.qz-review-item{
+  padding:.85rem 1.1rem;border-radius:8px;border:1px solid var(--rule);
+  background:var(--bg-card);display:flex;gap:.85rem;align-items:flex-start;
+  font-size:.85rem;line-height:1.5;
+}
+.qz-review-item .rv-ico{
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:.78rem;font-weight:700;color:#fff;
+}
+.qz-review-item .rv-ico.ok{background:var(--success)}
+.qz-review-item .rv-ico.no{background:var(--danger)}
+.qz-review-item .rv-ico.sk{background:var(--ink-mute)}
+.qz-review-item .rv-body{flex:1;min-width:0}
+.qz-review-item .rv-q{font-weight:500;color:var(--ink);margin-bottom:.2rem;line-height:1.4}
+.qz-review-item .rv-info{font-size:.78rem;color:var(--ink-mute)}
+.qz-review-item .rv-info b{color:var(--ink-soft);font-weight:600}
+
+/* ============ MINDMAP VIEW ============ */
+/* (Tái sử dụng styles từ mindmap preview v2) */
+.mm-switch-bar{
+  display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;
+  justify-content:space-between;
+}
+.mm-switch{
+  display:inline-flex;gap:.25rem;padding:.3rem;background:var(--bg-paper);
+  border:1px solid var(--rule);border-radius:99px;flex-wrap:wrap;
+}
+.mm-switch button{
+  padding:.55rem 1.1rem;border-radius:99px;
+  font-size:.85rem;font-weight:500;color:var(--ink-mute);
+  transition:all .15s;display:inline-flex;align-items:center;gap:.5rem;
+  white-space:nowrap;
+}
+.mm-switch button:hover:not(.active){color:var(--ink)}
+.mm-switch button.active{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
+.mm-switch .ico-sw{width:14px;height:14px;flex-shrink:0}
+.switch-meta{font-size:.78rem;color:var(--ink-mute);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.switch-meta b{color:var(--accent);font-weight:600}
+
+.mm-stage{
+  position:relative;
+  background:
+    radial-gradient(circle at 20% 0%, var(--accent-bg-soft) 0%, transparent 50%),
+    radial-gradient(circle at 80% 100%, var(--gold-bg) 0%, transparent 50%),
+    var(--bg-card);
+  border:1px solid var(--rule);border-radius:14px;
+  padding:clamp(1.25rem,3vw,2.5rem);
+  min-height:600px;box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.mm-view{display:none}
+.mm-view.active{display:block;animation:fadeIn .4s ease}
+
+/* TREE */
+.tree-root{display:flex;justify-content:center;margin-bottom:3rem;position:relative}
+.tree-root-node{
+  background:var(--accent);color:#fff;
+  padding:1.1rem 2rem;border-radius:99px;
+  font-family:'Fraunces',serif;font-size:1.2rem;font-weight:500;
+  font-variation-settings:"opsz" 144;text-align:center;
+  box-shadow:var(--shadow-lg);position:relative;z-index:2;letter-spacing:-.005em;
+}
+.tree-root-node::before{
+  content:'';position:absolute;inset:-8px;border:1.5px dashed var(--accent);
+  border-radius:99px;opacity:.3;
+}
+.tree-root::after{
+  content:'';position:absolute;bottom:-2rem;left:50%;
+  width:2px;height:2rem;background:var(--accent);transform:translateX(-1px);
+}
+.tree-branches{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;position:relative;
+}
+@media (max-width:920px){.tree-branches{grid-template-columns:1fr}}
+.tree-branches::before{
+  content:'';position:absolute;left:16.66%;right:16.66%;top:-1rem;height:2px;
+  background:var(--accent);opacity:.6;
+}
+@media (max-width:920px){.tree-branches::before{display:none}}
+.tree-branch{
+  background:var(--bg-paper);border:1px solid var(--rule);border-radius:12px;
+  padding:1.5rem 1.4rem;position:relative;border-top:3px solid var(--accent);
+}
+.tree-branch::before{
+  content:'';position:absolute;top:-1rem;left:50%;width:2px;height:1rem;
+  background:var(--accent);transform:translateX(-1px);
+}
+@media (max-width:920px){.tree-branch::before{display:none}}
+.tree-branch-h{
+  display:flex;align-items:center;gap:.6rem;margin-bottom:1.25rem;
+  padding-bottom:.85rem;border-bottom:1px dashed var(--rule);
+}
+.tree-branch-h .rom{
+  font-family:'Fraunces',serif;font-size:1.8rem;font-weight:500;color:var(--accent);
+  font-variation-settings:"opsz" 144;line-height:1;
+}
+.tree-branch-h h3{font-size:.95rem;line-height:1.3;color:var(--ink);font-family:'Fraunces',serif;font-weight:500;letter-spacing:-.005em}
+.tree-section{margin-bottom:1.25rem}
+.tree-section:last-child{margin-bottom:0}
+.tree-section-h{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.3rem .7rem;background:var(--accent-bg);color:var(--accent);
+  border-radius:5px;font-size:.78rem;font-weight:600;
+  margin-bottom:.65rem;letter-spacing:.01em;
+}
+.tree-section-h .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.tree-items{padding-left:1rem;border-left:2px solid var(--rule);display:flex;flex-direction:column;gap:.5rem}
+.tree-item{position:relative;font-size:.85rem;line-height:1.45;color:var(--ink-soft)}
+.tree-item::before{
+  content:'';position:absolute;left:-1rem;top:.55rem;width:.7rem;height:2px;background:var(--rule);
+}
+.tree-item strong{color:var(--ink);font-weight:600}
+.tree-item em{color:var(--accent);font-style:normal;font-weight:500}
+.tree-item .arrow{color:var(--accent);font-weight:600;margin:0 .2rem}
+.tree-item .meta{display:block;font-size:.75rem;color:var(--ink-mute);font-style:italic;margin-top:.1rem}
+.tree-item .pill{
+  display:inline-block;font-size:.7rem;
+  padding:.05rem .4rem;background:var(--gold-bg);color:var(--gold);
+  border-radius:3px;margin-left:.3rem;font-weight:600;letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;
+}
+.tree-highlight{
+  margin-top:.75rem;padding:.6rem .8rem;background:var(--accent-bg);
+  border-radius:6px;border-left:3px solid var(--accent);
+  font-size:.78rem;color:var(--ink);line-height:1.45;font-weight:500;
+  display:flex;align-items:flex-start;gap:.4rem;
+}
+.tree-highlight .star{color:var(--accent);font-weight:700;flex-shrink:0}
+.tree-highlight em{font-style:italic;color:var(--ink-soft);font-weight:400}
+
+/* TIMELINE */
+.tl-intro{
+  display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;
+  padding:1rem 1.25rem;background:var(--bg-paper);
+  border-radius:8px;border:1px solid var(--rule);flex-wrap:wrap;
+}
+.tl-intro .ico{
+  width:42px;height:42px;border-radius:8px;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.tl-intro .ico svg{width:22px;height:22px}
+.tl-intro .txt{flex:1;min-width:200px}
+.tl-intro .txt b{display:block;font-family:'Fraunces',serif;font-size:1.1rem;color:var(--ink);font-weight:500;margin-bottom:.15rem;font-variation-settings:"opsz" 144}
+.tl-intro .txt span{font-size:.85rem;color:var(--ink-mute);line-height:1.4}
+
+.tl-phases{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.tl-phase{
+  flex:1;min-width:160px;padding:.65rem .85rem;border-radius:6px;
+  border:1px solid var(--rule);background:var(--bg-paper);
+  display:flex;flex-direction:column;gap:.15rem;
+}
+.tl-phase .yr{font-size:.72rem;color:var(--ink-mute);font-weight:600;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.tl-phase .nm{font-size:.82rem;color:var(--ink);font-weight:500}
+.tl-phase.p1{border-left:3px solid var(--ink-mute)}
+.tl-phase.p2{border-left:3px solid var(--accent)}
+.tl-phase.p3{border-left:3px solid var(--gold)}
+.tl-phase.p4{border-left:3px solid var(--success)}
+
+.tl-rail{position:relative;padding:1rem 0 2rem;margin-left:clamp(70px,12vw,140px)}
+.tl-rail::before{
+  content:'';position:absolute;left:-1px;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,
+    var(--ink-mute) 0% 16%,
+    var(--accent) 16% 50%,
+    var(--gold) 50% 70%,
+    var(--success) 70% 100%);
+}
+.tl-event{position:relative;padding:1rem 0 1rem 2rem}
+.tl-event::before{
+  content:'';position:absolute;left:-9px;top:1.5rem;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--bg-card);border:3px solid var(--accent);z-index:2;
+  box-shadow:0 0 0 3px var(--bg-card);
+}
+.tl-event.star::before{
+  width:22px;height:22px;left:-12px;background:var(--accent);
+  box-shadow:0 0 0 4px var(--bg-card),0 0 0 5px var(--accent);
+}
+.tl-event.p1::before{border-color:var(--ink-mute)}
+.tl-event.p2::before{border-color:var(--accent)}
+.tl-event.p3::before{border-color:var(--gold)}
+.tl-event.p4::before{border-color:var(--success)}
+.tl-event-year{
+  position:absolute;left:calc(-2rem - clamp(70px,12vw,140px));
+  top:1.25rem;width:clamp(60px,11vw,120px);
+  font-family:'Fraunces',serif;font-size:clamp(1rem,1.5vw,1.4rem);
+  font-weight:500;color:var(--accent);text-align:right;
+  font-variation-settings:"opsz" 144;line-height:1.2;
+  padding-right:1rem;font-variant-numeric:tabular-nums;
+}
+.tl-event.star .tl-event-year{color:var(--accent);font-weight:600}
+.tl-event-body{
+  background:var(--bg-paper);border:1px solid var(--rule);
+  border-radius:10px;padding:1rem 1.25rem;
+  border-left:3px solid var(--accent);position:relative;
+}
+.tl-event.p1 .tl-event-body{border-left-color:var(--ink-mute)}
+.tl-event.p2 .tl-event-body{border-left-color:var(--accent)}
+.tl-event.p3 .tl-event-body{border-left-color:var(--gold)}
+.tl-event.p4 .tl-event-body{border-left-color:var(--success)}
+.tl-event.star .tl-event-body{
+  background:linear-gradient(135deg,var(--bg-paper) 0%,var(--accent-bg-soft) 100%);
+  border-color:var(--accent);box-shadow:0 4px 16px rgba(124,29,29,.08);
+}
+.tl-event-tag{
+  display:inline-block;font-size:.68rem;
+  letter-spacing:.16em;text-transform:uppercase;padding:.18rem .6rem;border-radius:3px;
+  background:var(--accent-bg);color:var(--accent);font-weight:700;margin-bottom:.5rem;
+}
+.tl-event.star .tl-event-tag{background:var(--accent);color:#fff}
+.tl-event-title{font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:.35rem;line-height:1.35;display:flex;align-items:center;gap:.5rem}
+.tl-event.star .tl-event-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:500;font-variation-settings:"opsz" 144}
+.tl-event-title .star-ico{color:var(--accent);font-size:1.2rem}
+.tl-event-desc{font-size:.86rem;color:var(--ink-soft);line-height:1.55}
+.tl-event-desc em{color:var(--accent);font-style:normal;font-weight:600}
+@media (max-width:640px){
+  .tl-rail{margin-left:70px}
+  .tl-event-year{left:-70px;width:60px;font-size:.95rem;padding-right:.75rem}
+}
+
+/* COMPARE */
+.cmp-wrap{display:grid;gap:1.75rem}
+.cmp-card{
+  background:var(--bg-paper);border:1px solid var(--rule);
+  border-radius:12px;padding:1.5rem clamp(1rem,2vw,1.75rem);
+  position:relative;overflow:hidden;
+}
+.cmp-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,var(--accent),var(--gold));
+}
+.cmp-h{
+  font-family:'Fraunces',serif;font-size:1.2rem;font-weight:500;
+  color:var(--ink);margin-bottom:.4rem;font-variation-settings:"opsz" 144;
+  display:flex;align-items:center;gap:.65rem;letter-spacing:-.005em;flex-wrap:wrap;
+}
+.cmp-h .num{
+  font-size:.78rem;font-family:'Manrope',sans-serif;
+  background:var(--accent);color:#fff;padding:.2rem .55rem;
+  border-radius:4px;font-weight:600;letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;line-height:1.2;
+}
+.cmp-sub{font-size:.85rem;color:var(--ink-mute);margin-bottom:1.25rem;font-style:italic;line-height:1.5}
+.cmp-objects{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.cmp-obj{
+  padding:.85rem 1.1rem;border-radius:8px;
+  font-family:'Fraunces',serif;font-size:1rem;font-weight:600;
+  font-variation-settings:"opsz" 144;color:#fff;text-align:center;line-height:1.3;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.15rem;
+}
+.cmp-obj.left{background:var(--accent)}
+.cmp-obj.right{background:var(--gold);color:#fff}
+.cmp-obj .obj-sub{
+  font-family:'Manrope',sans-serif;font-size:.7rem;font-weight:500;
+  opacity:.85;letter-spacing:.06em;font-variant-numeric:tabular-nums;
+}
+.cmp-rows{display:flex;flex-direction:column;gap:.4rem}
+.cmp-row{
+  background:var(--bg-card);border:1px solid var(--rule-soft);
+  border-radius:8px;overflow:hidden;
+}
+.cmp-row-criteria{
+  padding:.45rem 1rem;background:var(--bg-elev);
+  font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);border-bottom:1px solid var(--rule-soft);
+  display:flex;align-items:center;gap:.5rem;
+}
+.cmp-row-criteria::before{
+  content:'';width:4px;height:14px;background:var(--accent);border-radius:1px;
+}
+.cmp-row-values{display:grid;grid-template-columns:1fr 1fr}
+.cmp-row-values > div{padding:.75rem 1rem;font-size:.86rem;line-height:1.5;color:var(--ink-soft)}
+.cmp-row-values > div.left{background:var(--accent-bg-soft);border-right:1px solid var(--rule-soft)}
+.cmp-row-values > div.right{background:var(--gold-bg)}
+.cmp-row-values strong{color:var(--ink);font-weight:600}
+.cmp-row-values em{font-style:italic;color:var(--ink-mute);font-weight:400}
+.cmp-row-values .x{color:var(--accent);font-weight:700;margin-right:.25rem}
+.cmp-row-values .v{color:var(--success);font-weight:700;margin-right:.25rem}
+@media (max-width:680px){
+  .cmp-row-values{grid-template-columns:1fr}
+  .cmp-row-values > div.left{border-right:none;border-bottom:1px solid var(--rule-soft)}
+  .cmp-objects{position:sticky;top:0;z-index:5;background:var(--bg-paper);padding:.4rem 0}
+}
+.cmp-takeaway{
+  margin-top:1.5rem;padding:1rem 1.25rem;
+  background:var(--accent-bg);border-left:3px solid var(--accent);
+  border-radius:0 8px 8px 0;font-size:.88rem;color:var(--ink);line-height:1.55;
+}
+.cmp-takeaway::before{
+  content:'⟶ TAKEAWAY';display:block;
+  font-size:.7rem;letter-spacing:.2em;color:var(--accent);font-weight:700;margin-bottom:.4rem;
+}
+.cmp-takeaway strong{color:var(--ink);font-weight:700}
+.cmp-takeaway em{font-style:italic;color:var(--ink-soft)}
+
+.legend{
+  display:flex;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;
+  font-size:.78rem;color:var(--ink-mute);align-items:center;
+  padding:.75rem 1rem;background:var(--bg-paper);
+  border:1px dashed var(--rule);border-radius:6px;
+}
+.legend-dot{display:inline-flex;align-items:center;gap:.45rem;font-style:italic}
+.legend-dot::before{content:'';width:10px;height:10px;border-radius:2px}
+.legend-dot.r::before{background:var(--accent)}
+.legend-dot.b::before{background:var(--accent-bg);border:1px solid var(--accent)}
+.legend-dot.n::before{background:var(--bg-elev);border:1px solid var(--rule)}
+.legend-dot.g::before{background:var(--gold)}
+.legend-spacer{flex:1}
+.legend-hint{font-style:italic;color:var(--ink-fade)}
+
+/* ============ FOOTER ============ */
+.note{
+  margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule);
+  font-size:.8rem;color:var(--ink-fade);line-height:1.6;font-style:italic;
+  display:flex;align-items:center;gap:.6rem;
+}
+.note::before{content:'※';color:var(--accent);font-size:1.1rem;font-style:normal}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ HEADER ============ -->
+  <header class="head">
+    <div class="head-left">
+      <div class="brand-line">
+        <div class="brand-logo serif">CNXHKH</div>
+        <div class="brand-sub">Học liệu sinh viên</div>
+      </div>
+      <div class="eyebrow">Chương · Giáo trình hệ không chuyên</div>
+      <h1>Nhập môn Chủ nghĩa xã hội khoa học</h1>
+      <p class="sub">Bộ học liệu tương tác cho Chương 1 — flashcards, quiz và sơ đồ tư duy trong một không gian học tập duy nhất.</p>
+    </div>
+    <div class="head-right">
+      <div class="head-meta">
+        <div class="ch-num serif">01</div>
+        <div class="ch-lbl">Chương</div>
+      </div>
+      <button class="theme-btn" id="themeToggle" title="Sáng / Tối">
+        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ MAIN NAV ============ -->
+  <nav class="main-nav" role="tablist">
+    <button class="active" data-view="home">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="lbl-stack">Trang chủ<span class="lbl-sm">Tổng quan</span></span>
+    </button>
+    <button data-view="flashcards">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 2h14v14"/></svg>
+      <span class="lbl-stack">Flashcards<span class="lbl-sm">30 thẻ</span></span>
+    </button>
+    <button data-view="quiz">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span class="lbl-stack">Quiz<span class="lbl-sm">28 câu</span></span>
+    </button>
+    <button data-view="mindmap">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v6M12 13l-5 4M12 13l5 4"/></svg>
+      <span class="lbl-stack">Sơ đồ tư duy<span class="lbl-sm">3 loại sơ đồ</span></span>
+    </button>
+  </nav>
+
+  <!-- ============ HOME VIEW ============ -->
+  <section class="view active" id="view-home">
+    <div class="home-hero">
+      <div class="eyebrow" style="margin-bottom:.85rem">Bắt đầu</div>
+      <h2 class="serif">Chọn cách học phù hợp với bạn hôm nay</h2>
+      <p class="lead">Ba phương pháp học bổ trợ cho nhau: <em>flashcards</em> để ghi nhớ thuật ngữ, <em>quiz</em> để kiểm tra hiểu biết, và <em>sơ đồ tư duy</em> để nắm cấu trúc tổng thể. Tiến độ học được lưu lại trên trình duyệt của bạn.</p>
+
+      <div class="home-progress-mini">
+        <div class="pm-item">
+          <div class="pm-val tnum" id="statKnown">0<span style="font-size:.6em;color:var(--ink-mute);font-weight:400">/30</span></div>
+          <div class="pm-lbl">Thẻ đã thuộc</div>
+        </div>
+        <div class="pm-item">
+          <div class="pm-val tnum" id="statQuizBest">—</div>
+          <div class="pm-lbl">Điểm quiz cao nhất</div>
+        </div>
+        <div class="pm-item">
+          <div class="pm-val tnum" id="statQuizCount">0</div>
+          <div class="pm-lbl">Lượt làm quiz</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-cards">
+      <button class="home-card" data-goto="flashcards">
+        <div class="hc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 2h14v14"/></svg>
+        </div>
+        <div class="hc-title">Flashcards</div>
+        <div class="hc-desc">30 thẻ thuật ngữ chia theo 3 phần. Lật thẻ, đánh dấu thẻ đã thuộc, lọc theo chủ đề.</div>
+        <div class="hc-meta">
+          <span><b id="hcCardCount">30</b> thẻ · 3 phần</span>
+          <span class="arrow">→</span>
+        </div>
+      </button>
+
+      <button class="home-card" data-goto="quiz">
+        <div class="hc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="hc-title">Quiz</div>
+        <div class="hc-desc">28 câu hỏi: trắc nghiệm, đúng/sai, điền khuyết, câu hỏi mở rộng. Có giải thích chi tiết cho từng câu.</div>
+        <div class="hc-meta">
+          <span><b>12</b> MC · <b>7</b> TF · <b>5</b> Fill · <b>4</b> Side</span>
+          <span class="arrow">→</span>
+        </div>
+      </button>
+
+      <button class="home-card" data-goto="mindmap">
+        <div class="hc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v6M12 13l-5 4M12 13l5 4"/></svg>
+        </div>
+        <div class="hc-title">Sơ đồ tư duy</div>
+        <div class="hc-desc">Sơ đồ cây · Timeline lịch sử · Bảng đối chiếu so sánh các cặp khái niệm dễ nhầm.</div>
+        <div class="hc-meta">
+          <span><b>3</b> loại sơ đồ · 15 mốc</span>
+          <span class="arrow">→</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="home-chapters">
+      <div class="hc-h">
+        <h3 class="serif">Mục lục giáo trình</h3>
+        <span class="badge">7 chương</span>
+      </div>
+      <div class="chap-list">
+        <div class="chap-item active" data-chap="1">
+          <div class="chap-num serif">01</div>
+          <div class="chap-info">
+            <div class="chap-name">Nhập môn CNXHKH</div>
+            <div class="chap-state">Đang học</div>
+          </div>
+        </div>
+        <div class="chap-item">
+          <div class="chap-num serif">02</div>
+          <div class="chap-info">
+            <div class="chap-name">Sứ mệnh lịch sử của GCCN</div>
+            <div class="chap-state">Sắp có</div>
+          </div>
+        </div>
+        <div class="chap-item">
+          <div class="chap-num serif">03</div>
+          <div class="chap-info">
+            <div class="chap-name">CNXH và thời kỳ quá độ</div>
+            <div class="chap-state">Sắp có</div>
+          </div>
+        </div>
+        <div class="chap-item">
+          <div class="chap-num serif">04</div>
+          <div class="chap-info">
+            <div class="chap-name">Dân chủ XHCN và nhà nước XHCN</div>
+            <div class="chap-state">Sắp có</div>
+          </div>
+        </div>
+        <div class="chap-item">
+          <div class="chap-num serif">05</div>
+          <div class="chap-info">
+            <div class="chap-name">Cơ cấu xã hội - giai cấp</div>
+            <div class="chap-state">Sắp có</div>
+          </div>
+        </div>
+        <div class="chap-item">
+          <div class="chap-num serif">06</div>
+          <div class="chap-info">
+            <div class="chap-name">Vấn đề dân tộc và tôn giáo</div>
+            <div class="chap-state">Sắp có</div>
+          </div>
+        </div>
+        <div class="chap-item">
+          <div class="chap-num serif">07</div>
+          <div class="chap-info">
+            <div class="chap-name">Gia đình trong CNXH</div>
+            <div class="chap-state">Sắp có</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FLASHCARDS VIEW ============ -->
+  <section class="view" id="view-flashcards">
+    <div class="fc-stage">
+      <div class="fc-toolbar">
+        <div class="fc-filter" id="fcFilter">
+          <button class="active" data-part="all">Tất cả <span class="cnt" id="fcCntAll">30</span></button>
+          <button data-part="I">Phần I <span class="cnt" id="fcCntI">13</span></button>
+          <button data-part="II">Phần II <span class="cnt" id="fcCntII">9</span></button>
+          <button data-part="III">Phần III <span class="cnt" id="fcCntIII">8</span></button>
+        </div>
+        <div class="fc-tools">
+          <button class="icon-btn" id="fcShuffle" title="Xáo trộn thứ tự">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+          </button>
+          <button class="icon-btn" id="fcOnlyUnknown" title="Chỉ học thẻ chưa thuộc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          </button>
+          <button class="icon-btn has-lbl" id="fcReset" title="Xoá tiến độ học">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span class="lbl">Reset</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="fc-progress-bar"><div class="fill" id="fcProgressFill" style="width:0%"></div></div>
+      <div class="fc-meta">
+        <div class="pos"><b id="fcPos">0</b> / <span id="fcTotal">0</span></div>
+        <div><span class="part-tag" id="fcPartTag">PHẦN I</span></div>
+        <div>Đã thuộc <b id="fcKnown" style="color:var(--success);font-weight:600">0</b></div>
+      </div>
+
+      <div class="fc-card-wrap" id="fcCardWrap">
+        <div class="fc-card" id="fcCard">
+          <!-- Faces will be rendered by JS -->
+        </div>
+      </div>
+
+      <div class="fc-controls" id="fcControls">
+        <button class="fc-nav-btn" id="fcPrev" title="Thẻ trước (←)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Trước
+        </button>
+        <button class="fc-nav-btn primary" id="fcFlip" title="Lật thẻ (Space)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+          Lật
+        </button>
+        <button class="fc-mark-btn" id="fcMark" title="Đã thuộc (E)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Đã thuộc
+        </button>
+        <button class="fc-nav-btn" id="fcNext" title="Thẻ sau (→)">
+          Sau
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <div class="fc-empty" id="fcEmpty" style="display:none">
+        <span class="ico">🎉</span>
+        <h3>Tuyệt vời! Bạn đã thuộc hết các thẻ trong nhóm này.</h3>
+        <p>Đổi sang bộ lọc khác hoặc tắt chế độ "chỉ học thẻ chưa thuộc" để xem lại toàn bộ thẻ.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ VIEW ============ -->
+  <section class="view" id="view-quiz">
+    <div class="qz-stage">
+
+      <!-- SETUP -->
+      <div class="qz-screen active" id="qzSetup">
+        <div class="qz-setup-h">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h2 class="serif">Bắt đầu kiểm tra</h2>
+          <p class="sub">Chọn loại câu hỏi và số lượng. Bạn có thể làm toàn bộ 28 câu hoặc chọn theo nhóm để tập trung ôn một loại.</p>
+        </div>
+
+        <div class="qz-setup-grid">
+          <div class="qz-setup-block">
+            <div class="blk-h"><span class="dot"></span>Loại câu hỏi</div>
+            <div class="qz-opt-row" id="qzTypeRow">
+              <button class="qz-opt-btn active" data-type="all">Tất cả <span class="cnt">28 câu</span></button>
+              <button class="qz-opt-btn" data-type="MC">Trắc nghiệm <span class="cnt">12 câu</span></button>
+              <button class="qz-opt-btn" data-type="TF">Đúng/Sai <span class="cnt">7 câu</span></button>
+              <button class="qz-opt-btn" data-type="FILL">Điền khuyết <span class="cnt">5 câu</span></button>
+              <button class="qz-opt-btn" data-type="SIDE">Câu mở rộng <span class="cnt">4 câu</span></button>
+            </div>
+          </div>
+
+          <div class="qz-setup-block">
+            <div class="blk-h"><span class="dot"></span>Số lượng câu</div>
+            <div class="qz-opt-row" id="qzCountRow">
+              <button class="qz-opt-btn" data-count="5">5 câu <span class="cnt">Nhanh</span></button>
+              <button class="qz-opt-btn" data-count="10">10 câu <span class="cnt">Vừa</span></button>
+              <button class="qz-opt-btn active" data-count="all">Toàn bộ <span class="cnt" id="qzCountAll">28 câu</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="qz-start-row">
+          <label class="qz-shuffle-toggle">
+            <input type="checkbox" id="qzShuffle" checked>
+            <span class="box"></span>
+            Xáo trộn thứ tự
+          </label>
+          <button class="qz-start-btn" id="qzStartBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Bắt đầu làm bài
+          </button>
+        </div>
+      </div>
+
+      <!-- QUIZ PLAY -->
+      <div class="qz-screen" id="qzPlay">
+        <div class="qz-top">
+          <div class="qz-progress">
+            <div class="num"><span id="qzNum">1</span>/<span id="qzTotal">28</span></div>
+            <div class="bar"><div class="fill" id="qzBar" style="width:0%"></div></div>
+          </div>
+          <button class="qz-quit" id="qzQuit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Dừng bài
+          </button>
+        </div>
+
+        <div class="qz-q" id="qzQ">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="qz-screen" id="qzResult">
+        <div class="qz-result-h">
+          <div class="qz-score-ring">
+            <svg viewBox="0 0 200 200">
+              <circle class="track" cx="100" cy="100" r="88"/>
+              <circle class="progress" id="qzRingProg" cx="100" cy="100" r="88" stroke-dasharray="552.92" stroke-dashoffset="552.92"/>
+            </svg>
+            <div class="inner">
+              <div class="pct tnum" id="qzPct">0%</div>
+              <div class="frac tnum" id="qzFrac">0 / 0</div>
+            </div>
+          </div>
+          <h2 class="serif" id="qzResultTitle">Hoàn thành</h2>
+          <p class="sub" id="qzResultSub">Xem lại các câu để củng cố kiến thức.</p>
+        </div>
+
+        <div class="qz-result-stats" id="qzResultStats">
+          <!-- Filled by JS -->
+        </div>
+
+        <div class="qz-result-actions">
+          <button class="qz-result-btn primary" id="qzRetry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Làm lại
+          </button>
+          <button class="qz-result-btn" id="qzNewQuiz">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Bài mới
+          </button>
+        </div>
+
+        <div class="qz-review">
+          <div class="qz-review-h">Xem lại từng câu</div>
+          <div id="qzReviewList"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ MINDMAP VIEW ============ -->
+  <section class="view" id="view-mindmap">
+    <div class="mm-switch-bar">
+      <div class="mm-switch" role="tablist">
+        <button class="active" data-mm="tree">
+          <svg class="ico-sw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v6M12 13l-5 4M12 13l5 4"/></svg>
+          Sơ đồ cây · Lý thuyết
+        </button>
+        <button data-mm="timeline">
+          <svg class="ico-sw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M12 8v8M5 6h5M5 18h5"/></svg>
+          Timeline · Lịch sử
+        </button>
+        <button data-mm="compare">
+          <svg class="ico-sw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="8" height="16" rx="1"/><rect x="13" y="4" width="8" height="16" rx="1"/></svg>
+          Đối chiếu · So sánh
+        </button>
+      </div>
+      <div class="switch-meta">Loại sơ đồ <b id="mmCount">1</b> / 3</div>
+    </div>
+
+    <div class="mm-stage">
+
+      <!-- TREE -->
+      <div class="mm-view active" id="mm-tree">
+        <div class="tree-root">
+          <div class="tree-root-node">CHƯƠNG 1 · NHẬP MÔN CNXHKH</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch">
+            <div class="tree-branch-h"><div class="rom serif">I</div><h3>Sự ra đời của CNXHKH</h3></div>
+            <div class="tree-section">
+              <div class="tree-section-h"><span class="dot"></span>A · Hoàn cảnh lịch sử</div>
+              <div class="tree-items">
+                <div class="tree-item"><strong>Điều kiện KT-XH</strong><span class="meta">CMCN phát triển · Mâu thuẫn LLSX vs QHSX · Phong trào CN độc lập (Lyon 1831, Hiến chương Anh, Xilêdi 1844)</span></div>
+                <div class="tree-item"><strong>Tiền đề KHTN</strong> — 3 phát minh<span class="meta">Học thuyết tiến hóa (Darwin) · Bảo toàn năng lượng · Học thuyết tế bào</span></div>
+                <div class="tree-item"><strong>Tiền đề tư tưởng</strong> — 3 nguồn<span class="meta">Triết học cổ điển Đức · KTCT cổ điển Anh · CNXH không tưởng Pháp</span></div>
+              </div>
+            </div>
+            <div class="tree-section">
+              <div class="tree-section-h"><span class="dot"></span>B · Vai trò Mác – Ăngghen</div>
+              <div class="tree-items">
+                <div class="tree-item"><strong>Chuyển biến lập trường</strong><span class="meta">Duy tâm <span class="arrow">→</span> duy vật · Dân chủ CM <span class="arrow">→</span> cộng sản CN</span></div>
+                <div class="tree-item"><em>BA PHÁT KIẾN VĨ ĐẠI</em><span class="meta">① CNDV lịch sử · ② Học thuyết GTTD · ③ Sứ mệnh GCCN</span></div>
+                <div class="tree-item"><strong>Tuyên ngôn ĐCS</strong> <span class="pill">2/1848</span></div>
+              </div>
+            </div>
+            <div class="tree-highlight">
+              <span class="star">★</span>
+              <span><em>Phát kiến thứ ③ trực tiếp đặt nền móng cho CNXHKH; Tuyên ngôn 1848 đánh dấu sự ra đời.</em></span>
+            </div>
+          </div>
+
+          <div class="tree-branch">
+            <div class="tree-branch-h"><div class="rom serif">II</div><h3>Các giai đoạn phát triển</h3></div>
+            <div class="tree-section">
+              <div class="tree-section-h"><span class="dot"></span>A · Mác – Ăngghen <span style="opacity:.7;margin-left:.3rem">(1848-1895)</span></div>
+              <div class="tree-items">
+                <div class="tree-item">Tuyên ngôn ĐCS <span class="pill">1848</span></div>
+                <div class="tree-item">Bộ <strong>Tư bản</strong> <span class="pill">1867</span></div>
+                <div class="tree-item">Công xã Paris <span class="pill">1871</span></div>
+                <div class="tree-item">Chống Đuyrinh <span class="pill">1878</span></div>
+              </div>
+            </div>
+            <div class="tree-section">
+              <div class="tree-section-h"><span class="dot"></span>B · V.I. Lênin <span style="opacity:.7;margin-left:.3rem">(1895-1924)</span></div>
+              <div class="tree-items">
+                <div class="tree-item"><strong>CN đế quốc</strong> — giai đoạn tột cùng của CNTB <span class="pill">1916</span></div>
+                <div class="tree-item">Học thuyết <em>CMXHCN có thể thắng ở 1 nước</em></div>
+                <div class="tree-item">Học thuyết đảng kiểu mới · Chuyên chính vô sản</div>
+                <div class="tree-item">Lãnh đạo <strong>CMTM Nga</strong> <span class="pill">1917</span></div>
+              </div>
+            </div>
+            <div class="tree-section">
+              <div class="tree-section-h"><span class="dot"></span>C · Sau Lênin → nay</div>
+              <div class="tree-items">
+                <div class="tree-item">Hệ thống XHCN thế giới <span class="pill">1945-1991</span></div>
+                <div class="tree-item">Sụp đổ Liên Xô <span class="pill">1991</span> → bài học</div>
+                <div class="tree-item"><strong>Vận dụng sáng tạo</strong>: TQ, VN, Cuba, Lào, Triều Tiên</div>
+                <div class="tree-item"><strong>ĐCSVN</strong>: độc lập DT <span class="arrow">+</span> CNXH</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tree-branch">
+            <div class="tree-branch-h"><div class="rom serif">III</div><h3>Đối tượng &amp; phương pháp</h3></div>
+            <div class="tree-section">
+              <div class="tree-section-h"><span class="dot"></span>A · Đối tượng nghiên cứu</div>
+              <div class="tree-items">
+                <div class="tree-item"><em>Quy luật chính trị-xã hội</em> của HTKT-XH CSCN<span class="meta">Sứ mệnh GCCN · CMXHCN · Dân chủ XHCN · Cơ cấu XH-giai cấp · Gia đình trong CNXH</span></div>
+              </div>
+            </div>
+            <div class="tree-section">
+              <div class="tree-section-h"><span class="dot"></span>B · Phương pháp</div>
+              <div class="tree-items">
+                <div class="tree-item"><strong>Phương pháp luận CHUNG</strong><span class="meta">CN duy vật biện chứng · CN duy vật lịch sử</span></div>
+                <div class="tree-item"><strong>4 phương pháp CỤ THỂ</strong><span class="meta">Kết hợp lịch sử-logic · <em>Khảo sát phân tích chính trị-xã hội</em> (đặc thù) · So sánh · Liên ngành</span></div>
+              </div>
+            </div>
+            <div class="tree-section">
+              <div class="tree-section-h"><span class="dot"></span>C · Ý nghĩa</div>
+              <div class="tree-items">
+                <div class="tree-item"><strong>Lý luận</strong>: thế giới quan, phương pháp luận khoa học</div>
+                <div class="tree-item"><strong>Thực tiễn</strong>: niềm tin CNXH, đạo đức cách mạng, vận dụng vào thực tiễn VN</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="legend">
+          <span class="legend-dot r">Nút trung tâm</span>
+          <span class="legend-dot b">Nhánh chính I/II/III</span>
+          <span class="legend-dot n">Nhánh phụ</span>
+          <span class="legend-spacer"></span>
+          <span class="legend-hint">Cấu trúc lý thuyết — 3 phần chính</span>
+        </div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div class="mm-view" id="mm-timeline">
+        <div class="tl-intro">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="txt">
+            <b>Dòng chảy lịch sử CNXHKH</b>
+            <span>15 mốc thời gian chính · 4 giai đoạn · 2 mốc bước ngoặt (★)</span>
+          </div>
+        </div>
+
+        <div class="tl-phases">
+          <div class="tl-phase p1"><div class="yr">1789 — đầu TK XIX</div><div class="nm">Bối cảnh & tiền đề</div></div>
+          <div class="tl-phase p2"><div class="yr">1848 — 1895</div><div class="nm">Giai đoạn Mác–Ăngghen</div></div>
+          <div class="tl-phase p3"><div class="yr">1895 — 1924</div><div class="nm">Giai đoạn Lênin</div></div>
+          <div class="tl-phase p4"><div class="yr">1924 — nay</div><div class="nm">Sau Lênin · Vận dụng sáng tạo</div></div>
+        </div>
+
+        <div class="tl-rail">
+          <div class="tl-event p1">
+            <div class="tl-event-year">1789</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Bối cảnh</span>
+              <div class="tl-event-title">Cách mạng tư sản Pháp</div>
+              <div class="tl-event-desc">Mở đầu thời đại tư sản — bối cảnh xa cho sự ra đời CNXHKH.</div>
+            </div>
+          </div>
+          <div class="tl-event p1">
+            <div class="tl-event-year">1830s–40s</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Điều kiện</span>
+              <div class="tl-event-title">Phong trào công nhân nổi lên</div>
+              <div class="tl-event-desc">Khởi nghĩa Lyon (1831, 1834) · Phong trào Hiến chương Anh (1838-48) · Khởi nghĩa Xilêdi (1844). <em>GCCN xuất hiện như lực lượng chính trị độc lập.</em></div>
+            </div>
+          </div>
+          <div class="tl-event p1">
+            <div class="tl-event-year">Đầu TK XIX</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Tiền đề</span>
+              <div class="tl-event-title">3 phát minh khoa học tự nhiên</div>
+              <div class="tl-event-desc">Học thuyết tiến hóa (Darwin) · Định luật bảo toàn & chuyển hóa năng lượng · Học thuyết tế bào → <em>tiền đề cho CNDV biện chứng</em>.</div>
+            </div>
+          </div>
+          <div class="tl-event p1">
+            <div class="tl-event-year">1842–1844</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Chuẩn bị</span>
+              <div class="tl-event-title">Mác – Ăngghen chuyển biến lập trường</div>
+              <div class="tl-event-desc">Triết học: <em>duy tâm → duy vật</em>. Chính trị: <em>dân chủ cách mạng → cộng sản chủ nghĩa</em>.</div>
+            </div>
+          </div>
+          <div class="tl-event p2 star">
+            <div class="tl-event-year">2/1848</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">★ MỐC RA ĐỜI</span>
+              <div class="tl-event-title"><span class="star-ico">★</span>Tuyên ngôn của Đảng Cộng sản</div>
+              <div class="tl-event-desc">Mác – Ăngghen soạn thảo. <em>Đánh dấu sự ra đời của Chủ nghĩa xã hội khoa học.</em> Lần đầu trình bày hệ thống thế giới quan của GCCN.</div>
+            </div>
+          </div>
+          <div class="tl-event p2">
+            <div class="tl-event-year">1867</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Mác–Ăngghen</span>
+              <div class="tl-event-title">Bộ "Tư bản" tập I</div>
+              <div class="tl-event-desc">Mác công bố <em>học thuyết giá trị thặng dư</em> — vạch trần bản chất bóc lột của CNTB.</div>
+            </div>
+          </div>
+          <div class="tl-event p2">
+            <div class="tl-event-year">1871</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Mác–Ăngghen</span>
+              <div class="tl-event-title">Công xã Paris</div>
+              <div class="tl-event-desc">Nhà nước kiểu mới đầu tiên của giai cấp công nhân — tồn tại 72 ngày, để lại nhiều bài học lịch sử.</div>
+            </div>
+          </div>
+          <div class="tl-event p2">
+            <div class="tl-event-year">1883 · 1895</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Mác–Ăngghen</span>
+              <div class="tl-event-title">Mác (1883) và Ăngghen (1895) qua đời</div>
+              <div class="tl-event-desc">Kết thúc giai đoạn xây dựng hệ thống lý luận CNXHKH của hai nhà sáng lập.</div>
+            </div>
+          </div>
+          <div class="tl-event p3">
+            <div class="tl-event-year">1916</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Lênin</span>
+              <div class="tl-event-title">"Chủ nghĩa đế quốc — giai đoạn tột cùng của CNTB"</div>
+              <div class="tl-event-desc">Lênin phân tích 5 đặc điểm kinh tế của giai đoạn đế quốc — cơ sở lý luận cho luận điểm <em>CMXHCN có thể thắng lợi ở khâu yếu nhất</em>.</div>
+            </div>
+          </div>
+          <div class="tl-event p3 star">
+            <div class="tl-event-year">10/1917</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">★ MỐC HIỆN THỰC HÓA</span>
+              <div class="tl-event-title"><span class="star-ico">★</span>Cách mạng tháng Mười Nga</div>
+              <div class="tl-event-desc">Lênin và Đảng Bônsêvích lãnh đạo. <em>Biến CNXHKH từ lý luận thành hiện thực</em> trên một phần sáu trái đất. Nhà nước XHCN đầu tiên trên thế giới.</div>
+            </div>
+          </div>
+          <div class="tl-event p3">
+            <div class="tl-event-year">1924</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Lênin</span>
+              <div class="tl-event-title">V.I. Lênin qua đời</div>
+              <div class="tl-event-desc">Kết thúc giai đoạn vận dụng và phát triển sáng tạo CNXHKH của Lênin.</div>
+            </div>
+          </div>
+          <div class="tl-event p4">
+            <div class="tl-event-year">3/2/1930</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Việt Nam</span>
+              <div class="tl-event-title">Đảng Cộng sản Việt Nam thành lập</div>
+              <div class="tl-event-desc">Chủ tịch Hồ Chí Minh sáng lập — vận dụng sáng tạo CNXHKH vào điều kiện Việt Nam: <em>gắn độc lập dân tộc với CNXH</em>.</div>
+            </div>
+          </div>
+          <div class="tl-event p4">
+            <div class="tl-event-year">1945–1991</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Sau Lênin</span>
+              <div class="tl-event-title">Hệ thống XHCN thế giới</div>
+              <div class="tl-event-desc">Mở rộng sau Thế chiến II ở Đông Âu, châu Á (TQ 1949, VN 1945-75), châu Mỹ (Cuba 1959).</div>
+            </div>
+          </div>
+          <div class="tl-event p4">
+            <div class="tl-event-year">1986</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Việt Nam</span>
+              <div class="tl-event-title">Việt Nam bắt đầu Đổi mới</div>
+              <div class="tl-event-desc">Đại hội VI ĐCSVN — phát triển kinh tế thị trường định hướng XHCN, đa thành phần kinh tế, mở cửa hội nhập.</div>
+            </div>
+          </div>
+          <div class="tl-event p4">
+            <div class="tl-event-year">1991</div>
+            <div class="tl-event-body">
+              <span class="tl-event-tag">Khủng hoảng</span>
+              <div class="tl-event-title">Liên Xô sụp đổ</div>
+              <div class="tl-event-desc">Khủng hoảng mô hình CNXH Xô-viết. <em>Bài học</em> cho các nước XHCN còn lại trong việc vận dụng sáng tạo, đổi mới phù hợp điều kiện riêng.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="legend">
+          <span class="legend-dot n">Bối cảnh / Tiền đề</span>
+          <span class="legend-dot r">Giai đoạn Mác–Ăngghen</span>
+          <span class="legend-dot g">Giai đoạn Lênin</span>
+          <span class="legend-dot" style="color:var(--success)">●&nbsp;Sau Lênin</span>
+          <span class="legend-spacer"></span>
+          <span class="legend-hint">★ = mốc bước ngoặt</span>
+        </div>
+      </div>
+
+      <!-- COMPARE -->
+      <div class="mm-view" id="mm-compare">
+        <div class="cmp-wrap">
+
+          <div class="cmp-card">
+            <div class="cmp-h"><span class="num">3.1</span>CNXH khoa học vs CNXH không tưởng - phê phán</div>
+            <p class="cmp-sub">Phân biệt cốt yếu nhất — quyết định tính "khoa học" của học thuyết.</p>
+            <div class="cmp-objects">
+              <div class="cmp-obj left">CNXH không tưởng<span class="obj-sub">PHÊ PHÁN</span></div>
+              <div class="cmp-obj right">CNXH khoa học<span class="obj-sub">MÁC – ĂNGGHEN – LÊNIN</span></div>
+            </div>
+            <div class="cmp-rows">
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Cơ sở lý luận</div>
+                <div class="cmp-row-values">
+                  <div class="left">Đạo đức, lương tâm, <em>ước mơ</em> về xã hội tốt đẹp</div>
+                  <div class="right"><strong>CNDV lịch sử</strong> + Học thuyết <strong>giá trị thặng dư</strong></div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Quy luật xã hội</div>
+                <div class="cmp-row-values">
+                  <div class="left"><span class="x">✗</span>Không phát hiện được</div>
+                  <div class="right"><span class="v">✓</span>Phát hiện ra quy luật khách quan</div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Chủ thể cách mạng</div>
+                <div class="cmp-row-values">
+                  <div class="left">Không xác định <em>(kỳ vọng giới giàu có thiện chí)</em></div>
+                  <div class="right"><strong>Giai cấp công nhân</strong></div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Con đường thực hiện</div>
+                <div class="cmp-row-values">
+                  <div class="left">Tuyên truyền · Thuyết phục · <em>Thí nghiệm</em></div>
+                  <div class="right"><strong>Đấu tranh cách mạng</strong></div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Tính chất</div>
+                <div class="cmp-row-values">
+                  <div class="left">Mơ tưởng tốt đẹp — không khả thi</div>
+                  <div class="right"><strong>Khoa học</strong> — có quy luật + chủ thể hiện thực</div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Đại biểu</div>
+                <div class="cmp-row-values">
+                  <div class="left">Saint-Simon · Fourier · Owen</div>
+                  <div class="right">C. Mác · Ph. Ăngghen · V.I. Lênin</div>
+                </div>
+              </div>
+            </div>
+            <div class="cmp-takeaway">
+              <strong>CNXHKH</strong> trả lời được <strong>AI làm</strong> và <strong>LÀM BẰNG CÁCH NÀO</strong>. CNXH không tưởng chỉ giỏi <em>phê phán</em> cái hiện tại và <em>vẽ ra</em> cái tương lai — không có chủ thể, không có phương pháp.
+            </div>
+          </div>
+
+          <div class="cmp-card">
+            <div class="cmp-h"><span class="num">3.2</span>Mác – Ăngghen vs V.I. Lênin</div>
+            <p class="cmp-sub">Hai giai đoạn lịch sử kế tiếp — từ xây dựng đến phát triển sáng tạo.</p>
+            <div class="cmp-objects">
+              <div class="cmp-obj left">Mác – Ăngghen<span class="obj-sub">1848 – 1895</span></div>
+              <div class="cmp-obj right">V.I. Lênin<span class="obj-sub">1895 – 1924</span></div>
+            </div>
+            <div class="cmp-rows">
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Bối cảnh CNTB</div>
+                <div class="cmp-row-values">
+                  <div class="left">CNTB <strong>tự do cạnh tranh</strong></div>
+                  <div class="right">CNTB chuyển sang <strong>chủ nghĩa đế quốc</strong></div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Nhiệm vụ chính</div>
+                <div class="cmp-row-values">
+                  <div class="left"><strong>XÂY DỰNG</strong> hệ thống lý luận CNXHKH</div>
+                  <div class="right"><strong>BẢO VỆ & PHÁT TRIỂN SÁNG TẠO</strong> CNXHKH</div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Lý luận cách mạng</div>
+                <div class="cmp-row-values">
+                  <div class="left">Cách mạng nổ ra <em>đồng loạt</em> ở các nước TBCN phát triển</div>
+                  <div class="right">Thắng lợi ở <strong>một số nước</strong>, thậm chí <strong>một nước</strong> riêng lẻ <em>(khâu yếu)</em></div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Tác phẩm tiêu biểu</div>
+                <div class="cmp-row-values">
+                  <div class="left">Tuyên ngôn ĐCS · Bộ Tư bản · Chống Đuyrinh</div>
+                  <div class="right">CN đế quốc · Nhà nước và cách mạng · Bệnh ấu trĩ tả khuynh</div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Thực tiễn lịch sử</div>
+                <div class="cmp-row-values">
+                  <div class="left">Công xã Paris (1871) — <em>thất bại</em></div>
+                  <div class="right"><strong>Cách mạng tháng Mười (1917) — THẮNG LỢI</strong></div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Kết quả</div>
+                <div class="cmp-row-values">
+                  <div class="left">CNXHKH là <strong>LÝ LUẬN</strong></div>
+                  <div class="right">CNXHKH thành <strong>HIỆN THỰC</strong> trên 1/6 trái đất</div>
+                </div>
+              </div>
+            </div>
+            <div class="cmp-takeaway">
+              Lênin không chỉ <em>kế thừa</em> mà còn <strong>phát triển</strong> CNXHKH cho phù hợp điều kiện mới — đặc biệt là luận điểm <strong>cách mạng có thể thắng lợi ở một nước riêng lẻ</strong> — là bài học cho VN và các nước XHCN từ thuộc địa/lạc hậu đi lên CNXH.
+            </div>
+          </div>
+
+          <div class="cmp-card">
+            <div class="cmp-h"><span class="num">3.3</span>Phép biện chứng: Hegel vs Mác</div>
+            <p class="cmp-sub">Mác đã "lật ngược" phép biện chứng Hegel như thế nào?</p>
+            <div class="cmp-objects">
+              <div class="cmp-obj left">Hegel<span class="obj-sub">TRIẾT HỌC CỔ ĐIỂN ĐỨC</span></div>
+              <div class="cmp-obj right">C. Mác<span class="obj-sub">CHỦ NGHĨA MÁC</span></div>
+            </div>
+            <div class="cmp-rows">
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Cơ sở</div>
+                <div class="cmp-row-values">
+                  <div class="left"><strong>Duy tâm</strong> — xuất phát từ "ý niệm tuyệt đối"</div>
+                  <div class="right"><strong>Duy vật</strong> — xuất phát từ vật chất, tồn tại xã hội</div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Đối tượng vận động</div>
+                <div class="cmp-row-values">
+                  <div class="left"><em>Tư tưởng</em> vận động → tạo ra hiện thực</div>
+                  <div class="right"><em>Hiện thực vật chất</em> vận động → phản ánh vào ý thức</div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Tính chất</div>
+                <div class="cmp-row-values">
+                  <div class="left">Phép biện chứng <strong>DUY TÂM</strong></div>
+                  <div class="right">Phép biện chứng <strong>DUY VẬT</strong></div>
+                </div>
+              </div>
+              <div class="cmp-row">
+                <div class="cmp-row-criteria">Vai trò trong CNXHKH</div>
+                <div class="cmp-row-values">
+                  <div class="left">Tiền đề tư tưởng — "hạt nhân hợp lý"</div>
+                  <div class="right">Phương pháp luận khoa học của CNXHKH</div>
+                </div>
+              </div>
+            </div>
+            <div class="cmp-takeaway">
+              Mác giữ <strong>"hạt nhân hợp lý"</strong> (phép biện chứng) của Hegel, loại bỏ vỏ duy tâm — phép biện chứng ở Hegel "đang đứng trên đầu", Mác đã <em>đặt nó "đứng trên đôi chân của mình"</em>.
+            </div>
+          </div>
+
+        </div>
+        <div class="legend">
+          <span class="legend-dot r">Đối tượng trái (đối chứng / cũ)</span>
+          <span class="legend-dot g">Đối tượng phải (CNXHKH / mới)</span>
+          <span class="legend-spacer"></span>
+          <span class="legend-hint">3 cặp đối chiếu trọng tâm</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <p class="note">Học liệu CNXHKH · Chương 1 — Tiến độ được lưu trên trình duyệt của bạn. Mở file này lần sau để tiếp tục.</p>
+
+</div>
+
+<script>
+/* ================================================================
+   DATA — CHƯƠNG 1
+   ================================================================ */
+const FLASHCARDS = [
+  // PHẦN I — Sự ra đời (13 thẻ)
+  { id:1, part:'I', front:'Chủ nghĩa xã hội khoa học <em>(nghĩa rộng)</em>', back:`
+    <p>Là <strong>chủ nghĩa Mác-Lênin</strong> nói chung — học thuyết khoa học và cách mạng của giai cấp công nhân nhằm luận giải con đường giải phóng giai cấp, giải phóng xã hội, giải phóng con người, xây dựng xã hội cộng sản chủ nghĩa.</p>
+    <blockquote><em>Theo nghĩa này, CNXHKH bao trùm cả ba bộ phận: triết học, kinh tế chính trị, và CNXHKH (nghĩa hẹp).</em></blockquote>
+  ` },
+  { id:2, part:'I', front:'Chủ nghĩa xã hội khoa học <em>(nghĩa hẹp)</em>', back:`
+    <p>Là <strong>một trong ba bộ phận hợp thành chủ nghĩa Mác-Lênin</strong>, cùng với triết học Mác-Lênin và kinh tế chính trị Mác-Lênin.</p>
+    <p>Nghiên cứu <strong>các quy luật và tính quy luật chính trị-xã hội</strong> của quá trình phát sinh, hình thành và phát triển hình thái kinh tế-xã hội cộng sản chủ nghĩa; những nguyên tắc, điều kiện, con đường, hình thức và phương pháp đấu tranh cách mạng của giai cấp công nhân.</p>
+  ` },
+  { id:3, part:'I', front:'Điều kiện kinh tế – xã hội cho sự ra đời CNXHKH', back:`
+    <p>Bối cảnh các nước Anh, Pháp, Đức những năm 40 thế kỷ XIX:</p>
+    <ul>
+      <li><strong>Cuộc cách mạng công nghiệp</strong> phát triển mạnh → phương thức sản xuất TBCN có bước phát triển vượt bậc.</li>
+      <li>Mâu thuẫn giữa <strong>lực lượng sản xuất xã hội hóa cao</strong> với <strong>quan hệ sản xuất TBCN dựa trên chiếm hữu tư nhân</strong> ngày càng gay gắt.</li>
+      <li>Biểu hiện ra mặt xã hội: mâu thuẫn <strong>giai cấp công nhân</strong> ↔ <strong>giai cấp tư sản</strong>:
+        <ul>
+          <li>Khởi nghĩa thợ dệt Lyon-Pháp (1831, 1834)</li>
+          <li>Phong trào Hiến chương Anh (1838-1848)</li>
+          <li>Khởi nghĩa thợ dệt Xilêdi-Đức (1844)</li>
+        </ul>
+      </li>
+    </ul>
+    <blockquote><em>Đặt ra yêu cầu cấp bách: phải có lý luận khoa học soi đường cho phong trào công nhân.</em></blockquote>
+  ` },
+  { id:4, part:'I', front:'Tiền đề khoa học tự nhiên', back:`
+    <p>Đầu thế kỷ XIX, KHTN có <strong>3 phát minh vạch thời đại</strong>:</p>
+    <ol>
+      <li><strong>Học thuyết tiến hóa</strong> (Charles Darwin) — chứng minh sự tiến hóa của các loài sinh vật.</li>
+      <li><strong>Định luật bảo toàn và chuyển hóa năng lượng</strong> (Mayer, Joule…) — chứng minh sự thống nhất vật chất của thế giới.</li>
+      <li><strong>Học thuyết tế bào</strong> (Schleiden, Schwann) — chứng minh sự thống nhất về cấu tạo và nguồn gốc của sinh vật.</li>
+    </ol>
+    <p><span class="arrow-out">→</span> Củng cố cơ sở khoa học cho <em>chủ nghĩa duy vật biện chứng</em>.</p>
+  ` },
+  { id:5, part:'I', front:'Tiền đề tư tưởng lý luận', back:`
+    <p><strong>Ba nguồn lý luận trực tiếp</strong> mà Mác-Ăngghen tiếp thu <em>có phê phán</em>:</p>
+    <ol>
+      <li><strong>Triết học cổ điển Đức</strong> (Hegel, Feuerbach)</li>
+      <li><strong>Kinh tế chính trị học cổ điển Anh</strong> (Adam Smith, David Ricardo)</li>
+      <li><strong>Chủ nghĩa xã hội không tưởng - phê phán Pháp</strong> (Saint-Simon, Fourier, Owen)</li>
+    </ol>
+    <blockquote><em>Kế thừa có phê phán → khắc phục hạn chế → phát triển lên trình độ khoa học.</em></blockquote>
+  ` },
+  { id:6, part:'I', front:'Triết học cổ điển Đức', back:`
+    <p>Đại biểu: <strong>G.W.F. Hegel</strong> và <strong>L. Feuerbach</strong>.</p>
+    <p>Mác-Ăngghen kế thừa:</p>
+    <ul>
+      <li><strong>Phép biện chứng của Hegel</strong> — nhưng <em>cải tạo lại trên cơ sở duy vật</em>, khắc phục tính chất duy tâm.</li>
+      <li><strong>Chủ nghĩa duy vật của Feuerbach</strong> — nhưng <em>bổ sung phép biện chứng và quan điểm lịch sử</em>, khắc phục tính siêu hình.</li>
+    </ul>
+    <p><span class="arrow-out">→</span> Ra đời <strong>chủ nghĩa duy vật biện chứng</strong> và <strong>chủ nghĩa duy vật lịch sử</strong>.</p>
+  ` },
+  { id:7, part:'I', front:'Kinh tế chính trị học cổ điển Anh', back:`
+    <p>Đại biểu: <strong>Adam Smith</strong>, <strong>David Ricardo</strong>.</p>
+    <ul>
+      <li><strong>Đóng góp lớn nhất</strong>: <em>học thuyết giá trị lao động</em> — giá trị hàng hóa do lao động tạo ra.</li>
+      <li><strong>Hạn chế</strong>: chưa phân biệt được <em>lao động</em> với <em>sức lao động</em> → không vạch trần được nguồn gốc thực sự của giá trị thặng dư và bản chất bóc lột của CNTB.</li>
+    </ul>
+    <p><span class="arrow-out">→</span> Mác đã phát triển vượt bậc: phát hiện <strong>hàng hóa sức lao động</strong> và xây dựng <strong>học thuyết giá trị thặng dư</strong>.</p>
+  ` },
+  { id:8, part:'I', front:'Chủ nghĩa xã hội không tưởng - phê phán', back:`
+    <p>Đại biểu: <strong>Henri de Saint-Simon</strong>, <strong>Charles Fourier</strong> (Pháp), <strong>Robert Owen</strong> (Anh).</p>
+    <p><strong>Giá trị:</strong></p>
+    <ul>
+      <li>Phê phán mạnh mẽ CNTB.</li>
+      <li>Phác họa hình ảnh xã hội tương lai tốt đẹp.</li>
+      <li>Thức tỉnh tinh thần đấu tranh.</li>
+    </ul>
+    <p><strong>Hạn chế:</strong></p>
+    <ul>
+      <li>Không phát hiện được quy luật vận động của xã hội.</li>
+      <li>Không thấy được <em>sứ mệnh lịch sử của giai cấp công nhân</em>.</li>
+      <li>Mơ tưởng cải tạo xã hội bằng <em>tuyên truyền, thuyết phục, thí nghiệm</em> — không phải bằng <strong>đấu tranh cách mạng</strong>.</li>
+    </ul>
+  ` },
+  { id:9, part:'I', front:'Sự chuyển biến lập trường của Mác – Ăngghen', back:`
+    <p>Trước khi xây dựng CNXHKH, Mác-Ăngghen đã trải qua <strong>hai chuyển biến</strong>:</p>
+    <ul>
+      <li><strong>Về triết học</strong>: từ <em>chủ nghĩa duy tâm</em> → <em>chủ nghĩa duy vật</em>.</li>
+      <li><strong>Về chính trị</strong>: từ lập trường <em>dân chủ cách mạng</em> → lập trường <em>cộng sản chủ nghĩa</em>.</li>
+    </ul>
+    <p>Thông qua hoạt động lý luận (báo Sông Ranh, Bản thảo kinh tế-triết học 1844…) và hoạt động thực tiễn (liên hệ với phong trào công nhân Anh, Pháp, Đức), hai ông đã chuyển hoàn toàn sang lập trường giai cấp vô sản.</p>
+  ` },
+  { id:10, part:'I', front:'Ba phát kiến vĩ đại của Mác – Ăngghen', back:`
+    <p>Cống hiến nền tảng — biến CNXH từ <em>không tưởng</em> thành <strong>khoa học</strong>:</p>
+    <ol>
+      <li><strong>Chủ nghĩa duy vật lịch sử</strong> — phát hiện quy luật vận động khách quan của lịch sử xã hội loài người.</li>
+      <li><strong>Học thuyết giá trị thặng dư</strong> — vạch trần bản chất bóc lột của CNTB.</li>
+      <li><strong>Học thuyết sứ mệnh lịch sử toàn thế giới của giai cấp công nhân</strong> — chỉ ra lực lượng xã hội tất yếu thực hiện chuyển biến cách mạng từ CNTB lên CNCS.</li>
+    </ol>
+    <blockquote><em>Hai phát kiến đầu là cơ sở khoa học cho phát kiến thứ ba — phát kiến trực tiếp đặt nền móng cho CNXHKH.</em></blockquote>
+  ` },
+  { id:11, part:'I', front:'Chủ nghĩa duy vật lịch sử <em>(phát kiến ①)</em>', back:`
+    <p>Phát kiến vĩ đại <strong>thứ nhất</strong>. Là sự vận dụng chủ nghĩa duy vật biện chứng vào nghiên cứu <strong>lĩnh vực xã hội</strong>.</p>
+    <p><strong>Nội dung cốt lõi:</strong></p>
+    <ul>
+      <li><strong>Tồn tại xã hội quyết định ý thức xã hội</strong>.</li>
+      <li>Quy luật về sự phù hợp của <em>quan hệ sản xuất</em> với trình độ phát triển của <em>lực lượng sản xuất</em>.</li>
+      <li>Học thuyết về <em>hình thái kinh tế-xã hội</em>.</li>
+      <li><em>Đấu tranh giai cấp</em> là động lực phát triển xã hội có giai cấp.</li>
+    </ul>
+  ` },
+  { id:12, part:'I', front:'Học thuyết giá trị thặng dư <em>(phát kiến ②)</em>', back:`
+    <p>Phát kiến vĩ đại <strong>thứ hai</strong>. Mác phát hiện ra hàng hóa <strong>sức lao động</strong> — thứ hàng hóa đặc biệt có giá trị sử dụng tạo ra giá trị lớn hơn giá trị bản thân nó.</p>
+    <p>Chênh lệch đó là <strong>giá trị thặng dư (m)</strong> — bị nhà tư bản chiếm đoạt không công, là nguồn gốc của tích lũy tư bản.</p>
+    <p><strong>Ý nghĩa:</strong></p>
+    <ul>
+      <li>Vạch trần <strong>bản chất bóc lột</strong> của CNTB.</li>
+      <li>Chỉ ra <strong>tính tất yếu diệt vong</strong> của CNTB.</li>
+      <li>Khẳng định đối kháng không thể điều hòa giữa <em>tư sản</em> và <em>vô sản</em>.</li>
+    </ul>
+  ` },
+  { id:13, part:'I', front:'Sứ mệnh lịch sử của GCCN <em>(phát kiến ③)</em>', back:`
+    <p>Phát kiến vĩ đại <strong>thứ ba</strong> — luận điểm trực tiếp đặt nền móng cho CNXHKH.</p>
+    <p>Giai cấp công nhân là <strong>lực lượng xã hội duy nhất có sứ mệnh</strong>:</p>
+    <ul>
+      <li>Lãnh đạo đấu tranh xóa bỏ chế độ TBCN.</li>
+      <li>Xây dựng thành công xã hội XHCN và CSCN.</li>
+      <li>Giải phóng giai cấp mình đồng thời giải phóng toàn thể nhân loại khỏi áp bức, bóc lột.</li>
+    </ul>
+    <blockquote><em>Nhờ phát hiện này mà CNXH có chủ thể hiện thực — vượt qua tính không tưởng.</em></blockquote>
+  ` },
+
+  // PHẦN II — Các giai đoạn phát triển (9 thẻ)
+  { id:14, part:'II', front:'Tuyên ngôn của Đảng Cộng sản <em>(2/1848)</em>', back:`
+    <p>Tác phẩm do <strong>Mác và Ăngghen</strong> soạn thảo theo yêu cầu của <em>Đồng minh những người cộng sản</em>, công bố <strong>tháng 2/1848</strong>.</p>
+    <p><strong>Ý nghĩa lịch sử:</strong></p>
+    <ul>
+      <li>Là <strong>cương lĩnh chính trị</strong>, <strong>kim chỉ nam hành động</strong> của phong trào cộng sản và công nhân quốc tế.</li>
+      <li><strong>Đánh dấu sự ra đời của CNXH khoa học</strong>.</li>
+      <li>Lần đầu trình bày hệ thống, hoàn chỉnh thế giới quan của giai cấp công nhân.</li>
+      <li>Khẳng định sự diệt vong tất yếu của CNTB và thắng lợi tất yếu của CNXH.</li>
+    </ul>
+    <p>Kết thúc bằng lời kêu gọi nổi tiếng: <em>"Vô sản tất cả các nước, đoàn kết lại!"</em></p>
+  ` },
+  { id:15, part:'II', front:'Giai đoạn Mác – Ăngghen (1848-1895)', back:`
+    <p>Giai đoạn <strong>xây dựng và hoàn thiện</strong> hệ thống lý luận CNXHKH.</p>
+    <p><strong>Các tác phẩm tiêu biểu:</strong></p>
+    <ul>
+      <li><em>Tuyên ngôn của Đảng Cộng sản</em> (1848)</li>
+      <li><em>Đấu tranh giai cấp ở Pháp</em> (1850)</li>
+      <li><em>Ngày 18 tháng Sương mù của Lui Bônapáctơ</em> (1852)</li>
+      <li><em>Bộ Tư bản</em> (Mác, từ 1867)</li>
+      <li><em>Chống Đuyrinh</em> (Ăngghen, 1878)</li>
+      <li><em>Nguồn gốc của gia đình, của chế độ tư hữu và của nhà nước</em> (Ăngghen, 1884)</li>
+    </ul>
+    <p><strong>Sự kiện nổi bật:</strong> Công xã Paris (1871) — nhà nước kiểu mới đầu tiên của giai cấp công nhân (tồn tại 72 ngày).</p>
+  ` },
+  { id:16, part:'II', front:'Giai cấp công nhân', back:`
+    <p>Giai cấp xã hội <strong>không có tư liệu sản xuất</strong>, phải bán sức lao động để sinh sống; là sản phẩm và là chủ thể của <strong>nền sản xuất đại công nghiệp</strong> hiện đại.</p>
+    <p><strong>Đặc điểm:</strong></p>
+    <ul>
+      <li>Đại diện cho <strong>lực lượng sản xuất tiên tiến</strong> của thời đại.</li>
+      <li>Có lợi ích đối kháng trực tiếp với giai cấp tư sản.</li>
+      <li>Có tính tổ chức, kỷ luật, tinh thần cách mạng triệt để.</li>
+      <li>Có khả năng đoàn kết với các tầng lớp lao động khác.</li>
+    </ul>
+    <blockquote><em>Là giai cấp duy nhất gánh vác sứ mệnh lịch sử xóa bỏ CNTB, xây dựng CNXH.</em></blockquote>
+  ` },
+  { id:17, part:'II', front:'Mâu thuẫn cơ bản của CNTB', back:`
+    <p>Mâu thuẫn giữa <strong>tính chất xã hội hóa ngày càng cao của lực lượng sản xuất</strong> với <strong>chế độ chiếm hữu tư nhân TBCN về tư liệu sản xuất</strong>.</p>
+    <p><strong>Biểu hiện ra mặt xã hội:</strong> mâu thuẫn giữa <strong>giai cấp công nhân</strong> và <strong>giai cấp tư sản</strong>.</p>
+    <p><strong>Tính chất:</strong></p>
+    <ul>
+      <li>Không thể giải quyết trong khuôn khổ CNTB.</li>
+      <li>Tất yếu dẫn đến <strong>cách mạng vô sản</strong>.</li>
+      <li>Là cơ sở khách quan của sự diệt vong CNTB và ra đời CNXH.</li>
+    </ul>
+  ` },
+  { id:18, part:'II', front:'V.I. Lênin với CNXHKH', back:`
+    <p>Lênin <strong>bảo vệ, vận dụng và phát triển sáng tạo CNXHKH</strong> trong điều kiện CNTB chuyển sang giai đoạn <strong>chủ nghĩa đế quốc</strong>.</p>
+    <p><strong>Đóng góp lý luận:</strong></p>
+    <ul>
+      <li>Học thuyết về <strong>chủ nghĩa đế quốc</strong> (1916).</li>
+      <li>Học thuyết về <strong>cách mạng XHCN</strong> — khả năng thắng lợi ở <em>một số nước</em>, thậm chí <em>một nước</em> riêng lẻ.</li>
+      <li>Học thuyết về <strong>đảng kiểu mới</strong> của giai cấp công nhân.</li>
+      <li>Học thuyết về <strong>chuyên chính vô sản</strong>, thời kỳ quá độ, dân chủ XHCN, liên minh công - nông, vấn đề dân tộc và thuộc địa…</li>
+    </ul>
+  ` },
+  { id:19, part:'II', front:'Chủ nghĩa đế quốc', back:`
+    <p>Theo Lênin (tác phẩm <em>Chủ nghĩa đế quốc — giai đoạn tột cùng của CNTB</em>, 1916): chủ nghĩa đế quốc là <strong>giai đoạn phát triển cao nhất, đồng thời là giai đoạn tột cùng</strong> của CNTB.</p>
+    <p><strong>5 đặc điểm kinh tế cơ bản:</strong></p>
+    <ol>
+      <li>Tập trung sản xuất → ra đời các tổ chức độc quyền.</li>
+      <li>Sự dung hợp giữa tư bản ngân hàng và tư bản công nghiệp → <strong>tư bản tài chính</strong>.</li>
+      <li><strong>Xuất khẩu tư bản</strong> trở thành đặc trưng.</li>
+      <li>Các tổ chức độc quyền quốc tế phân chia thị trường thế giới.</li>
+      <li>Các cường quốc đế quốc phân chia xong lãnh thổ thế giới.</li>
+    </ol>
+    <p><span class="arrow-out">→</span> Mâu thuẫn của CNTB gay gắt đến mức cách mạng XHCN có thể nổ ra ở <strong>khâu yếu nhất</strong> của hệ thống đế quốc.</p>
+  ` },
+  { id:20, part:'II', front:'Cách mạng tháng Mười Nga <em>(1917)</em>', back:`
+    <p>Cuộc cách mạng do <strong>V.I. Lênin</strong> và Đảng Bônsêvích lãnh đạo, lật đổ chính quyền tư sản Nga, thiết lập <strong>chính quyền Xô-viết</strong> — nhà nước XHCN <strong>đầu tiên</strong> trên thế giới.</p>
+    <p><strong>Ý nghĩa:</strong></p>
+    <ul>
+      <li><strong>Biến CNXHKH từ lý luận thành hiện thực</strong> trên một phần sáu trái đất.</li>
+      <li>Mở ra <strong>thời đại mới</strong> — thời đại quá độ từ CNTB lên CNXH trên phạm vi toàn thế giới.</li>
+      <li>Cổ vũ phong trào giải phóng dân tộc và phong trào cộng sản, công nhân quốc tế.</li>
+    </ul>
+  ` },
+  { id:21, part:'II', front:'Chuyên chính vô sản', back:`
+    <p>Hình thức <strong>quyền lực chính trị của giai cấp công nhân</strong> sau khi giành chính quyền — thực hiện thông qua nhà nước XHCN dưới sự lãnh đạo của Đảng cộng sản.</p>
+    <p><strong>Bản chất hai mặt:</strong></p>
+    <ul>
+      <li><strong>Dân chủ</strong> đối với <em>đa số nhân dân lao động</em>.</li>
+      <li><strong>Chuyên chính</strong> đối với <em>thiểu số bóc lột chống đối CNXH</em>.</li>
+    </ul>
+    <p><strong>Mục tiêu:</strong></p>
+    <ul>
+      <li>Trấn áp sự phản kháng của các giai cấp bóc lột đã bị lật đổ.</li>
+      <li>Xây dựng cơ sở vật chất - kỹ thuật của CNXH.</li>
+      <li>Cải tạo xã hội cũ, xây dựng xã hội mới.</li>
+    </ul>
+  ` },
+  { id:22, part:'II', front:'Đảng Cộng sản Việt Nam với CNXHKH', back:`
+    <p>ĐCSVN do <strong>Chủ tịch Hồ Chí Minh</strong> sáng lập (3/2/1930), đã vận dụng sáng tạo CNXHKH vào điều kiện Việt Nam:</p>
+    <ul>
+      <li>Tìm ra con đường <strong>cứu nước theo khuynh hướng vô sản</strong> — gắn <em>độc lập dân tộc</em> với <em>CNXH</em>.</li>
+      <li>Lãnh đạo thắng lợi <strong>Cách mạng tháng Tám 1945</strong>, các cuộc kháng chiến chống ngoại xâm.</li>
+      <li>Đề ra <strong>đường lối đổi mới</strong> từ Đại hội VI (1986) — phát triển kinh tế thị trường định hướng XHCN.</li>
+      <li>Tiếp tục <strong>bổ sung, phát triển</strong> lý luận về CNXH và con đường đi lên CNXH ở Việt Nam.</li>
+    </ul>
+  ` },
+
+  // PHẦN III — Đối tượng & phương pháp (8 thẻ)
+  { id:23, part:'III', front:'Đối tượng nghiên cứu của CNXHKH', back:`
+    <p>CNXHKH nghiên cứu <strong>những quy luật, tính quy luật chính trị-xã hội</strong> của quá trình phát sinh, hình thành và phát triển <strong>hình thái kinh tế - xã hội cộng sản chủ nghĩa</strong>.</p>
+    <p><strong>Cụ thể bao gồm:</strong></p>
+    <ul>
+      <li>Sứ mệnh lịch sử của giai cấp công nhân.</li>
+      <li>Cách mạng XHCN và thời kỳ quá độ lên CNXH.</li>
+      <li>Dân chủ XHCN và nhà nước XHCN.</li>
+      <li>Cơ cấu xã hội - giai cấp; vấn đề dân tộc, tôn giáo, gia đình trong CNXH.</li>
+    </ul>
+    <blockquote><em>Khác triết học (quy luật chung nhất) và kinh tế chính trị (quy luật kinh tế) — CNXHKH tập trung vào quy luật chính trị-xã hội.</em></blockquote>
+  ` },
+  { id:24, part:'III', front:'Phương pháp luận chung của CNXHKH', back:`
+    <p>CNXHKH sử dụng <strong>phương pháp luận chung của chủ nghĩa Mác-Lênin</strong>:</p>
+    <ul>
+      <li><strong>Chủ nghĩa duy vật biện chứng</strong> — xem xét sự vật trong mối liên hệ phổ biến, vận động và phát triển.</li>
+      <li><strong>Chủ nghĩa duy vật lịch sử</strong> — vận dụng vào nghiên cứu lĩnh vực xã hội, đặc biệt quy luật vận động của hình thái KT-XH.</li>
+    </ul>
+    <p><span class="arrow-out">→</span> Đây là phương pháp luận <em>nền tảng</em>, có tính chất chung. Trên cơ sở đó còn sử dụng các phương pháp cụ thể.</p>
+  ` },
+  { id:25, part:'III', front:'Phương pháp kết hợp lịch sử và logic', back:`
+    <p>Phương pháp nghiên cứu các quá trình lịch sử trong <strong>sự thống nhất giữa hai mặt</strong>:</p>
+    <ul>
+      <li><strong>Mặt lịch sử</strong>: nghiên cứu sự vận động hiện thực qua các giai đoạn cụ thể, sự kiện, con người, hoàn cảnh.</li>
+      <li><strong>Mặt logic</strong>: rút ra cái <em>bản chất, tính quy luật</em> của quá trình lịch sử.</li>
+    </ul>
+    <p><strong>Ví dụ:</strong> Nghiên cứu sự ra đời của CNXHKH — vừa qua các sự kiện cụ thể (Tuyên ngôn 1848, các cuộc cách mạng…), vừa rút ra logic phát triển khách quan từ CNXH không tưởng → CNXH khoa học.</p>
+  ` },
+  { id:26, part:'III', front:'Phương pháp khảo sát và phân tích chính trị - xã hội', back:`
+    <p>Phương pháp <strong>đặc thù</strong> của CNXHKH.</p>
+    <p><strong>Nội dung:</strong> Khảo sát các hiện tượng xã hội từ <strong>góc độ chính trị</strong> — từ quan hệ giai cấp, đấu tranh giai cấp, vai trò của quần chúng nhân dân.</p>
+    <p><strong>Yêu cầu:</strong></p>
+    <ul>
+      <li>Xem xét sự vật trong tổng thể các quan hệ chính trị-xã hội.</li>
+      <li>Phân tích <em>lợi ích giai cấp</em> đứng sau các hiện tượng.</li>
+      <li>Đánh giá vai trò của các lực lượng chính trị, đặc biệt là giai cấp công nhân.</li>
+    </ul>
+  ` },
+  { id:27, part:'III', front:'Phương pháp so sánh', back:`
+    <p>Phương pháp đối chiếu các sự vật, hiện tượng để thấy điểm chung và điểm riêng → nhận thức sâu sắc bản chất của đối tượng nghiên cứu.</p>
+    <p><strong>Trong CNXHKH thường so sánh:</strong></p>
+    <ul>
+      <li>CNXH với CNTB.</li>
+      <li>CNXHKH với CNXH không tưởng.</li>
+      <li>Mô hình CNXH ở các nước khác nhau.</li>
+      <li>Dân chủ XHCN với dân chủ tư sản.</li>
+    </ul>
+    <blockquote><em>Làm nổi bật tính ưu việt và tính khoa học của CNXH.</em></blockquote>
+  ` },
+  { id:28, part:'III', front:'Phương pháp liên ngành <em>(khảo sát đa chiều)</em>', back:`
+    <p>Vì đối tượng của CNXHKH là <strong>các vấn đề chính trị - xã hội phức tạp</strong>, đòi hỏi kết hợp nhiều ngành:</p>
+    <ul>
+      <li>Triết học, kinh tế chính trị, luật học, lịch sử, văn hóa học, xã hội học…</li>
+    </ul>
+    <p><strong>Yêu cầu:</strong></p>
+    <ul>
+      <li>Tiếp thu thành quả các ngành khoa học khác.</li>
+      <li>Đặt vấn đề trong mối liên hệ tổng thể đa chiều.</li>
+      <li>Tránh phiến diện, một chiều.</li>
+    </ul>
+  ` },
+  { id:29, part:'III', front:'Ý nghĩa lý luận của việc nghiên cứu CNXHKH', back:`
+    <ul>
+      <li>Trang bị <strong>thế giới quan, phương pháp luận khoa học</strong> cho người học.</li>
+      <li>Nắm vững <strong>quy luật vận động khách quan</strong> của lịch sử và xã hội.</li>
+      <li>Hiểu rõ <strong>bản chất và xu hướng phát triển</strong> của xã hội loài người, đặc biệt là con đường đi lên CNXH.</li>
+      <li>Cung cấp <strong>cơ sở lý luận khoa học</strong> cho việc đấu tranh tư tưởng chống lại các quan điểm sai trái, thù địch.</li>
+    </ul>
+  ` },
+  { id:30, part:'III', front:'Ý nghĩa thực tiễn của việc nghiên cứu CNXHKH', back:`
+    <p>Đối với sinh viên Việt Nam:</p>
+    <ul>
+      <li>Củng cố <strong>niềm tin khoa học</strong> vào con đường đi lên CNXH mà Đảng, Bác Hồ và nhân dân ta đã lựa chọn.</li>
+      <li>Vận dụng vào <strong>phân tích các vấn đề chính trị-xã hội thực tiễn</strong> ở Việt Nam và thế giới.</li>
+      <li>Bồi dưỡng <strong>phẩm chất chính trị, đạo đức cách mạng</strong>, lý tưởng phục vụ nhân dân.</li>
+      <li>Tích cực tham gia xây dựng và bảo vệ Tổ quốc XHCN.</li>
+    </ul>
+  ` },
+];
+
+const QUIZ = [
+  // ============ MC (12 câu) ============
+  { id:'Q01', type:'MC', topic:'Khái niệm CNXHKH',
+    q:'Theo nghĩa rộng, Chủ nghĩa xã hội khoa học là?',
+    options:['Một bộ phận của triết học Mác-Lênin','Chủ nghĩa Mác-Lênin nói chung','Học thuyết của các nhà CNXH không tưởng','Một trào lưu trong phong trào công nhân thế kỷ XIX'],
+    correct:1,
+    explain:'Nghĩa rộng = toàn bộ chủ nghĩa Mác-Lênin (gồm 3 bộ phận). Nghĩa hẹp = một trong ba bộ phận hợp thành.' },
+  { id:'Q02', type:'MC', topic:'Tiền đề KHTN',
+    q:'Ba phát minh khoa học tự nhiên lớn của thế kỷ XIX làm tiền đề cho CNXHKH là?',
+    options:['Cơ học Newton, định luật vạn vật hấp dẫn, lý thuyết tương đối','Học thuyết tiến hóa, định luật bảo toàn và chuyển hóa năng lượng, học thuyết tế bào','Học thuyết nguyên tử, định luật Ohm, học thuyết di truyền Mendel','Phép biện chứng, chủ nghĩa duy vật, học thuyết giá trị'],
+    correct:1,
+    explain:'Ba phát minh "vạch thời đại" — cùng nhau củng cố cơ sở khoa học cho chủ nghĩa duy vật biện chứng.' },
+  { id:'Q03', type:'MC', topic:'Học thuyết tiến hóa',
+    q:'Học thuyết tiến hóa là phát minh của nhà khoa học nào?',
+    options:['Isaac Newton','Charles Darwin','Albert Einstein','Gregor Mendel'],
+    correct:1,
+    explain:'Darwin công bố <em>Nguồn gốc các loài</em> (1859) — chứng minh sự tiến hóa của các loài sinh vật.' },
+  { id:'Q04', type:'MC', topic:'Tiền đề tư tưởng',
+    q:'Ba nguồn tư tưởng lý luận trực tiếp của CNXHKH là?',
+    options:['Triết học cổ điển Đức, KTCT cổ điển Anh, CNXH không tưởng-phê phán Pháp','Triết học Hy Lạp cổ đại, KTCT cổ điển Pháp, CNXH không tưởng Anh','Triết học Khai sáng Pháp, KTCT Mỹ, CNXH dân chủ Đức','Triết học Đức, kinh tế học Anh, văn hóa Pháp'],
+    correct:0,
+    explain:'Lưu ý 3 nước - 3 lĩnh vực gắn với nhau theo trật tự cụ thể: <strong>Đức (triết) - Anh (kinh tế) - Pháp (xã hội)</strong>.' },
+  { id:'Q05', type:'MC', topic:'Đại biểu CNXH không tưởng',
+    q:'Ai trong số sau <strong>KHÔNG</strong> phải đại biểu của CNXH không tưởng - phê phán?',
+    options:['Henri de Saint-Simon','Charles Fourier','Robert Owen','David Ricardo'],
+    correct:3,
+    explain:'Ricardo là đại biểu KTCT cổ điển Anh, không phải CNXH không tưởng. Ba nhà CNXH không tưởng tiêu biểu: Saint-Simon, Fourier (Pháp), Owen (Anh).' },
+  { id:'Q06', type:'MC', topic:'Ba phát kiến vĩ đại',
+    q:'Ba phát kiến vĩ đại của C. Mác và Ph. Ăngghen gồm?',
+    options:['Chủ nghĩa duy vật biện chứng, học thuyết giá trị, học thuyết tiến hóa xã hội','Chủ nghĩa duy vật lịch sử, học thuyết giá trị thặng dư, học thuyết về sứ mệnh lịch sử của giai cấp công nhân','Học thuyết tế bào, học thuyết tiến hóa, định luật bảo toàn năng lượng','Phép biện chứng duy vật, học thuyết hình thái KT-XH, học thuyết giai cấp'],
+    correct:1,
+    explain:'Đây là ba phát kiến biến CNXH từ <strong>KHÔNG TƯỞNG</strong> thành <strong>KHOA HỌC</strong>.' },
+  { id:'Q07', type:'MC', topic:'Phát kiến đặt nền móng',
+    q:'Phát kiến vĩ đại nào trực tiếp đặt nền móng cho sự ra đời của CNXHKH?',
+    options:['Chủ nghĩa duy vật lịch sử','Học thuyết giá trị thặng dư','Học thuyết về sứ mệnh lịch sử toàn thế giới của giai cấp công nhân','Phép biện chứng duy vật'],
+    correct:2,
+    explain:'Phát kiến (1) và (2) là <em>cơ sở khoa học</em>. Phát kiến (3) là phát kiến TRỰC TIẾP — chỉ ra <strong>chủ thể hiện thực</strong> gánh vác sứ mệnh xây dựng CNXH.' },
+  { id:'Q08', type:'MC', topic:'Tác phẩm đánh dấu',
+    q:'Tác phẩm nào đánh dấu sự ra đời của Chủ nghĩa xã hội khoa học?',
+    options:['Bộ "Tư bản" của C. Mác','"Tuyên ngôn của Đảng Cộng sản" (1848)','"Chống Đuyrinh" của Ph. Ăngghen','"Nhà nước và cách mạng" của V.I. Lênin'],
+    correct:1,
+    explain:'<em>Tuyên ngôn</em> (2/1848) — văn kiện cương lĩnh đầu tiên trình bày hệ thống thế giới quan của GCCN, đánh dấu CNXHKH ra đời.' },
+  { id:'Q09', type:'MC', topic:'Điều kiện Lênin',
+    q:'V.I. Lênin vận dụng và phát triển CNXHKH trong điều kiện CNTB đang ở giai đoạn nào?',
+    options:['CNTB tự do cạnh tranh','CNTB hiện đại','Chủ nghĩa đế quốc','CNTB nhà nước'],
+    correct:2,
+    explain:'Lênin viết <em>Chủ nghĩa đế quốc — giai đoạn tột cùng của CNTB</em> (1916), phân tích 5 đặc điểm kinh tế của giai đoạn này.' },
+  { id:'Q10', type:'MC', topic:'Cách mạng tháng Mười',
+    q:'Cách mạng tháng Mười Nga thắng lợi vào năm nào?',
+    options:['1789','1848','1871','1917'],
+    correct:3,
+    explain:'1789 = Cách mạng Pháp; 1848 = Tuyên ngôn của ĐCS; 1871 = Công xã Paris; <strong>1917 = Cách mạng tháng Mười Nga</strong> (CMXHCN đầu tiên).' },
+  { id:'Q11', type:'MC', topic:'Đối tượng nghiên cứu',
+    q:'Đối tượng nghiên cứu của CNXHKH (theo nghĩa hẹp) là?',
+    options:['Mọi quy luật của tự nhiên, xã hội và tư duy','Các quy luật kinh tế của các phương thức sản xuất','Các quy luật và tính quy luật chính trị-xã hội của quá trình hình thành, phát triển hình thái KT-XH cộng sản chủ nghĩa','Lịch sử các cuộc cách mạng xã hội'],
+    correct:2,
+    explain:'Lưu ý cụm "<strong>chính trị - xã hội</strong>" — đây là điểm phân biệt CNXHKH với triết học (quy luật chung nhất) và KTCT (quy luật kinh tế).' },
+  { id:'Q12', type:'MC', topic:'Phương pháp luận chung',
+    q:'Phương pháp luận chung của CNXHKH là?',
+    options:['Phép biện chứng tự phát của triết học cổ Hy Lạp','Chủ nghĩa duy vật biện chứng và chủ nghĩa duy vật lịch sử','Phương pháp thực chứng và phương pháp định lượng','Phương pháp lịch sử - so sánh thuần túy'],
+    correct:1,
+    explain:'Hai bộ phận của triết học Mác-Lênin chính là phương pháp luận chung nhất cho CNXHKH.' },
+
+  // ============ TF (7 câu) ============
+  { id:'Q13', type:'TF',
+    q:'CNXHKH là một trong ba bộ phận hợp thành chủ nghĩa Mác-Lênin.',
+    correct:true,
+    explain:'<strong>ĐÚNG.</strong> Ba bộ phận: (1) Triết học Mác-Lênin, (2) Kinh tế chính trị Mác-Lênin, (3) Chủ nghĩa xã hội khoa học.' },
+  { id:'Q14', type:'TF',
+    q:'Học thuyết tế bào là do C. Mác và Ph. Ăngghen phát minh.',
+    correct:false,
+    explain:'<strong>SAI.</strong> Học thuyết tế bào do <strong>Schleiden và Schwann</strong> phát minh — đây là một <em>tiền đề khoa học tự nhiên</em>, không phải sản phẩm của Mác-Ăngghen.' },
+  { id:'Q15', type:'TF',
+    q:'Chủ nghĩa xã hội không tưởng - phê phán đã phát hiện được sứ mệnh lịch sử của giai cấp công nhân.',
+    correct:false,
+    explain:'<strong>SAI.</strong> Đây là <em>hạn chế cốt yếu</em> của CNXH không tưởng. Họ không thấy được sứ mệnh GCCN, không tìm ra lực lượng xã hội hiện thực để thực hiện CNXH. Phát hiện này là của Mác-Ăngghen.' },
+  { id:'Q16', type:'TF',
+    q:'Trước khi xây dựng CNXHKH, C. Mác đã chuyển từ chủ nghĩa duy tâm sang chủ nghĩa duy vật, và từ lập trường dân chủ cách mạng sang lập trường cộng sản chủ nghĩa.',
+    correct:true,
+    explain:'<strong>ĐÚNG.</strong> Đây là hai chuyển biến quan trọng — về triết học và về chính trị — của Mác-Ăngghen trước khi đặt nền móng cho CNXHKH.' },
+  { id:'Q17', type:'TF',
+    q:'Học thuyết giá trị thặng dư là phát kiến của David Ricardo.',
+    correct:false,
+    explain:'<strong>SAI.</strong> Học thuyết giá trị thặng dư là phát kiến của <strong>C. Mác</strong>. Ricardo (KTCT cổ điển Anh) có học thuyết giá trị lao động nhưng chưa phân biệt được lao động với sức lao động — Mác đã phát triển lên thành học thuyết GTTD.' },
+  { id:'Q18', type:'TF',
+    q:'Tuyên ngôn của Đảng Cộng sản (1848) đánh dấu sự ra đời của Chủ nghĩa xã hội khoa học.',
+    correct:true,
+    explain:'<strong>ĐÚNG.</strong> Tuyên ngôn (tháng 2/1848) là văn kiện cương lĩnh đầu tiên trình bày có hệ thống thế giới quan của giai cấp công nhân — đây là mốc chính thức ra đời của CNXHKH.' },
+  { id:'Q19', type:'TF',
+    q:'Cách mạng tháng Mười Nga (1917) biến Chủ nghĩa xã hội khoa học từ hiện thực thành lý luận.',
+    correct:false,
+    explain:'<strong>SAI.</strong> Ngược lại — Cách mạng tháng Mười biến CNXHKH <strong>từ lý luận thành hiện thực</strong>, thành lập nhà nước XHCN đầu tiên trên thế giới (Nhà nước Xô viết).' },
+
+  // ============ FILL (5 câu) ============
+  { id:'Q20', type:'FILL',
+    q:'Học thuyết <u>___</u> là một trong hai phát kiến vĩ đại của C. Mác, vạch trần bản chất bóc lột của chủ nghĩa tư bản.',
+    answer:['giá trị thặng dư','gia tri thang du','gttd'],
+    explain:'Hai phát kiến vĩ đại của Mác: (1) <strong>Chủ nghĩa duy vật lịch sử</strong> và (2) <strong>Học thuyết giá trị thặng dư</strong>. Phát kiến (2) chỉ ra nguồn gốc giá trị thặng dư — lao động không được trả công của công nhân.' },
+  { id:'Q21', type:'FILL',
+    q:'Tuyên ngôn của Đảng Cộng sản được Mác và Ăngghen công bố vào năm <u>___</u>.',
+    answer:['1848'],
+    explain:'Tháng 2/<strong>1848</strong>, Tuyên ngôn được công bố — mốc ra đời của CNXHKH và cũng là khởi đầu làn sóng cách mạng 1848–1849 tại châu Âu.' },
+  { id:'Q22', type:'FILL',
+    q:'Một trong ba tiền đề lý luận trực tiếp của CNXHKH là triết học cổ điển <u>___</u>, với đại diện tiêu biểu là Hêghen và Phơbách.',
+    answer:['đức','Đức','duc'],
+    explain:'Ba tiền đề: (1) <strong>Triết học cổ điển Đức</strong> (Hêghen, Phơbách), (2) <strong>KTCT cổ điển Anh</strong> (Smith, Ricardo), (3) <strong>CNXH-CN không tưởng Pháp</strong> (Saint-Simon, Fourier, Owen).' },
+  { id:'Q23', type:'FILL',
+    q:'CNXHKH (theo nghĩa hẹp) là một trong <u>___</u> bộ phận cấu thành chủ nghĩa Mác-Lênin.',
+    answer:['ba','3'],
+    explain:'<strong>Ba</strong> bộ phận: (1) Triết học Mác-Lênin, (2) Kinh tế chính trị Mác-Lênin, (3) Chủ nghĩa xã hội khoa học.' },
+  { id:'Q24', type:'FILL',
+    q:'Công xã Paris năm <u>___</u> là nhà nước vô sản đầu tiên trong lịch sử (tồn tại 72 ngày), kiểm chứng luận điểm của Mác về chuyên chính vô sản.',
+    answer:['1871'],
+    explain:'<strong>Công xã Paris 1871</strong> (18/3 – 28/5/1871) — nhà nước công nhân đầu tiên. Mác tổng kết bài học Công xã trong <em>Nội chiến ở Pháp</em>.' },
+
+  // ============ SIDE — câu mở rộng (4 câu) ============
+  { id:'Q25', type:'SIDE',
+    q:'Tại sao CNXHKH được gọi là "khoa học"? Hãy phân biệt với Chủ nghĩa xã hội không tưởng.',
+    hint:`<ul>
+      <li><strong>CNXH không tưởng:</strong> Phê phán CNTB đúng đắn, mơ ước xã hội tốt đẹp, nhưng <em>không tìm ra con đường và lực lượng hiện thực</em> để thực hiện — mang tính ảo tưởng.</li>
+      <li><strong>CNXHKH là "khoa học"</strong> vì xây dựng trên: <em>(1)</em> Chủ nghĩa duy vật lịch sử — chứng minh CNXH là tất yếu lịch sử; <em>(2)</em> Học thuyết GTTD — vạch trần mâu thuẫn không thể hòa giải TS–CN; <em>(3)</em> Phát hiện ra <strong>giai cấp công nhân</strong> là lực lượng xã hội hiện thực đủ sức gánh vác sứ mệnh xây dựng CNXH.</li>
+    </ul>`,
+    explain:'CNXHKH là khoa học vì dựa trên CNDVLS + học thuyết GTTD, phát hiện ra GCCN là lực lượng hiện thực — thay thế ảo tưởng của CNXH không tưởng bằng con đường đấu tranh cụ thể.' },
+  { id:'Q26', type:'SIDE',
+    q:'Trình bày ý nghĩa của hai phát kiến vĩ đại của C. Mác: Chủ nghĩa duy vật lịch sử và Học thuyết giá trị thặng dư.',
+    hint:`<ul>
+      <li><strong>Chủ nghĩa duy vật lịch sử:</strong> Lần đầu tiên giải thích lịch sử xã hội một cách khoa học — lực lượng sản xuất quyết định quan hệ sản xuất, tồn tại xã hội quyết định ý thức xã hội. Từ đó chứng minh CNXH thay thế CNTB là <em>tất yếu lịch sử</em>, không phải ý muốn chủ quan.</li>
+      <li><strong>Học thuyết giá trị thặng dư:</strong> Vạch trần bí mật bóc lột của CNTB — giá trị thặng dư tạo ra bởi lao động công nhân nhưng bị nhà tư bản chiếm đoạt. Chứng minh mâu thuẫn không thể hòa giải giữa tư sản và vô sản.</li>
+      <li><strong>Ý nghĩa chung:</strong> Hai phát kiến biến CNXH từ <em>không tưởng</em> thành <em>khoa học</em>; đặt nền tảng lý luận cho đấu tranh của GCCN.</li>
+    </ul>`,
+    explain:'CNDVLS chứng minh CNXH là tất yếu lịch sử; học thuyết GTTD vạch trần bóc lột của CNTB — hai phát kiến biến CNXH từ không tưởng thành khoa học.' },
+  { id:'Q27', type:'SIDE',
+    q:'Phân tích ba tiền đề lý luận cho sự ra đời của CNXHKH và vai trò của mỗi tiền đề.',
+    hint:`<ul>
+      <li><strong>Triết học cổ điển Đức</strong> (Hêghen, Phơbách): Cung cấp phép biện chứng và tư tưởng duy vật. Mác kế thừa cái hạt nhân hợp lý (phép biện chứng của Hêghen + CNDV của Phơbách), loại bỏ tính chất duy tâm.</li>
+      <li><strong>KTCT cổ điển Anh</strong> (Smith, Ricardo): Cung cấp học thuyết giá trị lao động — xuất phát điểm để Mác xây dựng học thuyết GTTD.</li>
+      <li><strong>CNXH-CN không tưởng Pháp</strong> (Saint-Simon, Fourier, Owen): Phê phán CNTB, mơ ước xã hội tốt đẹp — chất liệu Mác kế thừa phê phán và phát triển lên cơ sở khoa học.</li>
+    </ul>`,
+    explain:'Triết học Đức → phương pháp luận; KTCT Anh → học thuyết GTTD; CNXH không tưởng Pháp → phê phán CNTB. Mác-Ăngghen tiếp thu có phê phán cả ba nguồn.' },
+  { id:'Q28', type:'SIDE',
+    q:'Lênin đã đóng góp gì trong việc bảo vệ và phát triển Chủ nghĩa xã hội khoa học?',
+    hint:`<ul>
+      <li><strong>Bảo vệ CNXHKH:</strong> Phê phán chủ nghĩa xét lại (Bernstein, Kautsky), đấu tranh chống cơ hội chủ nghĩa trong Quốc tế II.</li>
+      <li><strong>Phát triển lý luận mới:</strong> (1) Học thuyết về CNTB độc quyền — <em>chủ nghĩa đế quốc</em>; (2) Lý luận cách mạng XHCN thắng lợi ở nước yếu hơn (<em>mắt xích yếu nhất</em>); (3) Học thuyết về Đảng Cộng sản kiểu mới; (4) NEP và chính sách xây dựng CNXH thực tế.</li>
+      <li><strong>Hiện thực hóa:</strong> Lãnh đạo Cách mạng tháng Mười 1917 — biến CNXHKH từ lý luận thành hiện thực, thành lập Nhà nước Xô viết.</li>
+    </ul>`,
+    explain:'Lênin bảo vệ CNXHKH chống xét lại; bổ sung lý luận về CNTB độc quyền, đảng kiểu mới; lãnh đạo CM tháng Mười 1917 — đưa CNXHKH vào thực tiễn lần đầu tiên.' },
+];
+
+/* ================================================================
+   HELPERS
+   ================================================================ */
+const $  = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+
+/* ================================================================
+   THEME
+   ================================================================ */
+(function(){
+  const saved = localStorage.getItem('cnxhkh_theme') || 'light';
+  document.documentElement.dataset.theme = saved;
+  const sun  = document.getElementById('iconSun');
+  const moon = document.getElementById('iconMoon');
+  if(sun)  sun.style.display  = saved === 'dark'  ? '' : 'none';
+  if(moon) moon.style.display = saved === 'light' ? '' : 'none';
+})();
+
+document.getElementById('themeToggle').addEventListener('click', function(){
+  const root = document.documentElement;
+  const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+  root.dataset.theme = next;
+  localStorage.setItem('cnxhkh_theme', next);
+  document.getElementById('iconSun').style.display  = next === 'dark'  ? '' : 'none';
+  document.getElementById('iconMoon').style.display = next === 'light' ? '' : 'none';
+});
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+let fc_initialized = false;
+
+function switchView(id){
+  $$('.main-nav button').forEach(b => b.classList.toggle('active', b.dataset.view === id));
+  $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + id));
+  if(id === 'home')       updateHomeStats();
+  if(id === 'flashcards' && !fc_initialized) initFC();
+}
+
+$$('.main-nav button').forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
+$$('[data-goto]').forEach(el => el.addEventListener('click', () => switchView(el.dataset.goto)));
+
+/* ================================================================
+   HOME STATS
+   ================================================================ */
+function getQzHist(){ return JSON.parse(localStorage.getItem('cnxhkh_quiz') || '{"count":0,"best":0}'); }
+function saveQzHist(h){ localStorage.setItem('cnxhkh_quiz', JSON.stringify(h)); }
+
+function updateHomeStats(){
+  const hist = getQzHist();
+  const sK = document.getElementById('statKnown');
+  const sB = document.getElementById('statQuizBest');
+  const sC = document.getElementById('statQuizCount');
+  if(sK) sK.textContent = fc_known.size + '/30';
+  if(sB) sB.textContent = hist.best ? hist.best + '%' : '—';
+  if(sC) sC.textContent = hist.count;
+}
+
+/* ================================================================
+   FLASHCARD ENGINE
+   ================================================================ */
+let fc_deck        = [];
+let fc_idx         = 0;
+let fc_filterPart  = 'all';
+let fc_onlyUnknown = false;
+let fc_known       = new Set(JSON.parse(localStorage.getItem('cnxhkh_known') || '[]'));
+
+function saveKnown(){ localStorage.setItem('cnxhkh_known', JSON.stringify([...fc_known])); }
+
+function buildDeck(){
+  let cards = FLASHCARDS;
+  if(fc_filterPart !== 'all') cards = cards.filter(c => c.part === fc_filterPart);
+  if(fc_onlyUnknown)          cards = cards.filter(c => !fc_known.has(c.id));
+  fc_deck = [...cards];
+  fc_idx  = 0;
+}
+
+function renderFC(){
+  const wrap  = document.getElementById('fcCardWrap');
+  const card  = document.getElementById('fcCard');
+  const empty = document.getElementById('fcEmpty');
+  const ctrl  = document.getElementById('fcControls');
+  const posEl = document.getElementById('fcPos');
+  const totEl = document.getElementById('fcTotal');
+  const fill  = document.getElementById('fcProgressFill');
+  const part  = document.getElementById('fcPartTag');
+  const knEl  = document.getElementById('fcKnown');
+  const prev  = document.getElementById('fcPrev');
+  const next  = document.getElementById('fcNext');
+  const mark  = document.getElementById('fcMark');
+
+  knEl.textContent = fc_known.size;
+
+  if(!fc_deck.length){
+    wrap.style.display  = 'none';
+    ctrl.style.display  = 'none';
+    empty.style.display = '';
+    posEl.textContent   = '0';
+    totEl.textContent   = '0';
+    fill.style.width    = '0%';
+    return;
+  }
+
+  wrap.style.display  = '';
+  ctrl.style.display  = '';
+  empty.style.display = 'none';
+
+  const c       = fc_deck[fc_idx];
+  const isKnown = fc_known.has(c.id);
+  card.classList.remove('flipped');
+  card.innerHTML = `
+    <div class="fc-face front">
+      <div class="fc-face-tag"><span class="dot"></span>PHẦN ${c.part}<span class="num">${fc_idx + 1}</span></div>
+      <div class="fc-front-title">${c.front}</div>
+      <div class="fc-hint"><span class="kbd">Space</span> / nhấn thẻ để lật</div>
+      ${isKnown ? '<div class="fc-known-badge">★ Đã thuộc</div>' : ''}
+    </div>
+    <div class="fc-face back">
+      <div class="fc-face-tag"><span class="dot"></span>Đáp án</div>
+      <div class="fc-back-body">${c.back}</div>
+      ${isKnown ? '<div class="fc-known-badge">★ Đã thuộc</div>' : ''}
+    </div>`;
+
+  part.textContent  = 'PHẦN ' + c.part;
+  posEl.textContent = fc_idx + 1;
+  totEl.textContent = fc_deck.length;
+  fill.style.width  = `${((fc_idx + 1) / fc_deck.length) * 100}%`;
+  prev.disabled     = fc_idx === 0;
+  next.disabled     = fc_idx === fc_deck.length - 1;
+  mark.classList.toggle('active', isKnown);
+
+  card.onclick = () => card.classList.toggle('flipped');
+}
+
+function initFC(){
+  fc_initialized = true;
+  buildDeck();
+  renderFC();
+
+  // Filter bar
+  $$('#fcFilter button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('#fcFilter button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      fc_filterPart  = btn.dataset.part;
+      fc_onlyUnknown = false;
+      document.getElementById('fcOnlyUnknown').classList.remove('active');
+      buildDeck(); renderFC();
+    });
+  });
+
+  document.getElementById('fcShuffle').addEventListener('click', () => {
+    for(let i = fc_deck.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [fc_deck[i], fc_deck[j]] = [fc_deck[j], fc_deck[i]];
+    }
+    fc_idx = 0; renderFC();
+  });
+
+  document.getElementById('fcOnlyUnknown').addEventListener('click', function(){
+    fc_onlyUnknown = !fc_onlyUnknown;
+    this.classList.toggle('active', fc_onlyUnknown);
+    buildDeck(); renderFC();
+  });
+
+  document.getElementById('fcReset').addEventListener('click', () => {
+    if(confirm('Đặt lại toàn bộ tiến độ? Các thẻ "đã thuộc" sẽ bị xóa.')){
+      fc_known.clear(); saveKnown(); buildDeck(); renderFC(); updateHomeStats();
+    }
+  });
+
+  document.getElementById('fcPrev').addEventListener('click', () => { if(fc_idx > 0){ fc_idx--; renderFC(); } });
+  document.getElementById('fcNext').addEventListener('click', () => { if(fc_idx < fc_deck.length - 1){ fc_idx++; renderFC(); } });
+  document.getElementById('fcFlip').addEventListener('click', () => document.getElementById('fcCard').classList.toggle('flipped'));
+  document.getElementById('fcMark').addEventListener('click', () => {
+    const c = fc_deck[fc_idx];
+    if(fc_known.has(c.id)) fc_known.delete(c.id); else fc_known.add(c.id);
+    saveKnown(); renderFC(); updateHomeStats();
+  });
+
+  document.addEventListener('keydown', e => {
+    if(!document.getElementById('view-flashcards').classList.contains('active')) return;
+    if(['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+    const card = document.getElementById('fcCard');
+    if(e.key === ' ' || e.key === 'ArrowUp')   { e.preventDefault(); card.classList.toggle('flipped'); }
+    else if(e.key === 'ArrowLeft'  && fc_idx > 0)                   { fc_idx--; renderFC(); }
+    else if(e.key === 'ArrowRight' && fc_idx < fc_deck.length - 1)  { fc_idx++; renderFC(); }
+    else if(e.key === 'e' || e.key === 'E') document.getElementById('fcMark').click();
+  });
+}
+
+/* ================================================================
+   QUIZ ENGINE
+   ================================================================ */
+let qz_session  = [];
+let qz_idx      = 0;
+let qz_score    = 0;
+let qz_answered = [];
+
+function showScreen(id){
+  $$('.qz-screen').forEach(s => s.classList.toggle('active', s.id === id));
+}
+
+// Type selector
+$$('#qzTypeRow button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if(btn.dataset.type === 'all'){
+      $$('#qzTypeRow button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    } else {
+      $('#qzTypeRow [data-type="all"]').classList.remove('active');
+      btn.classList.toggle('active');
+      const any = [...$$('#qzTypeRow button:not([data-type="all"])')].some(b => b.classList.contains('active'));
+      if(!any) $('#qzTypeRow [data-type="all"]').classList.add('active');
+    }
+  });
+});
+
+// Count selector
+$$('#qzCountRow button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('#qzCountRow button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// Start
+document.getElementById('qzStartBtn').addEventListener('click', () => {
+  const allActive = $('#qzTypeRow [data-type="all"]').classList.contains('active');
+  let pool;
+  if(allActive){
+    pool = [...QUIZ];
+  } else {
+    const types = [...$$('#qzTypeRow button.active')].map(b => b.dataset.type);
+    pool = QUIZ.filter(q => types.includes(q.type));
+  }
+  if(!pool.length){ alert('Không có câu hỏi phù hợp.'); return; }
+
+  if(document.getElementById('qzShuffle').checked){
+    for(let i = pool.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+  }
+
+  const cVal = ($('#qzCountRow button.active') || {}).dataset?.count;
+  const n    = (!cVal || cVal === 'all') ? pool.length : parseInt(cVal);
+  qz_session  = pool.slice(0, n);
+  qz_idx      = 0;
+  qz_score    = 0;
+  qz_answered = new Array(qz_session.length).fill(null);
+
+  showScreen('qzPlay');
+  renderQzQ();
+});
+
+function renderQzQ(){
+  const q   = qz_session[qz_idx];
+  const n   = qz_session.length;
+  const lbl = { MC:'Trắc nghiệm', TF:'Đúng / Sai', FILL:'Điền khuyết', SIDE:'Câu mở rộng' }[q.type];
+
+  document.getElementById('qzNum').textContent   = qz_idx + 1;
+  document.getElementById('qzTotal').textContent = n;
+  document.getElementById('qzBar').style.width   = `${(qz_idx / n) * 100}%`;
+
+  document.getElementById('qzQ').innerHTML = `
+    <div class="qz-q-tags"><span class="qz-q-tag type">${lbl}</span></div>
+    <div class="qz-q-text">${q.q}</div>
+    <div id="qzBody"></div>
+    <div class="qz-feedback" id="qzFB" style="display:none"></div>
+    <div class="qz-actions" id="qzAct" style="display:none">
+      <button class="qz-next-btn" id="qzNextBtn">
+        ${qz_idx < n - 1 ? 'Câu tiếp theo →' : 'Xem kết quả →'}
+      </button>
+    </div>`;
+
+  const body = document.getElementById('qzBody');
+
+  if(q.type === 'MC'){
+    body.className = 'qz-options';
+    body.innerHTML = q.options.map((opt, i) => `
+      <button class="qz-option" data-i="${i}">
+        <span class="letter">${'ABCD'[i]}</span>
+        <span>${opt}</span>
+        <svg class="icon-end" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>`).join('');
+    body.querySelectorAll('.qz-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const i = parseInt(btn.dataset.i), ok = i === q.correct;
+        if(ok) qz_score++;
+        qz_answered[qz_idx] = { correct: ok, chosen: i };
+        body.querySelectorAll('.qz-option').forEach((b, j) => {
+          b.disabled = true;
+          if(j === q.correct)    b.classList.add('correct');
+          else if(j === i && !ok) b.classList.add('wrong');
+        });
+        showFB(ok, q.explain);
+      });
+    });
+
+  } else if(q.type === 'TF'){
+    body.className = 'qz-tf';
+    body.innerHTML = `
+      <button class="qz-tf-btn" data-val="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Đúng
+      </button>
+      <button class="qz-tf-btn" data-val="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Sai
+      </button>`;
+    body.querySelectorAll('.qz-tf-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const chosen = btn.dataset.val === 'true', ok = chosen === q.correct;
+        if(ok) qz_score++;
+        qz_answered[qz_idx] = { correct: ok, chosen };
+        body.querySelectorAll('.qz-tf-btn').forEach(b => {
+          b.disabled = true;
+          const bv = b.dataset.val === 'true';
+          if(bv === q.correct)        b.classList.add('correct');
+          else if(bv === chosen && !ok) b.classList.add('wrong');
+        });
+        showFB(ok, q.explain);
+      });
+    });
+
+  } else if(q.type === 'FILL'){
+    body.className = 'qz-fill-wrap';
+    body.innerHTML = `
+      <input class="qz-fill-input" id="qzFillIn" type="text" placeholder="Nhập câu trả lời…" autocomplete="off" spellcheck="false">
+      <button class="qz-fill-submit" id="qzFillOk">Kiểm tra</button>`;
+    const inp   = document.getElementById('qzFillIn');
+    const okBtn = document.getElementById('qzFillOk');
+    inp.focus();
+    const check = () => {
+      const val = inp.value.trim();
+      if(!val) return;
+      const ans = Array.isArray(q.answer) ? q.answer : [q.answer];
+      const ok  = ans.some(a => val.toLowerCase() === a.toLowerCase());
+      if(ok) qz_score++;
+      qz_answered[qz_idx] = { correct: ok, chosen: val };
+      inp.disabled   = true;
+      okBtn.disabled = true;
+      inp.classList.add(ok ? 'correct' : 'wrong');
+      showFB(ok, q.explain + (ok ? '' : '<br><em>Đáp án đúng: <strong>' + ans[0] + '</strong></em>'));
+    };
+    inp.addEventListener('keydown', e => { if(e.key === 'Enter') check(); });
+    okBtn.addEventListener('click', check);
+
+  } else if(q.type === 'SIDE'){
+    body.className = 'qz-side-wrap';
+    body.innerHTML = `
+      <div class="qz-side-actions">
+        <button class="qz-side-reveal" id="qzReveal">Xem gợi ý đáp án</button>
+        <button class="qz-side-skip"   id="qzSkip">Bỏ qua</button>
+      </div>
+      <div id="qzHint" style="display:none;margin-top:.85rem;padding:1rem 1.2rem;background:var(--gold-bg);border:1px solid var(--rule);border-left:3px solid var(--gold);border-radius:8px;font-size:.88rem;line-height:1.65;color:var(--ink-soft)">${q.hint}</div>
+      <div class="qz-side-eval" id="qzEval" style="display:none">
+        <span class="qz-side-eval-lbl">Tự đánh giá:</span>
+        <button class="qz-side-eval-btn good" id="qzSideOk">✓ Tôi trả lời đúng</button>
+        <button class="qz-side-eval-btn bad"  id="qzSideNg">✗ Chưa đủ ý</button>
+      </div>`;
+
+    document.getElementById('qzReveal').addEventListener('click', function(){
+      this.style.display = 'none';
+      document.getElementById('qzSkip').style.display  = 'none';
+      document.getElementById('qzHint').style.display  = '';
+      document.getElementById('qzEval').style.display  = '';
+    });
+    document.getElementById('qzSkip').addEventListener('click', () => {
+      qz_answered[qz_idx] = { correct: false, chosen: 'Bỏ qua' };
+      body.querySelectorAll('button').forEach(b => b.disabled = true);
+      showFB(false, q.explain || '');
+    });
+    document.getElementById('qzSideOk').addEventListener('click', () => {
+      qz_score++;
+      qz_answered[qz_idx] = { correct: true, chosen: 'Đúng' };
+      body.querySelectorAll('#qzEval button').forEach(b => b.disabled = true);
+      showFB(true, q.explain || '');
+    });
+    document.getElementById('qzSideNg').addEventListener('click', () => {
+      qz_answered[qz_idx] = { correct: false, chosen: 'Sai' };
+      body.querySelectorAll('#qzEval button').forEach(b => b.disabled = true);
+      showFB(false, q.explain || '');
+    });
+  }
+
+  document.getElementById('qzNextBtn').addEventListener('click', () => {
+    qz_idx++;
+    if(qz_idx >= qz_session.length) showQzResult();
+    else renderQzQ();
+  });
+}
+
+function showFB(ok, txt){
+  const fb = document.getElementById('qzFB');
+  fb.style.display = '';
+  fb.className     = 'qz-feedback ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML     = `<div class="fb-h"><span>${ok ? '✓ Đúng' : '✗ Sai'}</span></div>${txt}`;
+  document.getElementById('qzAct').style.display = '';
+}
+
+document.getElementById('qzQuit').addEventListener('click', () => {
+  if(confirm('Dừng bài quiz này?')) showScreen('qzSetup');
+});
+
+function showQzResult(){
+  showScreen('qzResult');
+  const total = qz_session.length;
+  const pct   = total ? Math.round((qz_score / total) * 100) : 0;
+  const r     = 88, circ = +(2 * Math.PI * r).toFixed(2);
+
+  const ring = document.getElementById('qzRingProg');
+  ring.setAttribute('stroke-dasharray',  circ);
+  ring.setAttribute('stroke-dashoffset', (circ * (1 - qz_score / total)).toFixed(2));
+  ring.className = 'progress ' + (pct >= 80 ? 'high' : pct >= 50 ? 'mid' : 'low');
+
+  const pctEl = document.getElementById('qzPct');
+  pctEl.textContent = pct + '%';
+  pctEl.className   = 'pct ' + (pct >= 80 ? 'high' : pct >= 50 ? 'mid' : 'low');
+  document.getElementById('qzFrac').textContent = `${qz_score} / ${total}`;
+
+  const msg = pct >= 90 ? 'Xuất sắc! 🏆' : pct >= 70 ? 'Khá tốt! 👍' : pct >= 50 ? 'Cần ôn thêm 📚' : 'Cố gắng hơn! 💪';
+  document.getElementById('qzResultTitle').textContent = msg;
+  document.getElementById('qzResultSub').textContent   = `Bạn trả lời đúng ${qz_score} / ${total} câu.`;
+
+  const types = [...new Set(qz_session.map(q => q.type))];
+  const tLbl  = { MC:'Trắc nghiệm', TF:'Đúng/Sai', FILL:'Điền khuyết', SIDE:'Câu mở rộng' };
+  document.getElementById('qzResultStats').innerHTML = types.map(t => {
+    const qs    = qz_session.map((q, i) => ({ q, a: qz_answered[i] })).filter(x => x.q.type === t);
+    const right = qs.filter(x => x.a?.correct).length;
+    const cls   = right === qs.length ? 'good' : right === 0 ? 'bad' : 'warn';
+    return `<div class="qz-stat"><div class="val ${cls}">${right}/${qs.length}</div><div class="lbl">${tLbl[t]}</div></div>`;
+  }).join('');
+
+  const h = getQzHist();
+  h.count++;
+  if(pct > h.best) h.best = pct;
+  saveQzHist(h);
+  updateHomeStats();
+
+  document.getElementById('qzReviewList').innerHTML = qz_session.map((q, i) => {
+    const a = qz_answered[i], ok = a?.correct;
+    return `<div class="qz-review-item">
+      <div class="rv-ico ${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'}</div>
+      <div class="rv-body">
+        <div class="rv-q">Câu ${i + 1}: ${q.q}</div>
+        ${q.explain ? `<div class="rv-info">${q.explain}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('qzRetry').addEventListener('click', () => {
+  qz_idx = 0; qz_score = 0; qz_answered = new Array(qz_session.length).fill(null);
+  showScreen('qzPlay'); renderQzQ();
+});
+document.getElementById('qzNewQuiz').addEventListener('click', () => showScreen('qzSetup'));
+
+/* ================================================================
+   MINDMAP SWITCHER
+   ================================================================ */
+const mmOrder = ['tree', 'timeline', 'compare'];
+$$('.mm-switch button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('.mm-switch button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const t = btn.dataset.mm;
+    $$('.mm-view').forEach(v => v.classList.toggle('active', v.id === 'mm-' + t));
+    document.getElementById('mmCount').textContent = mmOrder.indexOf(t) + 1;
+  });
+});
+
+/* ================================================================
+   INIT
+   ================================================================ */
+switchView('home');
+showScreen('qzSetup');
+</script>
+</body>
+</html>
