@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lịch AI bằng giọng nói — Demo</title>
+<style>
+  :root {
+    --bg: #0f1226;
+    --card: #1a1f3a;
+    --card2: #232a4d;
+    --accent: #6c8cff;
+    --accent2: #4ad6a0;
+    --text: #e8ebff;
+    --muted: #9aa3c7;
+    --danger: #ff6b6b;
+    --line: #2c3358;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -10%, #1b2350 0%, var(--bg) 60%);
+    color: var(--text); min-height: 100vh; padding: 24px 16px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 18px; margin-bottom: 16px;
+  }
+  label { display:block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  input[type=password], textarea {
+    width: 100%; background: var(--card2); border: 1px solid var(--line);
+    color: var(--text); border-radius: 10px; padding: 12px; font-size: 15px;
+    font-family: inherit;
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  .row { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  button {
+    background: var(--accent); color: #0b0e20; border: none; border-radius: 10px;
+    padding: 12px 18px; font-size: 15px; font-weight: 600; cursor: pointer;
+    transition: transform .05s ease, filter .15s ease;
+  }
+  button:hover { filter: brightness(1.08); }
+  button:active { transform: translateY(1px); }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .mic { font-size: 17px; padding: 14px 22px; }
+  .mic.rec { background: var(--danger); color: #fff; animation: pulse 1.1s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(255,107,107,.5)} 70%{box-shadow:0 0 0 14px rgba(255,107,107,0)} 100%{box-shadow:0 0 0 0 rgba(255,107,107,0)} }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .status { font-size: 13px; color: var(--accent2); min-height: 18px; margin-top: 8px; }
+  .status.err { color: var(--danger); }
+  .ev {
+    background: var(--card2); border: 1px solid var(--line); border-left: 4px solid var(--accent2);
+    border-radius: 12px; padding: 14px; margin-bottom: 10px;
+  }
+  .ev .title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .ev .meta { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .ev .tag { display:inline-block; background:#2f3a6b; color:#cdd6ff; font-size:11px;
+    padding:2px 8px; border-radius:20px; margin-left:6px; }
+  .ev.warn { border-left-color: var(--danger); }
+  .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .chip {
+    background: var(--card2); border:1px solid var(--line); color: var(--text);
+    font-size:13px; padding:8px 12px; border-radius:20px; cursor:pointer;
+  }
+  .chip:hover { border-color: var(--accent); }
+  details { margin-top: 10px; }
+  summary { cursor:pointer; color: var(--muted); font-size: 13px; }
+  code { background:#11152e; padding:1px 5px; border-radius:5px; font-size:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎙️ Lịch AI bằng giọng nói</h1>
+  <p class="sub">Bản demo Giai đoạn 1 — Nói một câu, AI tự tạo lịch cho bạn.</p>
+
+  <div class="card">
+    <label for="key">Gemini API key (miễn phí — lấy ở Google AI Studio)</label>
+    <input id="key" type="password" placeholder="Dán key vào đây..." autocomplete="off">
+    <label style="display:flex; align-items:center; gap:8px; margin-top:10px; cursor:pointer;">
+      <input id="remember" type="checkbox" style="width:auto;"> Nhớ key trên máy này (khỏi dán lại lần sau)
+    </label>
+    <div class="hint">Key chỉ nằm trong trình duyệt của bạn, không gửi đi đâu khác ngoài Google.
+      Nếu tick "Nhớ key", key được lưu ngay trên máy bạn — đừng tick nếu dùng máy chung.</div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <button id="micBtn" class="mic">🎤 Bấm để nói</button>
+      <button id="parseBtn" class="ghost">⚙️ Tạo lịch từ chữ</button>
+    </div>
+    <div class="status" id="status"></div>
+
+    <label style="margin-top:14px" for="text">Câu bạn nói (sửa tay được)</label>
+    <textarea id="text" placeholder="Ví dụ: Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút"></textarea>
+
+    <div class="examples" id="examples"></div>
+  </div>
+
+  <div id="result"></div>
+
+  <details>
+    <summary>Trang này hoạt động thế nào?</summary>
+    <p class="hint">
+      1. Trình duyệt (Chrome) chuyển <b>giọng nói tiếng Việt</b> thành chữ — miễn phí, không cần cài gì.<br>
+      2. Chữ được gửi cho <b>Gemini</b> kèm hướng dẫn bóc tách thành lịch (JSON).<br>
+      3. Trang tự <b>trải lịch lặp</b> (ví dụ "thứ Hai trong 4 tuần" → 4 buổi) và hiện ra để bạn xác nhận.<br>
+      Đây là cùng bộ não với <code>giai_doan_0_test_ai.py</code>, chỉ thêm phần nói + giao diện.
+    </p>
+  </details>
+</div>
+
+<script>
+// ====================== CẤU HÌNH ======================
+const GEMINI_MODEL = "gemini-2.5-flash";
+const WEEKDAY_VI = ["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"];
+const WEEKDAY_MAP = { mon:0, tue:1, wed:2, thu:3, fri:4, sat:5, sun:6 };
+
+const EXAMPLES = [
+  "Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút",
+  "Mốt đi cà phê với Linh lúc 9 giờ sáng",
+  "Đặt thứ Hai trong 4 tuần để học tiếng Anh lúc 8 giờ tối",
+  "Sáng thứ Hai, thứ Tư tập gym lúc 6 giờ trong 4 tuần",
+];
+
+// ====================== TIỆN ÍCH NGÀY ======================
+// JS getDay(): 0=CN..6=Thứ Bảy. Mình đổi sang kiểu "Thứ Hai = 0".
+function mon0(date) { return (date.getDay() + 6) % 7; }
+function parseDate(str) { return new Date(str + "T00:00:00"); }
+function addWeeks(date, n) { const d = new Date(date); d.setDate(d.getDate() + n*7); return d; }
+function nextWeekday(d, targetMon0) {
+  const ahead = (targetMon0 - mon0(d) + 7) % 7;
+  const r = new Date(d); r.setDate(r.getDate() + ahead); return r;
+}
+function fmtDate(d) {
+  const dd = String(d.getDate()).padStart(2,"0");
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  return dd + "/" + mm + "/" + d.getFullYear();
+}
+function todayStr() {
+  const t = new Date();
+  return t.getFullYear() + "-" + String(t.getMonth()+1).padStart(2,"0") + "-" + String(t.getDate()).padStart(2,"0");
+}
+
+// ====================== PROMPT (giống bản Python) ======================
+function buildPrompt() {
+  const t = new Date();
+  const ngay = todayStr();
+  const thu = WEEKDAY_VI[mon0(t)];
+  return (
+    "Bạn là bộ máy bóc tách lịch tiếng Việt. CHỈ trả JSON, không giải thích.\n" +
+    "Hôm nay là: " + ngay + " (" + thu + ").\n" +
+    "Quy ước: 'mai' = ngày mai, 'mốt' = ngày kia. Giờ chiều/tối đổi sang 24h.\n" +
+    "Nếu là thời khoá biểu lặp lại thì dùng 'recurrence'.\n" +
+    'Định dạng: { "events": [ { "title": "", "start_time": "HH:MM", "duration_minutes": 60, ' +
+    '"category": "", "reminder_minutes_before": 30, ' +
+    '"recurrence": {"weekday": "Mon", "count": 4, "start_date": "YYYY-MM-DD"}, ' +
+    '"date": "YYYY-MM-DD" } ] }\n' +
+    "Sự kiện một lần: dùng 'date', để 'recurrence' = null. " +
+    "Sự kiện lặp: dùng 'recurrence', để 'date' = null."
+  );
+}
+
+// ====================== GỌI GEMINI ======================
+async function callGemini(text, apiKey) {
+  const url = "https://generativelanguage.googleapis.com/v1beta/models/" +
+              GEMINI_MODEL + ":generateContent?key=" + encodeURIComponent(apiKey);
+  const body = {
+    systemInstruction: { parts: [{ text: buildPrompt() }] },
+    contents: [{ parts: [{ text: text }] }],
+    generationConfig: { responseMimeType: "application/json" }
+  };
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) {
+    const msg = await resp.text();
+    throw new Error("Gemini lỗi " + resp.status + ": " + msg.slice(0, 200));
+  }
+  const data = await resp.json();
+  const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!raw) throw new Error("Gemini không trả nội dung.");
+  return JSON.parse(raw);
+}
+
+// ====================== TRẢI LỊCH (giống Python) ======================
+function expandEvents(parsed) {
+  const occ = [];
+  for (const ev of (parsed.events || [])) {
+    const rec = ev.recurrence;
+    if (rec) {
+      const wd = WEEKDAY_MAP[String(rec.weekday).toLowerCase().slice(0,3)];
+      const first = nextWeekday(parseDate(rec.start_date), wd);
+      const count = rec.count || 1;
+      for (let i = 0; i < count; i++) occ.push({ day: addWeeks(first, i), ev });
+    } else if (ev.date) {
+      occ.push({ day: parseDate(ev.date), ev });
+    } else {
+      occ.push({ day: null, ev });
+    }
+  }
+  occ.sort((a,b) => (a.day===null) - (b.day===null) || (a.day && b.day ? a.day - b.day : 0));
+  return occ;
+}
+
+// ====================== HIỂN THỊ ======================
+function render(parsed) {
+  const box = document.getElementById("result");
+  const occ = expandEvents(parsed);
+  if (occ.length === 0) {
+    box.innerHTML = '<div class="card"><div class="ev warn">Không tạo được sự kiện nào. Thử nói rõ giờ và việc cần làm.</div></div>';
+    return;
+  }
+  const total = occ.length;
+  let html = '<div class="card"><div style="margin-bottom:10px;color:var(--muted);font-size:13px">📅 Sẽ tạo <b style="color:var(--text)">' + total + '</b> sự kiện:</div>';
+  for (const { day, ev } of occ) {
+    const title = ev.title || "(không tên)";
+    if (day === null) {
+      html += '<div class="ev warn"><div class="title">' + esc(title) + '</div>' +
+              '<div class="meta">⚠️ Thiếu ngày/giờ — cần nói rõ hơn.</div></div>';
+      continue;
+    }
+    const rm = ev.reminder_minutes_before;
+    const nhac = rm ? ('🔔 nhắc trước ' + rm + ' phút') : '';
+    const cat = ev.category ? ('<span class="tag">' + esc(ev.category) + '</span>') : '';
+    html += '<div class="ev"><div class="title">' + esc(title) + cat + '</div>' +
+            '<div class="meta">' +
+            WEEKDAY_VI[mon0(day)] + ', ' + fmtDate(day) +
+            ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
+            (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') +
+            '</div></div>';
+  }
+  html += '<div class="row" style="margin-top:6px">' +
+          '<button onclick="alert(\'(Demo) Ở bản thật, đây là lúc lưu vào lịch điện thoại / Google Calendar.\')">✅ Xác nhận tạo lịch</button>' +
+          '<button class="ghost" onclick="document.getElementById(\'result\').innerHTML=\'\'">Huỷ</button>' +
+          '</div></div>';
+  box.innerHTML = html;
+}
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+// ====================== ĐIỀU KHIỂN GIAO DIỆN ======================
+const statusEl = document.getElementById("status");
+function setStatus(msg, isErr) {
+  statusEl.textContent = msg || "";
+  statusEl.className = "status" + (isErr ? " err" : "");
+}
+
+async function doParse() {
+  const key = document.getElementById("key").value.trim();
+  const text = document.getElementById("text").value.trim();
+  if (!key) { setStatus("Chưa có API key. Dán key Gemini vào ô trên.", true); return; }
+  if (!text) { setStatus("Chưa có câu nào. Hãy nói hoặc gõ một câu.", true); return; }
+  setStatus("⏳ Đang nhờ Gemini bóc tách lịch...");
+  try {
+    const parsed = await callGemini(text, key);
+    setStatus("✅ Xong! Kiểm tra lịch bên dưới.");
+    render(parsed);
+  } catch (e) {
+    setStatus(e.message, true);
+  }
+}
+document.getElementById("parseBtn").addEventListener("click", doParse);
+
+// ----- Nhận giọng nói (Web Speech API) -----
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const micBtn = document.getElementById("micBtn");
+let recog = null, listening = false, finalText = "", userStopped = false;
+
+if (!SR) {
+  micBtn.disabled = true;
+  micBtn.textContent = "🎤 Trình duyệt không hỗ trợ";
+  setStatus("Trình duyệt này chưa hỗ trợ nhận giọng nói. Hãy dùng Chrome trên máy tính, hoặc gõ tay rồi bấm 'Tạo lịch từ chữ'.", true);
+} else {
+  recog = new SR();
+  recog.lang = "vi-VN";
+  recog.interimResults = true;
+  recog.continuous = true;   // nghe liên tục, không tự ngắt khi ngừng giữa câu
+
+  recog.onresult = (e) => {
+    // Gom dần các đoạn đã chốt (isFinal) vào finalText; phần đang nói hiện tạm.
+    let interim = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const r = e.results[i];
+      if (r.isFinal) finalText += r[0].transcript;
+      else interim += r[0].transcript;
+    }
+    document.getElementById("text").value = (finalText + interim).trim();
+  };
+
+  recog.onerror = (e) => {
+    // 'no-speech'/'aborted' = im lặng tạm thời -> kệ, để onend tự nối lại.
+    if (e.error === "no-speech" || e.error === "aborted") return;
+    setStatus("Lỗi micro: " + e.error, true);
+  };
+
+  recog.onend = () => {
+    // Trình duyệt tự ngắt sau khoảng im lặng. Nếu bạn CHƯA bấm dừng thì nghe tiếp.
+    if (!userStopped) { try { recog.start(); } catch (e) {} }
+    else stopRec();
+  };
+
+  micBtn.addEventListener("click", () => listening ? endByUser() : startRec());
+}
+function startRec() {
+  listening = true; userStopped = false; finalText = "";
+  micBtn.classList.add("rec");
+  micBtn.textContent = "⏹ Đang nghe... bấm để dừng";
+  setStatus("🎤 Đang nghe. Cứ nói thong thả, ngừng giữa chừng cũng được — bấm nút khi nói xong.");
+  document.getElementById("text").value = "";
+  try { recog.start(); } catch(e) {}
+}
+function endByUser() {
+  userStopped = true;        // báo cho onend biết là bạn chủ động dừng
+  try { recog.stop(); } catch(e) {}
+}
+function stopRec() {
+  listening = false;
+  micBtn.classList.remove("rec");
+  micBtn.textContent = "🎤 Bấm để nói";
+  setStatus("⏹ Đã dừng nghe. Bấm 'Tạo lịch từ chữ' để xử lý.");
+}
+
+// ----- Câu ví dụ bấm nhanh -----
+const exBox = document.getElementById("examples");
+EXAMPLES.forEach(s => {
+  const c = document.createElement("div");
+  c.className = "chip"; c.textContent = s;
+  c.onclick = () => { document.getElementById("text").value = s; setStatus("Đã điền câu ví dụ. Bấm 'Tạo lịch từ chữ'."); };
+  exBox.appendChild(c);
+});
+
+// ----- Nhớ API key trên máy này (localStorage) -----
+const keyInput = document.getElementById("key");
+const rememberBox = document.getElementById("remember");
+// Khi mở trang: nếu đã lưu key thì tự điền + tick sẵn.
+const savedKey = localStorage.getItem("gemini_key");
+if (savedKey) { keyInput.value = savedKey; rememberBox.checked = true; }
+// Lưu / xoá key theo trạng thái tick.
+function syncKeyStore() {
+  if (rememberBox.checked && keyInput.value.trim()) {
+    localStorage.setItem("gemini_key", keyInput.value.trim());
+  } else {
+    localStorage.removeItem("gemini_key");
+  }
+}
+keyInput.addEventListener("input", syncKeyStore);
+rememberBox.addEventListener("change", syncKeyStore);
+</script>
+</body>
+</html>
