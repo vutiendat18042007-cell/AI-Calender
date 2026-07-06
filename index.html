@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lịch của tôi — nói là xong</title>
+<style>
+  :root {
+    --bg: #FCF4EE;
+    --card: #FFFFFF;
+    --card2: #FFF7F2;
+    --accent: #D85A30;
+    --accent-dark: #993C1D;
+    --accent2: #3B7A57;
+    --text: #4A1B0C;
+    --muted: #9A6A55;
+    --danger: #C0392B;
+    --line: #F3DACE;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(1000px 520px at 50% -12%, #FBE1D3 0%, var(--bg) 55%);
+    color: var(--text); min-height: 100vh; padding: 28px 16px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .head { text-align: center; margin-bottom: 16px; }
+  h1 { font-size: 25px; margin: 0 0 6px; display: inline-flex; align-items: center; gap: 9px; }
+  h1 .heart { color: var(--accent); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .langbar { display:flex; justify-content:center; align-items:center; gap:8px; margin-bottom:18px; }
+  .langbar label { margin:0; }
+  select {
+    background: var(--card2); border: 1px solid var(--line); color: var(--text);
+    border-radius: 12px; padding: 8px 12px; font-size: 14px; font-family: inherit; cursor: pointer;
+  }
+  select:focus { outline: none; border-color: var(--accent); }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 18px; margin-bottom: 16px;
+    box-shadow: 0 4px 18px rgba(216, 90, 48, 0.07);
+  }
+  label { display:block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  input[type=password], textarea {
+    width: 100%; background: var(--card2); border: 1px solid var(--line);
+    color: var(--text); border-radius: 12px; padding: 12px; font-size: 15px;
+    font-family: inherit; transition: border-color .15s ease;
+  }
+  input[type=password]:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  textarea { min-height: 76px; resize: vertical; }
+  input[type=checkbox] { accent-color: var(--accent); }
+  .row { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  button {
+    background: var(--accent); color: #fff; border: none; border-radius: 12px;
+    padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer;
+    transition: transform .05s ease, filter .15s ease;
+  }
+  button:hover { filter: brightness(1.06); }
+  button:active { transform: translateY(1px); }
+  button.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .mic-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 6px 0 4px; }
+  .mic {
+    width: 92px; height: 92px; border-radius: 50%; font-size: 34px; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 10px #F7D3C3;
+  }
+  .mic.rec { background: var(--danger); box-shadow: 0 0 0 0 rgba(192,57,43,.5); animation: pulse 1.2s infinite; }
+  .mic-label { font-size: 13px; color: var(--muted); }
+  @keyframes pulse {
+    0%{box-shadow:0 0 0 0 rgba(192,57,43,.45)}
+    70%{box-shadow:0 0 0 18px rgba(192,57,43,0)}
+    100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}
+  }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.55; }
+  .status { font-size: 13px; color: var(--accent2); min-height: 18px; margin-top: 10px; text-align: center; }
+  .status.err { color: var(--danger); }
+  .ev {
+    background: var(--card2); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+    border-radius: 12px; padding: 14px; margin-bottom: 10px;
+  }
+  .ev .title { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+  .ev .meta { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .ev .tag { display:inline-block; background:#FDE3D7; color:var(--accent-dark); font-size:11px;
+    padding:2px 9px; border-radius:20px; margin-left:6px; }
+  .ev.warn { border-left-color: var(--danger); }
+  .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .chip {
+    background: #FFF1E9; border:1px solid var(--line); color: var(--accent-dark);
+    font-size:13px; padding:8px 12px; border-radius:20px; cursor:pointer;
+    transition: border-color .15s ease;
+  }
+  .chip:hover { border-color: var(--accent); }
+  details { margin-top: 6px; }
+  summary { cursor:pointer; color: var(--muted); font-size: 13px; }
+  code { background:#FDE3D7; color: var(--accent-dark); padding:1px 5px; border-radius:5px; font-size:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1><span class="heart">🎙️</span> <span id="uiTitle">Lịch của tôi</span></h1>
+    <p class="sub" id="uiSub">Nói một câu, để phần còn lại cho AI lo.</p>
+  </div>
+
+  <div class="langbar">
+    <label id="uiLangLabel" for="lang">🌐 Ngôn ngữ</label>
+    <select id="lang"></select>
+  </div>
+
+  <div class="card">
+    <label id="uiKeyLabel" for="key">Gemini API key (miễn phí — lấy ở Google AI Studio)</label>
+    <input id="key" type="password" placeholder="Dán key vào đây..." autocomplete="off">
+    <label style="display:flex; align-items:center; gap:8px; margin-top:10px; cursor:pointer;">
+      <input id="remember" type="checkbox" style="width:auto;"> <span id="uiRemember">Nhớ key trên máy này (khỏi dán lại lần sau)</span>
+    </label>
+    <div class="hint" id="uiKeyHint">Key chỉ nằm trong trình duyệt của bạn, không gửi đi đâu khác ngoài Google.
+      Nếu tick "Nhớ key", key được lưu ngay trên máy bạn — đừng tick nếu dùng máy chung.</div>
+  </div>
+
+  <div class="card">
+    <div class="mic-wrap">
+      <button id="micBtn" class="mic" title="Bấm để nói">🎤</button>
+      <span class="mic-label" id="micLabel">Bấm để nói</span>
+    </div>
+    <div class="status" id="status"></div>
+
+    <label style="margin-top:14px" id="uiTextLabel" for="text">Câu bạn nói (sửa tay được)</label>
+    <textarea id="text" placeholder="Ví dụ: Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút"></textarea>
+
+    <label style="display:flex; align-items:center; gap:8px; margin-top:10px; cursor:pointer;">
+      <input id="grounding" type="checkbox" style="width:auto;"> <span id="uiGrounding">🔎 Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)</span>
+    </label>
+
+    <div class="row" style="margin-top:12px; justify-content:center;">
+      <button id="parseBtn">Tạo lịch</button>
+    </div>
+
+    <div class="examples" id="examples"></div>
+  </div>
+
+  <div id="result"></div>
+
+  <details>
+    <summary id="uiHowSummary">Trang này hoạt động thế nào?</summary>
+    <p class="hint" id="uiHowBody"></p>
+  </details>
+</div>
+
+<!-- Thư viện đăng nhập Google (để ghi thẳng vào Google Calendar) -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+// ====================== CẤU HÌNH ======================
+const GEMINI_MODEL = "gemini-2.5-flash";
+// Client ID của bạn (công khai được). Đổi nếu tạo project Google khác.
+const GOOGLE_CLIENT_ID = "629021777726-l1e426i4k77o8bgv0tq1u09g40lf4jtl.apps.googleusercontent.com";
+const WEEKDAY_MAP = { mon:0, tue:1, wed:2, thu:3, fri:4, sat:5, sun:6 };
+// Múi giờ đích = múi giờ của chính máy người dùng (đúng cho mọi quốc gia).
+const LOCAL_TZ = (Intl.DateTimeFormat().resolvedOptions().timeZone) || "Asia/Ho_Chi_Minh";
+
+// ====================== ĐA NGÔN NGỮ ======================
+// Mỗi ngôn ngữ gồm: mã nhận giọng (stt), tên thứ (Thứ Hai = 0), quy ước ngày tương đối
+// dùng cho prompt, câu ví dụ, và toàn bộ chữ trên giao diện (ui).
+const LANGS = {
+  vi: {
+    nativeName: "Tiếng Việt",
+    stt: "vi-VN",
+    promptLang: "Vietnamese",
+    weekdays: ["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"],
+    relRules: "'mai' = ngày mai, 'mốt' = ngày kia. Giờ chiều/tối đổi sang 24h.",
+    examples: [
+      "Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút",
+      "Mốt đi cà phê với Linh lúc 9 giờ sáng",
+      "Đặt thứ Hai trong 4 tuần để học tiếng Anh lúc 8 giờ tối",
+      "Sáng thứ Hai, thứ Tư tập gym lúc 6 giờ trong 4 tuần",
+    ],
+    ui: {
+      title: "Lịch của tôi",
+      sub: "Nói một câu, để phần còn lại cho AI lo.",
+      langLabel: "🌐 Ngôn ngữ",
+      keyLabel: "Gemini API key (miễn phí — lấy ở Google AI Studio)",
+      keyPlaceholder: "Dán key vào đây...",
+      rememberLabel: "Nhớ key trên máy này (khỏi dán lại lần sau)",
+      keyHint: "Key chỉ nằm trong trình duyệt của bạn, không gửi đi đâu khác ngoài Google. Nếu tick \"Nhớ key\", key được lưu ngay trên máy bạn — đừng tick nếu dùng máy chung.",
+      micIdle: "Bấm để nói",
+      micListening: "Đang nghe... bấm để dừng",
+      micNotSupported: "Trình duyệt không hỗ trợ",
+      browserNoSpeech: "Trình duyệt này chưa hỗ trợ nhận giọng nói. Hãy dùng Chrome trên máy tính, hoặc gõ tay rồi bấm nút tạo lịch.",
+      textLabel: "Câu bạn nói (sửa tay được)",
+      textPlaceholder: "Ví dụ: Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút",
+      groundingLabel: "🔎 Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)",
+      parseBtn: "Tạo lịch",
+      howSummary: "Trang này hoạt động thế nào?",
+      howBody: "1. Trình duyệt (Chrome) chuyển <b>giọng nói của bạn</b> thành chữ — miễn phí, không cần cài gì.<br>2. Chữ được gửi cho <b>Gemini</b> kèm hướng dẫn bóc tách thành lịch (JSON).<br>3. Trang tự <b>trải lịch lặp</b> (ví dụ \"thứ Hai trong 4 tuần\" → 4 buổi) và hiện ra để bạn xác nhận.",
+      exFilled: "Đã điền câu ví dụ. Bấm nút tạo lịch.",
+      micStartHint: "🎤 Cứ nói thong thả, ngừng giữa chừng cũng được — bấm nút khi nói xong.",
+      micStopped: "⏹ Đã dừng nghe. Bấm nút tạo lịch để xử lý.",
+      noKey: "Chưa có API key. Dán key Gemini vào ô trên.",
+      noText: "Chưa có câu nào. Hãy nói hoặc gõ một câu.",
+      parsingNormal: "⏳ Đang nhờ Gemini bóc tách lịch...",
+      parsingGrounded: "⏳ Đang tra giờ thật trên mạng (chậm hơn một chút)...",
+      doneNormal: "✅ Xong! Kiểm tra lịch bên dưới.",
+      doneGrounded: "✅ Xong (đã tra mạng + code tự đổi múi giờ). Kiểm tra lịch bên dưới.",
+      needConfirm: "⚠️ AI chưa chắc giờ của sự kiện này — hãy tự kiểm tra hoặc nói rõ giờ.",
+      micErrorPrefix: "Lỗi micro: ",
+      willCreate: "📅 Sẽ tạo <b style=\"color:var(--text)\">{n}</b> sự kiện:",
+      noEvents: "Không tạo được sự kiện nào. Thử nói rõ giờ và việc cần làm.",
+      missingDateTime: "⚠️ Thiếu ngày/giờ — cần nói rõ hơn.",
+      unnamed: "(không tên)",
+      remindBefore: "🔔 nhắc trước {n} phút",
+      toLocal: "→ giờ máy bạn",
+      addGcalBtn: "📅 Thêm thẳng vào Google Calendar",
+      cancelBtn: "Huỷ",
+      gcalHint: "Bấm nút trên là sự kiện hiện luôn trên Google Calendar (lần đầu sẽ hỏi đăng nhập &amp; cho phép). Hoặc {link} để nạp thủ công nếu cần.",
+      gcalLink: "tải file .ics",
+      noScheduleToAdd: "Chưa có lịch để thêm.",
+      googleNotLoaded: "Google chưa tải xong. Đợi vài giây rồi bấm lại.",
+      noAuthPrefix: "Không lấy được quyền: ",
+      requestingPermission: "⏳ Đang xin quyền Google (lần đầu sẽ hiện cửa sổ đăng nhập)...",
+      addingEvents: "⏳ Đang thêm {n} sự kiện vào Google Calendar...",
+      addedSuccess: "✅ Đã thêm {n} sự kiện vào Google Calendar! Mở Google Calendar để xem.",
+      addedPartial: "Đã thêm {ok} sự kiện, {err} sự kiện lỗi. Xem Console (F12) để rõ.",
+      icsNoSchedule: "Chưa có lịch để tải.",
+      icsDownloaded: "✅ Đã tải file .ics. Mở Google Calendar → Cài đặt → Nhập & xuất → chọn file này.",
+    },
+  },
+
+  en: {
+    nativeName: "English",
+    stt: "en-US",
+    promptLang: "English",
+    weekdays: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    relRules: "'tomorrow' = next day, 'the day after tomorrow' = +2 days. Convert PM times to 24-hour.",
+    examples: [
+      "Meeting tomorrow at 8pm, remind me 30 minutes before",
+      "Coffee with Linh the day after tomorrow at 9am",
+      "Study English every Monday for 4 weeks at 8pm",
+      "Gym Monday and Wednesday morning at 6 for 4 weeks",
+    ],
+    ui: {
+      title: "My Calendar",
+      sub: "Say one sentence, let the AI do the rest.",
+      langLabel: "🌐 Language",
+      keyLabel: "Gemini API key (free — get it at Google AI Studio)",
+      keyPlaceholder: "Paste your key here...",
+      rememberLabel: "Remember key on this device (no need to paste again)",
+      keyHint: "The key stays in your browser and is only sent to Google. If you tick \"Remember key\", it's saved on this device — don't tick it on a shared computer.",
+      micIdle: "Tap to speak",
+      micListening: "Listening... tap to stop",
+      micNotSupported: "Browser not supported",
+      browserNoSpeech: "This browser doesn't support speech recognition. Use Chrome on a computer, or type manually and press the create button.",
+      textLabel: "What you said (editable)",
+      textPlaceholder: "e.g. Meeting tomorrow at 8pm, remind me 30 minutes before",
+      groundingLabel: "🔎 Look up the real time online (for real events like F1, matches... when you don't say a time)",
+      parseBtn: "Create schedule",
+      howSummary: "How does this page work?",
+      howBody: "1. Your browser (Chrome) turns <b>your speech</b> into text — free, nothing to install.<br>2. The text is sent to <b>Gemini</b> with instructions to extract a schedule (JSON).<br>3. The page <b>expands repeats</b> (e.g. \"every Monday for 4 weeks\" → 4 sessions) and shows them for you to confirm.",
+      exFilled: "Example filled in. Press the create button.",
+      micStartHint: "🎤 Speak at your own pace, pausing is fine — tap the button when you're done.",
+      micStopped: "⏹ Stopped listening. Press the create button to process.",
+      noKey: "No API key yet. Paste your Gemini key in the box above.",
+      noText: "No sentence yet. Speak or type one.",
+      parsingNormal: "⏳ Asking Gemini to extract the schedule...",
+      parsingGrounded: "⏳ Looking up the real time online (a bit slower)...",
+      doneNormal: "✅ Done! Check the schedule below.",
+      doneGrounded: "✅ Done (looked online + code converted the timezone). Check the schedule below.",
+      needConfirm: "⚠️ The AI isn't sure of this event's time — please double-check or say the time.",
+      micErrorPrefix: "Mic error: ",
+      willCreate: "📅 Will create <b style=\"color:var(--text)\">{n}</b> event(s):",
+      noEvents: "Couldn't create any event. Try stating the time and task clearly.",
+      missingDateTime: "⚠️ Missing date/time — please be more specific.",
+      unnamed: "(untitled)",
+      remindBefore: "🔔 remind {n} min before",
+      toLocal: "→ your time",
+      addGcalBtn: "📅 Add straight to Google Calendar",
+      cancelBtn: "Cancel",
+      gcalHint: "Tap the button above and the events appear right on Google Calendar (the first time it asks you to sign in &amp; allow). Or {link} to import manually if needed.",
+      gcalLink: "download the .ics file",
+      noScheduleToAdd: "No schedule to add yet.",
+      googleNotLoaded: "Google hasn't finished loading. Wait a few seconds and tap again.",
+      noAuthPrefix: "Couldn't get permission: ",
+      requestingPermission: "⏳ Requesting Google permission (first time shows a sign-in window)...",
+      addingEvents: "⏳ Adding {n} event(s) to Google Calendar...",
+      addedSuccess: "✅ Added {n} event(s) to Google Calendar! Open Google Calendar to see them.",
+      addedPartial: "Added {ok} event(s), {err} failed. See Console (F12) for details.",
+      icsNoSchedule: "No schedule to download.",
+      icsDownloaded: "✅ Downloaded the .ics file. Open Google Calendar → Settings → Import & export → choose this file.",
+    },
+  },
+
+  fr: {
+    nativeName: "Français",
+    stt: "fr-FR",
+    promptLang: "French",
+    weekdays: ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"],
+    relRules: "'demain' = jour+1, 'après-demain' = jour+2. Convertir les heures au format 24h.",
+    examples: [
+      "Réunion demain à 20h, rappelle-moi 30 minutes avant",
+      "Café avec Linh après-demain à 9h",
+      "Étudier l'anglais chaque lundi pendant 4 semaines à 20h",
+      "Gym lundi et mercredi matin à 6h pendant 4 semaines",
+    ],
+    ui: {
+      title: "Mon agenda",
+      sub: "Dites une phrase, l'IA fait le reste.",
+      langLabel: "🌐 Langue",
+      keyLabel: "Clé API Gemini (gratuite — sur Google AI Studio)",
+      keyPlaceholder: "Collez votre clé ici...",
+      rememberLabel: "Retenir la clé sur cet appareil (pas besoin de la recoller)",
+      keyHint: "La clé reste dans votre navigateur et n'est envoyée qu'à Google. Si vous cochez « Retenir la clé », elle est enregistrée sur cet appareil — ne cochez pas sur un ordinateur partagé.",
+      micIdle: "Appuyez pour parler",
+      micListening: "À l'écoute... appuyez pour arrêter",
+      micNotSupported: "Navigateur non pris en charge",
+      browserNoSpeech: "Ce navigateur ne prend pas en charge la reconnaissance vocale. Utilisez Chrome sur ordinateur, ou tapez à la main puis appuyez sur le bouton de création.",
+      textLabel: "Ce que vous avez dit (modifiable)",
+      textPlaceholder: "Ex. : Réunion demain à 20h, rappelle-moi 30 minutes avant",
+      groundingLabel: "🔎 Chercher l'heure réelle en ligne (pour de vrais événements comme la F1, les matchs... si vous ne dites pas l'heure)",
+      parseBtn: "Créer l'agenda",
+      howSummary: "Comment fonctionne cette page ?",
+      howBody: "1. Votre navigateur (Chrome) transforme <b>votre voix</b> en texte — gratuit, rien à installer.<br>2. Le texte est envoyé à <b>Gemini</b> avec des instructions pour en extraire un agenda (JSON).<br>3. La page <b>déploie les répétitions</b> (ex. « chaque lundi pendant 4 semaines » → 4 séances) et les affiche pour confirmation.",
+      exFilled: "Exemple rempli. Appuyez sur le bouton de création.",
+      micStartHint: "🎤 Parlez à votre rythme, les pauses sont permises — appuyez sur le bouton quand vous avez fini.",
+      micStopped: "⏹ Écoute arrêtée. Appuyez sur le bouton de création pour traiter.",
+      noKey: "Pas encore de clé API. Collez votre clé Gemini dans le champ ci-dessus.",
+      noText: "Aucune phrase. Parlez ou tapez-en une.",
+      parsingNormal: "⏳ Gemini extrait l'agenda...",
+      parsingGrounded: "⏳ Recherche de l'heure réelle en ligne (un peu plus lent)...",
+      doneNormal: "✅ Terminé ! Vérifiez l'agenda ci-dessous.",
+      doneGrounded: "✅ Terminé (recherche en ligne + conversion du fuseau par le code). Vérifiez ci-dessous.",
+      needConfirm: "⚠️ L'IA n'est pas sûre de l'heure de cet événement — vérifiez ou indiquez l'heure.",
+      micErrorPrefix: "Erreur micro : ",
+      willCreate: "📅 Va créer <b style=\"color:var(--text)\">{n}</b> événement(s) :",
+      noEvents: "Aucun événement créé. Précisez l'heure et la tâche.",
+      missingDateTime: "⚠️ Date/heure manquante — soyez plus précis.",
+      unnamed: "(sans titre)",
+      remindBefore: "🔔 rappel {n} min avant",
+      toLocal: "→ votre heure",
+      addGcalBtn: "📅 Ajouter directement à Google Agenda",
+      cancelBtn: "Annuler",
+      gcalHint: "Appuyez sur le bouton ci-dessus et les événements apparaissent dans Google Agenda (la première fois, il demande de se connecter &amp; d'autoriser). Ou {link} pour importer manuellement si besoin.",
+      gcalLink: "télécharger le fichier .ics",
+      noScheduleToAdd: "Aucun agenda à ajouter.",
+      googleNotLoaded: "Google n'a pas fini de charger. Attendez quelques secondes et réessayez.",
+      noAuthPrefix: "Autorisation refusée : ",
+      requestingPermission: "⏳ Demande d'autorisation Google (la première fois, une fenêtre de connexion s'affiche)...",
+      addingEvents: "⏳ Ajout de {n} événement(s) à Google Agenda...",
+      addedSuccess: "✅ {n} événement(s) ajouté(s) à Google Agenda ! Ouvrez Google Agenda pour voir.",
+      addedPartial: "{ok} événement(s) ajouté(s), {err} en échec. Voir la Console (F12).",
+      icsNoSchedule: "Aucun agenda à télécharger.",
+      icsDownloaded: "✅ Fichier .ics téléchargé. Ouvrez Google Agenda → Paramètres → Importer/exporter → choisissez ce fichier.",
+    },
+  },
+
+  es: {
+    nativeName: "Español",
+    stt: "es-ES",
+    promptLang: "Spanish",
+    weekdays: ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"],
+    relRules: "'mañana' = día+1, 'pasado mañana' = día+2. Convertir las horas al formato de 24h.",
+    examples: [
+      "Reunión mañana a las 8pm, recuérdame 30 minutos antes",
+      "Café con Linh pasado mañana a las 9am",
+      "Estudiar inglés cada lunes durante 4 semanas a las 8pm",
+      "Gimnasio lunes y miércoles por la mañana a las 6 durante 4 semanas",
+    ],
+    ui: {
+      title: "Mi calendario",
+      sub: "Di una frase y deja el resto a la IA.",
+      langLabel: "🌐 Idioma",
+      keyLabel: "Clave API de Gemini (gratis — en Google AI Studio)",
+      keyPlaceholder: "Pega tu clave aquí...",
+      rememberLabel: "Recordar la clave en este dispositivo (sin volver a pegarla)",
+      keyHint: "La clave permanece en tu navegador y solo se envía a Google. Si marcas « Recordar la clave », se guarda en este dispositivo — no la marques en un ordenador compartido.",
+      micIdle: "Toca para hablar",
+      micListening: "Escuchando... toca para parar",
+      micNotSupported: "Navegador no compatible",
+      browserNoSpeech: "Este navegador no admite reconocimiento de voz. Usa Chrome en un ordenador, o escribe a mano y pulsa el botón de crear.",
+      textLabel: "Lo que dijiste (editable)",
+      textPlaceholder: "Ej.: Reunión mañana a las 8pm, recuérdame 30 minutos antes",
+      groundingLabel: "🔎 Buscar la hora real en internet (para eventos reales como F1, partidos... si no dices la hora)",
+      parseBtn: "Crear calendario",
+      howSummary: "¿Cómo funciona esta página?",
+      howBody: "1. Tu navegador (Chrome) convierte <b>tu voz</b> en texto — gratis, sin instalar nada.<br>2. El texto se envía a <b>Gemini</b> con instrucciones para extraer un calendario (JSON).<br>3. La página <b>expande las repeticiones</b> (ej. « cada lunes durante 4 semanas » → 4 sesiones) y las muestra para confirmar.",
+      exFilled: "Ejemplo rellenado. Pulsa el botón de crear.",
+      micStartHint: "🎤 Habla a tu ritmo, puedes pausar — pulsa el botón cuando termines.",
+      micStopped: "⏹ Escucha detenida. Pulsa el botón de crear para procesar.",
+      noKey: "Aún no hay clave API. Pega tu clave de Gemini en el campo de arriba.",
+      noText: "Aún no hay ninguna frase. Habla o escribe una.",
+      parsingNormal: "⏳ Pidiendo a Gemini que extraiga el calendario...",
+      parsingGrounded: "⏳ Buscando la hora real en internet (un poco más lento)...",
+      doneNormal: "✅ ¡Listo! Revisa el calendario abajo.",
+      doneGrounded: "✅ Listo (búsqueda en línea + el código convirtió la zona horaria). Revisa abajo.",
+      needConfirm: "⚠️ La IA no está segura de la hora de este evento — verifica o di la hora.",
+      micErrorPrefix: "Error de micro: ",
+      willCreate: "📅 Se crearán <b style=\"color:var(--text)\">{n}</b> evento(s):",
+      noEvents: "No se creó ningún evento. Indica la hora y la tarea con claridad.",
+      missingDateTime: "⚠️ Falta fecha/hora — sé más específico.",
+      unnamed: "(sin título)",
+      remindBefore: "🔔 avisar {n} min antes",
+      toLocal: "→ tu hora",
+      addGcalBtn: "📅 Añadir directamente a Google Calendar",
+      cancelBtn: "Cancelar",
+      gcalHint: "Pulsa el botón de arriba y los eventos aparecen en Google Calendar (la primera vez pide iniciar sesión &amp; autorizar). O {link} para importar manualmente si hace falta.",
+      gcalLink: "descargar el archivo .ics",
+      noScheduleToAdd: "No hay calendario para añadir.",
+      googleNotLoaded: "Google no terminó de cargar. Espera unos segundos y vuelve a pulsar.",
+      noAuthPrefix: "No se obtuvo permiso: ",
+      requestingPermission: "⏳ Solicitando permiso de Google (la primera vez muestra una ventana de inicio de sesión)...",
+      addingEvents: "⏳ Añadiendo {n} evento(s) a Google Calendar...",
+      addedSuccess: "✅ ¡{n} evento(s) añadido(s) a Google Calendar! Abre Google Calendar para verlos.",
+      addedPartial: "Añadidos {ok} evento(s), {err} con error. Mira la Consola (F12).",
+      icsNoSchedule: "No hay calendario para descargar.",
+      icsDownloaded: "✅ Archivo .ics descargado. Abre Google Calendar → Configuración → Importar y exportar → elige este archivo.",
+    },
+  },
+
+  zh: {
+    nativeName: "中文",
+    stt: "zh-CN",
+    promptLang: "Chinese",
+    weekdays: ["星期一","星期二","星期三","星期四","星期五","星期六","星期日"],
+    relRules: "'明天' = 次日, '后天' = +2天。时间使用24小时制。",
+    examples: [
+      "明天晚上8点开会，提前30分钟提醒我",
+      "后天早上9点和Linh喝咖啡",
+      "连续4周每周一晚上8点学英语",
+      "连续4周周一周三早上6点去健身房",
+    ],
+    ui: {
+      title: "我的日历",
+      sub: "说一句话，剩下的交给 AI。",
+      langLabel: "🌐 语言",
+      keyLabel: "Gemini API 密钥（免费 — 在 Google AI Studio 获取）",
+      keyPlaceholder: "在此粘贴密钥...",
+      rememberLabel: "在此设备记住密钥（无需再次粘贴）",
+      keyHint: "密钥只保存在你的浏览器中，仅发送给 Google。若勾选“记住密钥”，它会保存在此设备上 — 公用电脑请勿勾选。",
+      micIdle: "点击说话",
+      micListening: "正在聆听... 点击停止",
+      micNotSupported: "浏览器不支持",
+      browserNoSpeech: "此浏览器不支持语音识别。请在电脑上使用 Chrome，或手动输入后点击创建按钮。",
+      textLabel: "你说的话（可编辑）",
+      textPlaceholder: "例如：明天晚上8点开会，提前30分钟提醒我",
+      groundingLabel: "🔎 在线查询真实时间（用于 F1、比赛等真实事件，当你没说时间时）",
+      parseBtn: "创建日程",
+      howSummary: "这个页面怎么工作？",
+      howBody: "1. 你的浏览器（Chrome）把<b>你的语音</b>转成文字 — 免费，无需安装。<br>2. 文字连同提取日程的指令一起发送给 <b>Gemini</b>（JSON）。<br>3. 页面会<b>展开重复</b>（例如“每周一连续4周”→4次）并显示出来供你确认。",
+      exFilled: "已填入示例。点击创建按钮。",
+      micStartHint: "🎤 慢慢说，中途停顿也没关系 — 说完后点击按钮。",
+      micStopped: "⏹ 已停止聆听。点击创建按钮处理。",
+      noKey: "还没有 API 密钥。请在上方粘贴你的 Gemini 密钥。",
+      noText: "还没有句子。请说或输入一句。",
+      parsingNormal: "⏳ 正在请 Gemini 提取日程...",
+      parsingGrounded: "⏳ 正在在线查询真实时间（稍慢一点）...",
+      doneNormal: "✅ 完成！请查看下方日程。",
+      doneGrounded: "✅ 完成（已在线查询 + 代码自动换算时区）。请查看下方。",
+      needConfirm: "⚠️ AI 不确定此事件的时间 — 请自行核对或说明时间。",
+      micErrorPrefix: "麦克风错误：",
+      willCreate: "📅 将创建 <b style=\"color:var(--text)\">{n}</b> 个事件：",
+      noEvents: "未能创建任何事件。请清楚说明时间和事项。",
+      missingDateTime: "⚠️ 缺少日期/时间 — 请更具体。",
+      unnamed: "（无标题）",
+      remindBefore: "🔔 提前 {n} 分钟提醒",
+      toLocal: "→ 你的时间",
+      addGcalBtn: "📅 直接添加到 Google 日历",
+      cancelBtn: "取消",
+      gcalHint: "点击上方按钮，事件会直接出现在 Google 日历中（第一次会要求登录并授权）。或 {link} 手动导入。",
+      gcalLink: "下载 .ics 文件",
+      noScheduleToAdd: "还没有可添加的日程。",
+      googleNotLoaded: "Google 尚未加载完成。请等几秒后再点。",
+      noAuthPrefix: "未获得授权：",
+      requestingPermission: "⏳ 正在请求 Google 授权（第一次会弹出登录窗口）...",
+      addingEvents: "⏳ 正在向 Google 日历添加 {n} 个事件...",
+      addedSuccess: "✅ 已向 Google 日历添加 {n} 个事件！打开 Google 日历查看。",
+      addedPartial: "已添加 {ok} 个事件，{err} 个失败。查看控制台（F12）了解详情。",
+      icsNoSchedule: "没有可下载的日程。",
+      icsDownloaded: "✅ 已下载 .ics 文件。打开 Google 日历 → 设置 → 导入和导出 → 选择此文件。",
+    },
+  },
+};
+
+// Ngôn ngữ hiện tại (nhớ trên máy).
+let curLang = localStorage.getItem("app_lang");
+if (!curLang || !LANGS[curLang]) curLang = "vi";
+function t(k) { return LANGS[curLang].ui[k]; }
+function fmt(s, o) { return String(s).replace(/\{(\w+)\}/g, (m, k) => o[k]); }
+function wd(i) { return LANGS[curLang].weekdays[i]; }
+
+// ====================== TIỆN ÍCH NGÀY ======================
+function mon0(date) { return (date.getDay() + 6) % 7; }
+function parseDate(str) { return new Date(str + "T00:00:00"); }
+function addWeeks(date, n) { const d = new Date(date); d.setDate(d.getDate() + n*7); return d; }
+function nextWeekday(d, targetMon0) {
+  const ahead = (targetMon0 - mon0(d) + 7) % 7;
+  const r = new Date(d); r.setDate(r.getDate() + ahead); return r;
+}
+function fmtDate(d) {
+  const dd = String(d.getDate()).padStart(2,"0");
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  return dd + "/" + mm + "/" + d.getFullYear();
+}
+function todayStr() {
+  const t = new Date();
+  return t.getFullYear() + "-" + String(t.getMonth()+1).padStart(2,"0") + "-" + String(t.getDate()).padStart(2,"0");
+}
+
+// ====================== PROMPT (theo ngôn ngữ đang chọn) ======================
+function buildPrompt() {
+  const L = LANGS[curLang];
+  const ngay = todayStr();
+  const thu = L.weekdays[mon0(new Date())];
+  return (
+    "You are a calendar-parsing engine. Return ONLY JSON, no explanation.\n" +
+    "The user writes in " + L.promptLang + ". Keep event titles and categories in " + L.promptLang + ".\n" +
+    "Today is: " + ngay + " (" + thu + ").\n" +
+    "Relative-date rules: " + L.relRules + "\n" +
+    "If it is a repeating timetable, use 'recurrence'. " +
+    "recurrence.weekday MUST be an English 3-letter code: Mon/Tue/Wed/Thu/Fri/Sat/Sun.\n" +
+    '{ "events": [ { "title": "", "start_time": "HH:MM", "duration_minutes": 60, ' +
+    '"category": "", "reminder_minutes_before": 30, ' +
+    '"recurrence": {"weekday": "Mon", "count": 4, "start_date": "YYYY-MM-DD"}, ' +
+    '"date": "YYYY-MM-DD" } ] }\n' +
+    "One-off event: use 'date', set 'recurrence' = null. " +
+    "Repeating event: use 'recurrence', set 'date' = null."
+  );
+}
+
+// ====================== GỌI GEMINI ======================
+async function callGemini(text, apiKey) {
+  const url = "https://generativelanguage.googleapis.com/v1beta/models/" +
+              GEMINI_MODEL + ":generateContent?key=" + encodeURIComponent(apiKey);
+  const body = {
+    systemInstruction: { parts: [{ text: buildPrompt() }] },
+    contents: [{ parts: [{ text: text }] }],
+    generationConfig: { responseMimeType: "application/json" }
+  };
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) {
+    const msg = await resp.text();
+    throw new Error("Gemini " + resp.status + ": " + msg.slice(0, 200));
+  }
+  const data = await resp.json();
+  const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!raw) throw new Error("Gemini: empty response.");
+  return JSON.parse(raw);
+}
+
+// ====================== GỌI GEMINI CÓ TRA GOOGLE (grounding) ======================
+function buildPromptGrounded() {
+  const L = LANGS[curLang];
+  const ngay = todayStr();
+  const thu = L.weekdays[mon0(new Date())];
+  return (
+    "Today is " + ngay + " (" + thu + "). The user writes in " + L.promptLang + ".\n" +
+    "The user describes a REAL-WORLD event but may not say the time.\n" +
+    "1) USE GOOGLE SEARCH to find the official DATE and TIME of the next occurrence.\n" +
+    "2) Return 'local_time' as the LOCAL time AT THE VENUE (exactly as the source states), and\n" +
+    "   'timezone' as the standard IANA name of that place (e.g. 'Europe/Brussels', 'Asia/Tokyo').\n" +
+    "   DO NOT convert to any other timezone — the software will handle conversion.\n" +
+    "3) If unsure of the time, set local_time = null and need_confirm = true.\n" +
+    "Keep 'title' in " + L.promptLang + ". Return ONLY JSON, nothing else:\n" +
+    '{ "events": [ { "title": "", "local_time": "HH:MM", "timezone": "IANA", ' +
+    '"duration_minutes": 60, "category": "", "reminder_minutes_before": null, ' +
+    '"date": "YYYY-MM-DD", "recurrence": null } ], "need_confirm": false, "source": "" }'
+  );
+}
+// ----- Đổi múi giờ bằng CODE (biết cả giờ mùa hè DST) — không để AI tự tính -----
+function tzOffsetMs(timeZone, utcMs) {
+  const dtf = new Intl.DateTimeFormat("en-US", { timeZone, hour12: false,
+    year:"numeric", month:"2-digit", day:"2-digit",
+    hour:"2-digit", minute:"2-digit", second:"2-digit" });
+  const p = {}; dtf.formatToParts(new Date(utcMs)).forEach(x => p[x.type] = x.value);
+  const hh = p.hour === "24" ? "00" : p.hour;
+  const asUTC = Date.UTC(+p.year, +p.month-1, +p.day, +hh, +p.minute, +p.second);
+  return asUTC - utcMs;
+}
+function zonedWallToUTC(y, mo, d, h, mi, timeZone) {
+  const guess = Date.UTC(y, mo-1, d, h, mi);
+  let off = tzOffsetMs(timeZone, guess);
+  let utc = guess - off;
+  const off2 = tzOffsetMs(timeZone, utc);
+  if (off2 !== off) utc = guess - off2;
+  return utc;
+}
+function fmtInZone(utcMs, timeZone) {
+  const dtf = new Intl.DateTimeFormat("en-CA", { timeZone, hour12: false,
+    year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+  const p = {}; dtf.formatToParts(new Date(utcMs)).forEach(x => p[x.type] = x.value);
+  const hh = p.hour === "24" ? "00" : p.hour;
+  return { date: p.year+"-"+p.month+"-"+p.day, time: hh+":"+p.minute };
+}
+function applyTimezone(parsed) {
+  for (const ev of (parsed.events || [])) {
+    if (ev.local_time && ev.timezone) {
+      const dateStr = ev.date || todayStr();
+      const [y, mo, d] = dateStr.split("-").map(Number);
+      const [h, mi] = String(ev.local_time).split(":").map(Number);
+      try {
+        const utc = zonedWallToUTC(y, mo, d, h||0, mi||0, ev.timezone);
+        const local = fmtInZone(utc, LOCAL_TZ);
+        ev._local = ev.local_time + " (" + ev.timezone + ")";
+        ev.date = local.date;
+        ev.start_time = local.time;
+      } catch (e) {
+        ev.start_time = ev.local_time;
+        ev._local = ev.local_time + " (" + ev.timezone + " — ?)";
+      }
+    }
+  }
+  return parsed;
+}
+function extractJSON(txt) {
+  if (!txt) throw new Error("Gemini: empty response.");
+  txt = txt.replace(/```(?:json)?/g, "").trim();
+  const i = txt.indexOf("{"), j = txt.lastIndexOf("}");
+  if (i === -1 || j === -1) throw new Error("Couldn't read JSON from AI. Try again.");
+  return JSON.parse(txt.slice(i, j + 1));
+}
+async function callGeminiGrounded(text, apiKey) {
+  const url = "https://generativelanguage.googleapis.com/v1beta/models/" +
+              GEMINI_MODEL + ":generateContent?key=" + encodeURIComponent(apiKey);
+  const body = {
+    systemInstruction: { parts: [{ text: buildPromptGrounded() }] },
+    contents: [{ parts: [{ text: text }] }],
+    tools: [{ google_search: {} }],
+    generationConfig: { temperature: 0 }
+  };
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) {
+    const msg = await resp.text();
+    throw new Error("Gemini " + resp.status + ": " + msg.slice(0, 200));
+  }
+  const data = await resp.json();
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  const raw = parts.map(p => p.text || "").join("");
+  return extractJSON(raw);
+}
+
+// ====================== TRẢI LỊCH ======================
+function expandEvents(parsed) {
+  const occ = [];
+  for (const ev of (parsed.events || [])) {
+    const rec = ev.recurrence;
+    if (rec) {
+      const wdIdx = WEEKDAY_MAP[String(rec.weekday).toLowerCase().slice(0,3)];
+      const first = nextWeekday(parseDate(rec.start_date), wdIdx);
+      const count = rec.count || 1;
+      for (let i = 0; i < count; i++) occ.push({ day: addWeeks(first, i), ev });
+    } else if (ev.date) {
+      occ.push({ day: parseDate(ev.date), ev });
+    } else {
+      occ.push({ day: null, ev });
+    }
+  }
+  occ.sort((a,b) => (a.day===null) - (b.day===null) || (a.day && b.day ? a.day - b.day : 0));
+  return occ;
+}
+
+// ====================== XUẤT FILE .ics (iCalendar) ======================
+let lastOcc = [];
+function pad2(n) { return String(n).padStart(2, "0"); }
+function icsStamp(d) {
+  return d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate()) +
+         "T" + pad2(d.getHours()) + pad2(d.getMinutes()) + "00";
+}
+function icsStampUTC(d) {
+  return d.getUTCFullYear() + pad2(d.getUTCMonth()+1) + pad2(d.getUTCDate()) +
+         "T" + pad2(d.getUTCHours()) + pad2(d.getUTCMinutes()) + pad2(d.getUTCSeconds()) + "Z";
+}
+function icsEsc(s) {
+  return String(s || "").replace(/\\/g,"\\\\").replace(/;/g,"\\;")
+                        .replace(/,/g,"\\,").replace(/\n/g,"\\n");
+}
+function buildICS(occ) {
+  const stamp = icsStampUTC(new Date());
+  const L = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Lich cua toi//Demo//VI",
+             "CALSCALE:GREGORIAN","METHOD:PUBLISH"];
+  let i = 0;
+  for (const { day, ev } of occ) {
+    if (!day) continue;
+    const [h, m] = String(ev.start_time || "09:00").split(":").map(Number);
+    const s = new Date(day); s.setHours(h||0, m||0, 0, 0);
+    const e = new Date(s.getTime() + (ev.duration_minutes || 60) * 60000);
+    L.push("BEGIN:VEVENT");
+    L.push("UID:" + Date.now() + "-" + (i++) + "@lichcuatoi");
+    L.push("DTSTAMP:" + stamp);
+    L.push("DTSTART:" + icsStamp(s));
+    L.push("DTEND:" + icsStamp(e));
+    L.push("SUMMARY:" + icsEsc(ev.title || "Su kien"));
+    if (ev.category) L.push("CATEGORIES:" + icsEsc(ev.category));
+    const rm = ev.reminder_minutes_before;
+    if (rm) {
+      L.push("BEGIN:VALARM","TRIGGER:-PT" + rm + "M","ACTION:DISPLAY",
+             "DESCRIPTION:" + icsEsc(ev.title || "Nhac"),"END:VALARM");
+    }
+    L.push("END:VEVENT");
+  }
+  L.push("END:VCALENDAR");
+  return L.join("\r\n");
+}
+function downloadICS() {
+  const real = lastOcc.filter(o => o.day);
+  if (!real.length) { setStatus(t("icsNoSchedule"), true); return; }
+  const blob = new Blob([buildICS(lastOcc)], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "lich-cua-toi.ics";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setStatus(t("icsDownloaded"));
+}
+
+// ====================== GHI THẲNG VÀO GOOGLE CALENDAR ======================
+let tokenClient = null, accessToken = null;
+function fmtLocalRFC(d) {
+  return d.getFullYear() + "-" + pad2(d.getMonth()+1) + "-" + pad2(d.getDate()) +
+         "T" + pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":00";
+}
+function initGoogle() {
+  if (!(window.google && google.accounts && google.accounts.oauth2)) {
+    setStatus(t("googleNotLoaded"), true);
+    return false;
+  }
+  if (!tokenClient) {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: "https://www.googleapis.com/auth/calendar.events",
+      callback: (resp) => {
+        if (resp.error) { setStatus(t("noAuthPrefix") + resp.error, true); return; }
+        accessToken = resp.access_token;
+        doInsertAll();
+      }
+    });
+  }
+  return true;
+}
+function addToGoogleCalendar() {
+  const real = lastOcc.filter(o => o.day);
+  if (!real.length) { setStatus(t("noScheduleToAdd"), true); return; }
+  if (!initGoogle()) return;
+  setStatus(t("requestingPermission"));
+  tokenClient.requestAccessToken();
+}
+async function insertEvent(day, ev) {
+  const [h, m] = String(ev.start_time || "09:00").split(":").map(Number);
+  const s = new Date(day); s.setHours(h||0, m||0, 0, 0);
+  const e = new Date(s.getTime() + (ev.duration_minutes || 60) * 60000);
+  const body = {
+    summary: ev.title || "Event",
+    start: { dateTime: fmtLocalRFC(s), timeZone: LOCAL_TZ },
+    end:   { dateTime: fmtLocalRFC(e), timeZone: LOCAL_TZ }
+  };
+  const rm = ev.reminder_minutes_before;
+  if (rm) body.reminders = { useDefault: false, overrides: [{ method: "popup", minutes: rm }] };
+  const resp = await fetch(
+    "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+    { method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify(body) });
+  if (!resp.ok) throw new Error("Error " + resp.status + ": " + (await resp.text()).slice(0, 150));
+}
+async function doInsertAll() {
+  const real = lastOcc.filter(o => o.day);
+  setStatus(fmt(t("addingEvents"), { n: real.length }));
+  let ok = 0, err = 0;
+  for (const { day, ev } of real) {
+    try { await insertEvent(day, ev); ok++; }
+    catch (e) { err++; console.error(e); }
+  }
+  if (err === 0) setStatus(fmt(t("addedSuccess"), { n: ok }));
+  else setStatus(fmt(t("addedPartial"), { ok, err }), err > ok);
+}
+
+// ====================== HIỂN THỊ ======================
+function render(parsed) {
+  const box = document.getElementById("result");
+  const occ = expandEvents(parsed);
+  lastOcc = occ;
+  if (occ.length === 0) {
+    box.innerHTML = '<div class="card"><div class="ev warn">' + esc(t("noEvents")) + '</div></div>';
+    return;
+  }
+  const total = occ.length;
+  let html = '<div class="card"><div style="margin-bottom:10px;color:var(--muted);font-size:13px">' +
+             fmt(t("willCreate"), { n: total }) + '</div>';
+  for (const { day, ev } of occ) {
+    const title = ev.title || t("unnamed");
+    if (day === null) {
+      html += '<div class="ev warn"><div class="title">' + esc(title) + '</div>' +
+              '<div class="meta">' + esc(t("missingDateTime")) + '</div></div>';
+      continue;
+    }
+    const rm = ev.reminder_minutes_before;
+    const nhac = rm ? fmt(t("remindBefore"), { n: rm }) : '';
+    const cat = ev.category ? ('<span class="tag">' + esc(ev.category) + '</span>') : '';
+    const goc = ev._local ? (' &nbsp;·&nbsp; 🌍 ' + esc(ev._local) + ' ' + esc(t("toLocal"))) : '';
+    html += '<div class="ev"><div class="title">' + esc(title) + cat + '</div>' +
+            '<div class="meta">' +
+            wd(mon0(day)) + ', ' + fmtDate(day) +
+            ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
+            (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') +
+            goc +
+            '</div></div>';
+  }
+  const link = '<a href="#" onclick="downloadICS();return false;">' + esc(t("gcalLink")) + '</a>';
+  html += '<div class="row" style="margin-top:6px">' +
+          '<button onclick="addToGoogleCalendar()">' + esc(t("addGcalBtn")) + '</button>' +
+          '<button class="ghost" onclick="document.getElementById(\'result\').innerHTML=\'\'">' + esc(t("cancelBtn")) + '</button>' +
+          '</div>' +
+          '<div class="muted" style="margin-top:8px;font-size:13px;line-height:1.5">' +
+          fmt(t("gcalHint"), { link }) +
+          '</div>' +
+          '</div>';
+  box.innerHTML = html;
+}
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+// ====================== ĐIỀU KHIỂN GIAO DIỆN ======================
+const statusEl = document.getElementById("status");
+function setStatus(msg, isErr) {
+  statusEl.textContent = msg || "";
+  statusEl.className = "status" + (isErr ? " err" : "");
+}
+
+async function doParse() {
+  const key = document.getElementById("key").value.trim();
+  const text = document.getElementById("text").value.trim();
+  if (!key) { setStatus(t("noKey"), true); return; }
+  if (!text) { setStatus(t("noText"), true); return; }
+  const tra = document.getElementById("grounding").checked;
+  setStatus(tra ? t("parsingGrounded") : t("parsingNormal"));
+  try {
+    let parsed = tra ? await callGeminiGrounded(text, key)
+                     : await callGemini(text, key);
+    if (tra) parsed = applyTimezone(parsed);
+    if (tra && parsed.need_confirm) setStatus(t("needConfirm"));
+    else if (tra) setStatus(t("doneGrounded"));
+    else setStatus(t("doneNormal"));
+    render(parsed);
+  } catch (e) {
+    setStatus(e.message, true);
+  }
+}
+const parseBtn = document.getElementById("parseBtn");
+parseBtn.addEventListener("click", doParse);
+
+// ----- Nhận giọng nói (Web Speech API) -----
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const micBtn = document.getElementById("micBtn");
+const micLabel = document.getElementById("micLabel");
+let recog = null, listening = false, finalText = "", userStopped = false;
+
+if (!SR) {
+  micBtn.disabled = true;
+  setStatus(t("browserNoSpeech"), true);
+} else {
+  recog = new SR();
+  recog.lang = LANGS[curLang].stt;
+  recog.interimResults = true;
+  recog.continuous = true;
+
+  recog.onresult = (e) => {
+    let interim = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const r = e.results[i];
+      if (r.isFinal) finalText += r[0].transcript;
+      else interim += r[0].transcript;
+    }
+    document.getElementById("text").value = (finalText + interim).trim();
+  };
+
+  recog.onerror = (e) => {
+    if (e.error === "no-speech" || e.error === "aborted") return;
+    setStatus(t("micErrorPrefix") + e.error, true);
+  };
+
+  recog.onend = () => {
+    if (!userStopped) { try { recog.start(); } catch (e) {} }
+    else stopRec();
+  };
+
+  micBtn.addEventListener("click", () => listening ? endByUser() : startRec());
+}
+function startRec() {
+  listening = true; userStopped = false; finalText = "";
+  micBtn.classList.add("rec");
+  micBtn.textContent = "⏹";
+  micLabel.textContent = t("micListening");
+  setStatus(t("micStartHint"));
+  document.getElementById("text").value = "";
+  try { recog.start(); } catch(e) {}
+}
+function endByUser() {
+  userStopped = true;
+  try { recog.stop(); } catch(e) {}
+}
+function stopRec() {
+  listening = false;
+  micBtn.classList.remove("rec");
+  micBtn.textContent = "🎤";
+  micLabel.textContent = t("micIdle");
+  setStatus(t("micStopped"));
+}
+
+// ----- Câu ví dụ bấm nhanh (dựng lại theo ngôn ngữ) -----
+const exBox = document.getElementById("examples");
+function renderExamples() {
+  exBox.innerHTML = "";
+  LANGS[curLang].examples.forEach(s => {
+    const c = document.createElement("div");
+    c.className = "chip"; c.textContent = s;
+    c.onclick = () => { document.getElementById("text").value = s; setStatus(t("exFilled")); };
+    exBox.appendChild(c);
+  });
+}
+
+// ----- Nhớ API key trên máy này (localStorage) -----
+const keyInput = document.getElementById("key");
+const rememberBox = document.getElementById("remember");
+const savedKey = localStorage.getItem("gemini_key");
+if (savedKey) { keyInput.value = savedKey; rememberBox.checked = true; }
+function syncKeyStore() {
+  if (rememberBox.checked && keyInput.value.trim()) {
+    localStorage.setItem("gemini_key", keyInput.value.trim());
+  } else {
+    localStorage.removeItem("gemini_key");
+  }
+}
+keyInput.addEventListener("input", syncKeyStore);
+rememberBox.addEventListener("change", syncKeyStore);
+
+// ====================== ÁP DỤNG NGÔN NGỮ ======================
+function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+function applyLang() {
+  const L = LANGS[curLang];
+  document.documentElement.lang = curLang;
+  document.title = L.ui.title;
+  setText("uiTitle", L.ui.title);
+  setText("uiSub", L.ui.sub);
+  setText("uiLangLabel", L.ui.langLabel);
+  setText("uiKeyLabel", L.ui.keyLabel);
+  setText("uiRemember", L.ui.rememberLabel);
+  setText("uiKeyHint", L.ui.keyHint);
+  setText("uiTextLabel", L.ui.textLabel);
+  setText("uiGrounding", L.ui.groundingLabel);
+  setText("uiHowSummary", L.ui.howSummary);
+  const hb = document.getElementById("uiHowBody"); if (hb) hb.innerHTML = L.ui.howBody;
+  keyInput.placeholder = L.ui.keyPlaceholder;
+  document.getElementById("text").placeholder = L.ui.textPlaceholder;
+  parseBtn.textContent = L.ui.parseBtn;
+  micBtn.title = L.ui.micIdle;
+  if (!SR) micLabel.textContent = L.ui.micNotSupported;
+  else if (!listening) micLabel.textContent = L.ui.micIdle;
+  else micLabel.textContent = L.ui.micListening;
+  if (recog) recog.lang = L.stt;
+  renderExamples();
+}
+
+// ----- Ô chọn ngôn ngữ -----
+const langSel = document.getElementById("lang");
+Object.keys(LANGS).forEach(code => {
+  const o = document.createElement("option");
+  o.value = code; o.textContent = LANGS[code].nativeName;
+  langSel.appendChild(o);
+});
+langSel.value = curLang;
+langSel.addEventListener("change", () => {
+  curLang = langSel.value;
+  localStorage.setItem("app_lang", curLang);
+  applyLang();
+});
+
+// Chạy lần đầu.
+applyLang();
+</script>
+</body>
+</html>
