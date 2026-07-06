@@ -3,79 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lịch AI bằng giọng nói — Demo</title>
+<title>Lịch của tôi — nói là xong</title>
 <style>
   :root {
-    --bg: #0f1226;
-    --card: #1a1f3a;
-    --card2: #232a4d;
-    --accent: #6c8cff;
-    --accent2: #4ad6a0;
-    --text: #e8ebff;
-    --muted: #9aa3c7;
-    --danger: #ff6b6b;
-    --line: #2c3358;
+    --bg: #FCF4EE;
+    --card: #FFFFFF;
+    --card2: #FFF7F2;
+    --accent: #D85A30;
+    --accent-dark: #993C1D;
+    --accent2: #3B7A57;
+    --text: #4A1B0C;
+    --muted: #9A6A55;
+    --danger: #C0392B;
+    --line: #F3DACE;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    background: radial-gradient(1200px 600px at 50% -10%, #1b2350 0%, var(--bg) 60%);
-    color: var(--text); min-height: 100vh; padding: 24px 16px;
+    background: radial-gradient(1000px 520px at 50% -12%, #FBE1D3 0%, var(--bg) 55%);
+    color: var(--text); min-height: 100vh; padding: 28px 16px;
   }
-  .wrap { max-width: 720px; margin: 0 auto; }
-  h1 { font-size: 24px; margin: 0 0 4px; }
-  .sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .head { text-align: center; margin-bottom: 22px; }
+  h1 { font-size: 25px; margin: 0 0 6px; display: inline-flex; align-items: center; gap: 9px; }
+  h1 .heart { color: var(--accent); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
   .card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
     padding: 18px; margin-bottom: 16px;
+    box-shadow: 0 4px 18px rgba(216, 90, 48, 0.07);
   }
   label { display:block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
   input[type=password], textarea {
     width: 100%; background: var(--card2); border: 1px solid var(--line);
-    color: var(--text); border-radius: 10px; padding: 12px; font-size: 15px;
-    font-family: inherit;
+    color: var(--text); border-radius: 12px; padding: 12px; font-size: 15px;
+    font-family: inherit; transition: border-color .15s ease;
   }
-  textarea { min-height: 70px; resize: vertical; }
+  input[type=password]:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  textarea { min-height: 76px; resize: vertical; }
+  input[type=checkbox] { accent-color: var(--accent); }
   .row { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
   button {
-    background: var(--accent); color: #0b0e20; border: none; border-radius: 10px;
-    padding: 12px 18px; font-size: 15px; font-weight: 600; cursor: pointer;
+    background: var(--accent); color: #fff; border: none; border-radius: 12px;
+    padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer;
     transition: transform .05s ease, filter .15s ease;
   }
-  button:hover { filter: brightness(1.08); }
+  button:hover { filter: brightness(1.06); }
   button:active { transform: translateY(1px); }
-  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  button.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
   button:disabled { opacity: .5; cursor: not-allowed; }
-  .mic { font-size: 17px; padding: 14px 22px; }
-  .mic.rec { background: var(--danger); color: #fff; animation: pulse 1.1s infinite; }
-  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(255,107,107,.5)} 70%{box-shadow:0 0 0 14px rgba(255,107,107,0)} 100%{box-shadow:0 0 0 0 rgba(255,107,107,0)} }
-  .hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
-  .status { font-size: 13px; color: var(--accent2); min-height: 18px; margin-top: 8px; }
+  .mic-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 6px 0 4px; }
+  .mic {
+    width: 92px; height: 92px; border-radius: 50%; font-size: 34px; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 10px #F7D3C3;
+  }
+  .mic.rec { background: var(--danger); box-shadow: 0 0 0 0 rgba(192,57,43,.5); animation: pulse 1.2s infinite; }
+  .mic-label { font-size: 13px; color: var(--muted); }
+  @keyframes pulse {
+    0%{box-shadow:0 0 0 0 rgba(192,57,43,.45)}
+    70%{box-shadow:0 0 0 18px rgba(192,57,43,0)}
+    100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}
+  }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.55; }
+  .status { font-size: 13px; color: var(--accent2); min-height: 18px; margin-top: 10px; text-align: center; }
   .status.err { color: var(--danger); }
   .ev {
-    background: var(--card2); border: 1px solid var(--line); border-left: 4px solid var(--accent2);
+    background: var(--card2); border: 1px solid var(--line); border-left: 4px solid var(--accent);
     border-radius: 12px; padding: 14px; margin-bottom: 10px;
   }
-  .ev .title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .ev .title { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
   .ev .meta { font-size: 13px; color: var(--muted); line-height: 1.7; }
-  .ev .tag { display:inline-block; background:#2f3a6b; color:#cdd6ff; font-size:11px;
-    padding:2px 8px; border-radius:20px; margin-left:6px; }
+  .ev .tag { display:inline-block; background:#FDE3D7; color:var(--accent-dark); font-size:11px;
+    padding:2px 9px; border-radius:20px; margin-left:6px; }
   .ev.warn { border-left-color: var(--danger); }
-  .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
   .chip {
-    background: var(--card2); border:1px solid var(--line); color: var(--text);
+    background: #FFF1E9; border:1px solid var(--line); color: var(--accent-dark);
     font-size:13px; padding:8px 12px; border-radius:20px; cursor:pointer;
+    transition: border-color .15s ease;
   }
   .chip:hover { border-color: var(--accent); }
-  details { margin-top: 10px; }
+  details { margin-top: 6px; }
   summary { cursor:pointer; color: var(--muted); font-size: 13px; }
-  code { background:#11152e; padding:1px 5px; border-radius:5px; font-size:12px; }
+  code { background:#FDE3D7; color: var(--accent-dark); padding:1px 5px; border-radius:5px; font-size:12px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🎙️ Lịch AI bằng giọng nói</h1>
-  <p class="sub">Bản demo Giai đoạn 1 — Nói một câu, AI tự tạo lịch cho bạn.</p>
+  <div class="head">
+    <h1><span class="heart">🎙️</span> Lịch của tôi</h1>
+    <p class="sub">Nói một câu, để phần còn lại cho AI lo.</p>
+  </div>
 
   <div class="card">
     <label for="key">Gemini API key (miễn phí — lấy ở Google AI Studio)</label>
@@ -88,14 +107,18 @@
   </div>
 
   <div class="card">
-    <div class="row">
-      <button id="micBtn" class="mic">🎤 Bấm để nói</button>
-      <button id="parseBtn" class="ghost">⚙️ Tạo lịch từ chữ</button>
+    <div class="mic-wrap">
+      <button id="micBtn" class="mic" title="Bấm để nói">🎤</button>
+      <span class="mic-label" id="micLabel">Bấm để nói</span>
     </div>
     <div class="status" id="status"></div>
 
     <label style="margin-top:14px" for="text">Câu bạn nói (sửa tay được)</label>
     <textarea id="text" placeholder="Ví dụ: Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút"></textarea>
+
+    <div class="row" style="margin-top:12px; justify-content:center;">
+      <button id="parseBtn">Tạo lịch</button>
+    </div>
 
     <div class="examples" id="examples"></div>
   </div>
@@ -208,10 +231,66 @@ function expandEvents(parsed) {
   return occ;
 }
 
+// ====================== XUẤT FILE .ics (iCalendar) ======================
+// File .ics là chuẩn chung: Google/Apple/Outlook đều nhập được.
+let lastOcc = [];   // giữ lại lịch vừa tạo để bấm tải
+function pad2(n) { return String(n).padStart(2, "0"); }
+function icsStamp(d) {  // giờ địa phương (floating) — nhập vào là đúng giờ đã nói
+  return d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate()) +
+         "T" + pad2(d.getHours()) + pad2(d.getMinutes()) + "00";
+}
+function icsStampUTC(d) {
+  return d.getUTCFullYear() + pad2(d.getUTCMonth()+1) + pad2(d.getUTCDate()) +
+         "T" + pad2(d.getUTCHours()) + pad2(d.getUTCMinutes()) + pad2(d.getUTCSeconds()) + "Z";
+}
+function icsEsc(s) {
+  return String(s || "").replace(/\\/g,"\\\\").replace(/;/g,"\\;")
+                        .replace(/,/g,"\\,").replace(/\n/g,"\\n");
+}
+function buildICS(occ) {
+  const stamp = icsStampUTC(new Date());
+  const L = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Lich cua toi//Demo//VI",
+             "CALSCALE:GREGORIAN","METHOD:PUBLISH"];
+  let i = 0;
+  for (const { day, ev } of occ) {
+    if (!day) continue;   // bỏ sự kiện thiếu ngày/giờ
+    const [h, m] = String(ev.start_time || "09:00").split(":").map(Number);
+    const s = new Date(day); s.setHours(h||0, m||0, 0, 0);
+    const e = new Date(s.getTime() + (ev.duration_minutes || 60) * 60000);
+    L.push("BEGIN:VEVENT");
+    L.push("UID:" + Date.now() + "-" + (i++) + "@lichcuatoi");
+    L.push("DTSTAMP:" + stamp);
+    L.push("DTSTART:" + icsStamp(s));
+    L.push("DTEND:" + icsStamp(e));
+    L.push("SUMMARY:" + icsEsc(ev.title || "Su kien"));
+    if (ev.category) L.push("CATEGORIES:" + icsEsc(ev.category));
+    const rm = ev.reminder_minutes_before;
+    if (rm) {
+      L.push("BEGIN:VALARM","TRIGGER:-PT" + rm + "M","ACTION:DISPLAY",
+             "DESCRIPTION:" + icsEsc(ev.title || "Nhac"),"END:VALARM");
+    }
+    L.push("END:VEVENT");
+  }
+  L.push("END:VCALENDAR");
+  return L.join("\r\n");
+}
+function downloadICS() {
+  const real = lastOcc.filter(o => o.day);
+  if (!real.length) { setStatus("Chưa có lịch để tải.", true); return; }
+  const blob = new Blob([buildICS(lastOcc)], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "lich-cua-toi.ics";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setStatus("✅ Đã tải file .ics. Mở Google Calendar → Cài đặt → Nhập & xuất → chọn file này.");
+}
+
 // ====================== HIỂN THỊ ======================
 function render(parsed) {
   const box = document.getElementById("result");
   const occ = expandEvents(parsed);
+  lastOcc = occ;
   if (occ.length === 0) {
     box.innerHTML = '<div class="card"><div class="ev warn">Không tạo được sự kiện nào. Thử nói rõ giờ và việc cần làm.</div></div>';
     return;
@@ -236,9 +315,11 @@ function render(parsed) {
             '</div></div>';
   }
   html += '<div class="row" style="margin-top:6px">' +
-          '<button onclick="alert(\'(Demo) Ở bản thật, đây là lúc lưu vào lịch điện thoại / Google Calendar.\')">✅ Xác nhận tạo lịch</button>' +
+          '<button onclick="downloadICS()">⬇️ Tải file .ics (nạp vào Google Calendar)</button>' +
           '<button class="ghost" onclick="document.getElementById(\'result\').innerHTML=\'\'">Huỷ</button>' +
-          '</div></div>';
+          '</div>' +
+          '<div class="muted" style="margin-top:8px;font-size:13px;line-height:1.5">Cách nạp: mở <b>Google Calendar</b> → ⚙️ <b>Cài đặt</b> → <b>Nhập và xuất</b> → chọn file <b>lich-cua-toi.ics</b> vừa tải → <b>Nhập</b>.</div>' +
+          '</div>';
   box.innerHTML = html;
 }
 function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
@@ -269,12 +350,13 @@ document.getElementById("parseBtn").addEventListener("click", doParse);
 // ----- Nhận giọng nói (Web Speech API) -----
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const micBtn = document.getElementById("micBtn");
+const micLabel = document.getElementById("micLabel");
 let recog = null, listening = false, finalText = "", userStopped = false;
 
 if (!SR) {
   micBtn.disabled = true;
-  micBtn.textContent = "🎤 Trình duyệt không hỗ trợ";
-  setStatus("Trình duyệt này chưa hỗ trợ nhận giọng nói. Hãy dùng Chrome trên máy tính, hoặc gõ tay rồi bấm 'Tạo lịch từ chữ'.", true);
+  micLabel.textContent = "Trình duyệt không hỗ trợ";
+  setStatus("Trình duyệt này chưa hỗ trợ nhận giọng nói. Hãy dùng Chrome trên máy tính, hoặc gõ tay rồi bấm 'Tạo lịch'.", true);
 } else {
   recog = new SR();
   recog.lang = "vi-VN";
@@ -309,8 +391,9 @@ if (!SR) {
 function startRec() {
   listening = true; userStopped = false; finalText = "";
   micBtn.classList.add("rec");
-  micBtn.textContent = "⏹ Đang nghe... bấm để dừng";
-  setStatus("🎤 Đang nghe. Cứ nói thong thả, ngừng giữa chừng cũng được — bấm nút khi nói xong.");
+  micBtn.textContent = "⏹";
+  micLabel.textContent = "Đang nghe... bấm để dừng";
+  setStatus("🎤 Cứ nói thong thả, ngừng giữa chừng cũng được — bấm nút khi nói xong.");
   document.getElementById("text").value = "";
   try { recog.start(); } catch(e) {}
 }
@@ -321,8 +404,9 @@ function endByUser() {
 function stopRec() {
   listening = false;
   micBtn.classList.remove("rec");
-  micBtn.textContent = "🎤 Bấm để nói";
-  setStatus("⏹ Đã dừng nghe. Bấm 'Tạo lịch từ chữ' để xử lý.");
+  micBtn.textContent = "🎤";
+  micLabel.textContent = "Bấm để nói";
+  setStatus("⏹ Đã dừng nghe. Bấm 'Tạo lịch' để xử lý.");
 }
 
 // ----- Câu ví dụ bấm nhanh -----
@@ -330,7 +414,7 @@ const exBox = document.getElementById("examples");
 EXAMPLES.forEach(s => {
   const c = document.createElement("div");
   c.className = "chip"; c.textContent = s;
-  c.onclick = () => { document.getElementById("text").value = s; setStatus("Đã điền câu ví dụ. Bấm 'Tạo lịch từ chữ'."); };
+  c.onclick = () => { document.getElementById("text").value = s; setStatus("Đã điền câu ví dụ. Bấm 'Tạo lịch'."); };
   exBox.appendChild(c);
 });
 
@@ -353,4 +437,3 @@ rememberBox.addEventListener("change", syncKeyStore);
 </script>
 </body>
 </html>
- 
