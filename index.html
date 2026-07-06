@@ -116,6 +116,10 @@
     <label style="margin-top:14px" for="text">Câu bạn nói (sửa tay được)</label>
     <textarea id="text" placeholder="Ví dụ: Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút"></textarea>
 
+    <label style="display:flex; align-items:center; gap:8px; margin-top:10px; cursor:pointer;">
+      <input id="grounding" type="checkbox" style="width:auto;"> 🔎 Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)
+    </label>
+
     <div class="row" style="margin-top:12px; justify-content:center;">
       <button id="parseBtn">Tạo lịch</button>
     </div>
@@ -136,9 +140,13 @@
   </details>
 </div>
 
+<!-- Thư viện đăng nhập Google (để ghi thẳng vào Google Calendar) -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 // ====================== CẤU HÌNH ======================
 const GEMINI_MODEL = "gemini-2.5-flash";
+// Client ID của bạn (công khai được). Đổi nếu tạo project Google khác.
+const GOOGLE_CLIENT_ID = "629021777726-l1e426i4k77o8bgv0tq1u09g40lf4jtl.apps.googleusercontent.com";
 const WEEKDAY_VI = ["Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy","Chủ Nhật"];
 const WEEKDAY_MAP = { mon:0, tue:1, wed:2, thu:3, fri:4, sat:5, sun:6 };
 
@@ -209,6 +217,106 @@ async function callGemini(text, apiKey) {
   const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!raw) throw new Error("Gemini không trả nội dung.");
   return JSON.parse(raw);
+}
+
+// ====================== GỌI GEMINI CÓ TRA GOOGLE (grounding) ======================
+// Dùng khi tick "Tự tra giờ trên mạng". AI tra giờ thật của sự kiện, đổi sang giờ VN.
+// LƯU Ý: bật google_search thì KHÔNG ép responseMimeType=json được -> phải tự bóc JSON.
+function buildPromptGrounded() {
+  const ngay = todayStr();
+  const thu = WEEKDAY_VI[mon0(new Date())];
+  return (
+    "Hôm nay là " + ngay + " (" + thu + ").\n" +
+    "Người dùng mô tả một sự kiện CÓ THẬT ngoài đời nhưng có thể không nói giờ.\n" +
+    "1) DÙNG GOOGLE SEARCH tra NGÀY và GIỜ CHÍNH THỨC của lần diễn ra sắp tới.\n" +
+    "2) Trả 'local_time' là GIỜ TẠI NƠI DIỄN RA (đúng như nguồn ghi), và 'timezone' là\n" +
+    "   tên múi giờ chuẩn IANA của nơi đó (vd 'Europe/Brussels', 'Asia/Tokyo').\n" +
+    "   TUYỆT ĐỐI KHÔNG tự đổi sang giờ Việt Nam — phần đổi giờ để phần mềm lo.\n" +
+    "3) Nếu không chắc giờ, để local_time = null và need_confirm = true (app sẽ hỏi lại).\n" +
+    "CHỈ trả JSON đúng khung, KHÔNG thêm chữ nào ngoài JSON:\n" +
+    '{ "events": [ { "title": "", "local_time": "HH:MM", "timezone": "IANA", ' +
+    '"duration_minutes": 60, "category": "", "reminder_minutes_before": null, ' +
+    '"date": "YYYY-MM-DD", "recurrence": null } ], "need_confirm": false, "source": "" }'
+  );
+}
+// ----- Đổi múi giờ bằng CODE (biết cả giờ mùa hè DST) — không để AI tự tính -----
+function tzOffsetMs(timeZone, utcMs) {
+  // Giờ mà 'timeZone' đang hiện tại thời điểm UTC này, so với UTC (mili giây).
+  const dtf = new Intl.DateTimeFormat("en-US", { timeZone, hour12: false,
+    year:"numeric", month:"2-digit", day:"2-digit",
+    hour:"2-digit", minute:"2-digit", second:"2-digit" });
+  const p = {}; dtf.formatToParts(new Date(utcMs)).forEach(x => p[x.type] = x.value);
+  const hh = p.hour === "24" ? "00" : p.hour;
+  const asUTC = Date.UTC(+p.year, +p.month-1, +p.day, +hh, +p.minute, +p.second);
+  return asUTC - utcMs;
+}
+function zonedWallToUTC(y, mo, d, h, mi, timeZone) {
+  // "13:30 ở Europe/Brussels" ứng với thời điểm UTC nào (xử lý đúng DST).
+  const guess = Date.UTC(y, mo-1, d, h, mi);
+  let off = tzOffsetMs(timeZone, guess);
+  let utc = guess - off;
+  const off2 = tzOffsetMs(timeZone, utc);
+  if (off2 !== off) utc = guess - off2;
+  return utc;
+}
+function fmtInZone(utcMs, timeZone) {
+  const dtf = new Intl.DateTimeFormat("en-CA", { timeZone, hour12: false,
+    year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+  const p = {}; dtf.formatToParts(new Date(utcMs)).forEach(x => p[x.type] = x.value);
+  const hh = p.hour === "24" ? "00" : p.hour;
+  return { date: p.year+"-"+p.month+"-"+p.day, time: hh+":"+p.minute };
+}
+// Đổi mỗi sự kiện có (local_time + timezone) sang giờ Việt Nam; giữ lại giờ gốc để hiện.
+function applyTimezone(parsed) {
+  for (const ev of (parsed.events || [])) {
+    if (ev.local_time && ev.timezone) {
+      const dateStr = ev.date || todayStr();
+      const [y, mo, d] = dateStr.split("-").map(Number);
+      const [h, mi] = String(ev.local_time).split(":").map(Number);
+      try {
+        const utc = zonedWallToUTC(y, mo, d, h||0, mi||0, ev.timezone);
+        const vn = fmtInZone(utc, "Asia/Ho_Chi_Minh");
+        ev._local = ev.local_time + " (" + ev.timezone + ")";
+        ev.date = vn.date;            // ngày có thể đổi nếu vắt qua nửa đêm
+        ev.start_time = vn.time;      // giờ Việt Nam do CODE tính
+      } catch (e) {
+        // tên múi giờ lạ -> đành dùng tạm giờ gốc, đánh dấu cần kiểm
+        ev.start_time = ev.local_time;
+        ev._local = ev.local_time + " (" + ev.timezone + " — chưa đổi được)";
+      }
+    }
+  }
+  return parsed;
+}
+function extractJSON(txt) {
+  if (!txt) throw new Error("Gemini không trả nội dung.");
+  txt = txt.replace(/```(?:json)?/g, "").trim();
+  const i = txt.indexOf("{"), j = txt.lastIndexOf("}");
+  if (i === -1 || j === -1) throw new Error("Không đọc được JSON từ AI. Thử lại nhé.");
+  return JSON.parse(txt.slice(i, j + 1));
+}
+async function callGeminiGrounded(text, apiKey) {
+  const url = "https://generativelanguage.googleapis.com/v1beta/models/" +
+              GEMINI_MODEL + ":generateContent?key=" + encodeURIComponent(apiKey);
+  const body = {
+    systemInstruction: { parts: [{ text: buildPromptGrounded() }] },
+    contents: [{ parts: [{ text: text }] }],
+    tools: [{ google_search: {} }],
+    generationConfig: { temperature: 0 }
+  };
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) {
+    const msg = await resp.text();
+    throw new Error("Gemini lỗi " + resp.status + ": " + msg.slice(0, 200));
+  }
+  const data = await resp.json();
+  const parts = data.candidates?.[0]?.content?.parts || [];
+  const raw = parts.map(p => p.text || "").join("");
+  return extractJSON(raw);
 }
 
 // ====================== TRẢI LỊCH (giống Python) ======================
@@ -286,6 +394,68 @@ function downloadICS() {
   setStatus("✅ Đã tải file .ics. Mở Google Calendar → Cài đặt → Nhập & xuất → chọn file này.");
 }
 
+// ====================== GHI THẲNG VÀO GOOGLE CALENDAR ======================
+// Dùng Google Identity Services (chạy trong trình duyệt, không cần server).
+let tokenClient = null, accessToken = null;
+function fmtLocalRFC(d) {
+  return d.getFullYear() + "-" + pad2(d.getMonth()+1) + "-" + pad2(d.getDate()) +
+         "T" + pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":00";
+}
+function initGoogle() {
+  if (!(window.google && google.accounts && google.accounts.oauth2)) {
+    setStatus("Google chưa tải xong. Đợi vài giây rồi bấm lại.", true);
+    return false;
+  }
+  if (!tokenClient) {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: "https://www.googleapis.com/auth/calendar.events",
+      callback: (resp) => {
+        if (resp.error) { setStatus("Không lấy được quyền: " + resp.error, true); return; }
+        accessToken = resp.access_token;
+        doInsertAll();
+      }
+    });
+  }
+  return true;
+}
+function addToGoogleCalendar() {
+  const real = lastOcc.filter(o => o.day);
+  if (!real.length) { setStatus("Chưa có lịch để thêm.", true); return; }
+  if (!initGoogle()) return;
+  setStatus("⏳ Đang xin quyền Google (lần đầu sẽ hiện cửa sổ đăng nhập)...");
+  tokenClient.requestAccessToken();   // xong sẽ tự gọi doInsertAll()
+}
+async function insertEvent(day, ev) {
+  const [h, m] = String(ev.start_time || "09:00").split(":").map(Number);
+  const s = new Date(day); s.setHours(h||0, m||0, 0, 0);
+  const e = new Date(s.getTime() + (ev.duration_minutes || 60) * 60000);
+  const body = {
+    summary: ev.title || "Sự kiện",
+    start: { dateTime: fmtLocalRFC(s), timeZone: "Asia/Ho_Chi_Minh" },
+    end:   { dateTime: fmtLocalRFC(e), timeZone: "Asia/Ho_Chi_Minh" }
+  };
+  const rm = ev.reminder_minutes_before;
+  if (rm) body.reminders = { useDefault: false, overrides: [{ method: "popup", minutes: rm }] };
+  const resp = await fetch(
+    "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+    { method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify(body) });
+  if (!resp.ok) throw new Error("Lỗi " + resp.status + ": " + (await resp.text()).slice(0, 150));
+}
+async function doInsertAll() {
+  const real = lastOcc.filter(o => o.day);
+  setStatus("⏳ Đang thêm " + real.length + " sự kiện vào Google Calendar...");
+  let ok = 0, err = 0;
+  for (const { day, ev } of real) {
+    try { await insertEvent(day, ev); ok++; }
+    catch (e) { err++; console.error(e); }
+  }
+  if (err === 0) setStatus("✅ Đã thêm " + ok + " sự kiện vào Google Calendar! Mở Google Calendar để xem.");
+  else setStatus("Đã thêm " + ok + " sự kiện, " + err + " sự kiện lỗi. Xem Console (F12) để rõ.", err > ok);
+}
+
 // ====================== HIỂN THỊ ======================
 function render(parsed) {
   const box = document.getElementById("result");
@@ -307,18 +477,21 @@ function render(parsed) {
     const rm = ev.reminder_minutes_before;
     const nhac = rm ? ('🔔 nhắc trước ' + rm + ' phút') : '';
     const cat = ev.category ? ('<span class="tag">' + esc(ev.category) + '</span>') : '';
+    const goc = ev._local ? (' &nbsp;·&nbsp; 🌍 ' + esc(ev._local) + ' → giờ VN') : '';
     html += '<div class="ev"><div class="title">' + esc(title) + cat + '</div>' +
             '<div class="meta">' +
             WEEKDAY_VI[mon0(day)] + ', ' + fmtDate(day) +
             ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
             (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') +
+            goc +
             '</div></div>';
   }
   html += '<div class="row" style="margin-top:6px">' +
-          '<button onclick="downloadICS()">⬇️ Tải file .ics (nạp vào Google Calendar)</button>' +
+          '<button onclick="addToGoogleCalendar()">📅 Thêm thẳng vào Google Calendar</button>' +
           '<button class="ghost" onclick="document.getElementById(\'result\').innerHTML=\'\'">Huỷ</button>' +
           '</div>' +
-          '<div class="muted" style="margin-top:8px;font-size:13px;line-height:1.5">Cách nạp: mở <b>Google Calendar</b> → ⚙️ <b>Cài đặt</b> → <b>Nhập và xuất</b> → chọn file <b>lich-cua-toi.ics</b> vừa tải → <b>Nhập</b>.</div>' +
+          '<div class="muted" style="margin-top:8px;font-size:13px;line-height:1.5">Bấm nút trên là sự kiện hiện luôn trên Google Calendar (lần đầu sẽ hỏi đăng nhập &amp; cho phép). ' +
+          'Hoặc <a href="#" onclick="downloadICS();return false;">tải file .ics</a> để nạp thủ công nếu cần.</div>' +
           '</div>';
   box.innerHTML = html;
 }
@@ -336,10 +509,20 @@ async function doParse() {
   const text = document.getElementById("text").value.trim();
   if (!key) { setStatus("Chưa có API key. Dán key Gemini vào ô trên.", true); return; }
   if (!text) { setStatus("Chưa có câu nào. Hãy nói hoặc gõ một câu.", true); return; }
-  setStatus("⏳ Đang nhờ Gemini bóc tách lịch...");
+  const tra = document.getElementById("grounding").checked;
+  setStatus(tra ? "⏳ Đang tra giờ thật trên mạng (chậm hơn một chút)..."
+                : "⏳ Đang nhờ Gemini bóc tách lịch...");
   try {
-    const parsed = await callGemini(text, key);
-    setStatus("✅ Xong! Kiểm tra lịch bên dưới.");
+    let parsed = tra ? await callGeminiGrounded(text, key)
+                     : await callGemini(text, key);
+    if (tra) parsed = applyTimezone(parsed);
+    if (tra && parsed.need_confirm) {
+      setStatus("⚠️ AI chưa chắc giờ của sự kiện này — hãy tự kiểm tra hoặc nói rõ giờ.");
+    } else if (tra) {
+      setStatus("✅ Xong (đã tra mạng + code tự đổi múi giờ). Kiểm tra lịch bên dưới.");
+    } else {
+      setStatus("✅ Xong! Kiểm tra lịch bên dưới.");
+    }
     render(parsed);
   } catch (e) {
     setStatus(e.message, true);
