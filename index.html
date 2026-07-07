@@ -94,17 +94,24 @@
   details { margin-top: 6px; }
   summary { cursor:pointer; color: var(--muted); font-size: 13px; }
   code { background:#FDE3D7; color: var(--accent-dark); padding:1px 5px; border-radius:5px; font-size:12px; }
+  .mic svg { width:46px; height:46px; display:block; }
+  h1 .heart { display:inline-flex; align-items:center; vertical-align:-6px; }
+  h1 .heart svg { width:30px; height:30px; }
+  .lbl-ico { display:inline-flex; align-items:center; vertical-align:-5px; margin-right:5px; }
+  .lbl-ico svg { width:20px; height:20px; }
+  .btn-ico { display:inline-flex; align-items:center; vertical-align:-4px; margin-right:6px; }
+  .btn-ico svg { width:18px; height:18px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="head">
-    <h1><span class="heart">🎙️</span> <span id="uiTitle">Lịch của tôi</span></h1>
+    <h1><span class="heart"><svg viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="4" width="14" height="16" rx="7" fill="#D85A30"/><path d="M8 18 a12 12 0 0 0 24 0" stroke="#D85A30" stroke-width="2.5"/><line x1="20" y1="28" x2="20" y2="33" stroke="#D85A30" stroke-width="2.5"/><line x1="15" y1="33" x2="27" y2="33" stroke="#D85A30" stroke-width="2.5"/></svg></span> <span id="uiTitle">Lịch của tôi</span></h1>
     <p class="sub" id="uiSub">Nói một câu, để phần còn lại cho AI lo.</p>
   </div>
 
   <div class="langbar">
-    <label id="uiLangLabel" for="lang">🌐 Ngôn ngữ</label>
+    <label for="lang"><span class="lbl-ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="10" fill="#D85A30"/><ellipse cx="12" cy="12" rx="4.5" ry="10" stroke="#fff" stroke-width="1.2"/><line x1="2" y1="12" x2="22" y2="12" stroke="#fff" stroke-width="1.2"/><line x1="4" y1="7.5" x2="20" y2="7.5" stroke="#fff" stroke-width="1.2"/><line x1="4" y1="16.5" x2="20" y2="16.5" stroke="#fff" stroke-width="1.2"/></svg></span><span id="uiLangLabel">Ngôn ngữ</span></label>
     <select id="lang"></select>
   </div>
 
@@ -120,7 +127,7 @@
 
   <div class="card">
     <div class="mic-wrap">
-      <button id="micBtn" class="mic" title="Bấm để nói">🎤</button>
+      <button id="micBtn" class="mic" title="Bấm để nói"><svg viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="4" width="14" height="16" rx="7" fill="#fff"/><path d="M8 18 a12 12 0 0 0 24 0" stroke="#fff" stroke-width="2.5"/><line x1="20" y1="28" x2="20" y2="33" stroke="#fff" stroke-width="2.5"/><line x1="15" y1="33" x2="27" y2="33" stroke="#fff" stroke-width="2.5"/></svg></button>
       <span class="mic-label" id="micLabel">Bấm để nói</span>
     </div>
     <div class="status" id="status"></div>
@@ -129,7 +136,7 @@
     <textarea id="text" placeholder="Ví dụ: Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút"></textarea>
 
     <label style="display:flex; align-items:center; gap:8px; margin-top:10px; cursor:pointer;">
-      <input id="grounding" type="checkbox" style="width:auto;"> <span id="uiGrounding">🔎 Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)</span>
+      <input id="grounding" type="checkbox" style="width:auto;"> <span class="lbl-ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="11" fill="#FFE6DA"/><circle cx="11" cy="11" r="6" fill="#fff" stroke="#993C1D" stroke-width="2"/><line x1="15.5" y1="15.5" x2="19" y2="19" stroke="#993C1D" stroke-width="2.5"/></svg></span><span id="uiGrounding">Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)</span>
     </label>
 
     <div class="row" style="margin-top:12px; justify-content:center;">
@@ -177,7 +184,7 @@ const LANGS = {
     ui: {
       title: "Lịch của tôi",
       sub: "Nói một câu, để phần còn lại cho AI lo.",
-      langLabel: "🌐 Ngôn ngữ",
+      langLabel: "Ngôn ngữ",
       keyLabel: "Gemini API key (miễn phí — lấy ở Google AI Studio)",
       keyPlaceholder: "Dán key vào đây...",
       rememberLabel: "Nhớ key trên máy này (khỏi dán lại lần sau)",
@@ -188,7 +195,7 @@ const LANGS = {
       browserNoSpeech: "Trình duyệt này chưa hỗ trợ nhận giọng nói. Hãy dùng Chrome trên máy tính, hoặc gõ tay rồi bấm nút tạo lịch.",
       textLabel: "Câu bạn nói (sửa tay được)",
       textPlaceholder: "Ví dụ: Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút",
-      groundingLabel: "🔎 Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)",
+      groundingLabel: "Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)",
       parseBtn: "Tạo lịch",
       howSummary: "Trang này hoạt động thế nào?",
       howBody: "1. Trình duyệt (Chrome) chuyển <b>giọng nói của bạn</b> thành chữ — miễn phí, không cần cài gì.<br>2. Chữ được gửi cho <b>Gemini</b> kèm hướng dẫn bóc tách thành lịch (JSON).<br>3. Trang tự <b>trải lịch lặp</b> (ví dụ \"thứ Hai trong 4 tuần\" → 4 buổi) và hiện ra để bạn xác nhận.",
@@ -209,7 +216,7 @@ const LANGS = {
       unnamed: "(không tên)",
       remindBefore: "🔔 nhắc trước {n} phút",
       toLocal: "→ giờ máy bạn",
-      addGcalBtn: "📅 Thêm thẳng vào Google Calendar",
+      addGcalBtn: "Thêm thẳng vào Google Calendar",
       cancelBtn: "Huỷ",
       gcalHint: "Bấm nút trên là sự kiện hiện luôn trên Google Calendar (lần đầu sẽ hỏi đăng nhập &amp; cho phép). Hoặc {link} để nạp thủ công nếu cần.",
       gcalLink: "tải file .ics",
@@ -240,7 +247,7 @@ const LANGS = {
     ui: {
       title: "My Calendar",
       sub: "Say one sentence, let the AI do the rest.",
-      langLabel: "🌐 Language",
+      langLabel: "Language",
       keyLabel: "Gemini API key (free — get it at Google AI Studio)",
       keyPlaceholder: "Paste your key here...",
       rememberLabel: "Remember key on this device (no need to paste again)",
@@ -251,7 +258,7 @@ const LANGS = {
       browserNoSpeech: "This browser doesn't support speech recognition. Use Chrome on a computer, or type manually and press the create button.",
       textLabel: "What you said (editable)",
       textPlaceholder: "e.g. Meeting tomorrow at 8pm, remind me 30 minutes before",
-      groundingLabel: "🔎 Look up the real time online (for real events like F1, matches... when you don't say a time)",
+      groundingLabel: "Look up the real time online (for real events like F1, matches... when you don't say a time)",
       parseBtn: "Create schedule",
       howSummary: "How does this page work?",
       howBody: "1. Your browser (Chrome) turns <b>your speech</b> into text — free, nothing to install.<br>2. The text is sent to <b>Gemini</b> with instructions to extract a schedule (JSON).<br>3. The page <b>expands repeats</b> (e.g. \"every Monday for 4 weeks\" → 4 sessions) and shows them for you to confirm.",
@@ -272,7 +279,7 @@ const LANGS = {
       unnamed: "(untitled)",
       remindBefore: "🔔 remind {n} min before",
       toLocal: "→ your time",
-      addGcalBtn: "📅 Add straight to Google Calendar",
+      addGcalBtn: "Add straight to Google Calendar",
       cancelBtn: "Cancel",
       gcalHint: "Tap the button above and the events appear right on Google Calendar (the first time it asks you to sign in &amp; allow). Or {link} to import manually if needed.",
       gcalLink: "download the .ics file",
@@ -303,7 +310,7 @@ const LANGS = {
     ui: {
       title: "Mon agenda",
       sub: "Dites une phrase, l'IA fait le reste.",
-      langLabel: "🌐 Langue",
+      langLabel: "Langue",
       keyLabel: "Clé API Gemini (gratuite — sur Google AI Studio)",
       keyPlaceholder: "Collez votre clé ici...",
       rememberLabel: "Retenir la clé sur cet appareil (pas besoin de la recoller)",
@@ -314,7 +321,7 @@ const LANGS = {
       browserNoSpeech: "Ce navigateur ne prend pas en charge la reconnaissance vocale. Utilisez Chrome sur ordinateur, ou tapez à la main puis appuyez sur le bouton de création.",
       textLabel: "Ce que vous avez dit (modifiable)",
       textPlaceholder: "Ex. : Réunion demain à 20h, rappelle-moi 30 minutes avant",
-      groundingLabel: "🔎 Chercher l'heure réelle en ligne (pour de vrais événements comme la F1, les matchs... si vous ne dites pas l'heure)",
+      groundingLabel: "Chercher l'heure réelle en ligne (pour de vrais événements comme la F1, les matchs... si vous ne dites pas l'heure)",
       parseBtn: "Créer l'agenda",
       howSummary: "Comment fonctionne cette page ?",
       howBody: "1. Votre navigateur (Chrome) transforme <b>votre voix</b> en texte — gratuit, rien à installer.<br>2. Le texte est envoyé à <b>Gemini</b> avec des instructions pour en extraire un agenda (JSON).<br>3. La page <b>déploie les répétitions</b> (ex. « chaque lundi pendant 4 semaines » → 4 séances) et les affiche pour confirmation.",
@@ -335,7 +342,7 @@ const LANGS = {
       unnamed: "(sans titre)",
       remindBefore: "🔔 rappel {n} min avant",
       toLocal: "→ votre heure",
-      addGcalBtn: "📅 Ajouter directement à Google Agenda",
+      addGcalBtn: "Ajouter directement à Google Agenda",
       cancelBtn: "Annuler",
       gcalHint: "Appuyez sur le bouton ci-dessus et les événements apparaissent dans Google Agenda (la première fois, il demande de se connecter &amp; d'autoriser). Ou {link} pour importer manuellement si besoin.",
       gcalLink: "télécharger le fichier .ics",
@@ -366,7 +373,7 @@ const LANGS = {
     ui: {
       title: "Mi calendario",
       sub: "Di una frase y deja el resto a la IA.",
-      langLabel: "🌐 Idioma",
+      langLabel: "Idioma",
       keyLabel: "Clave API de Gemini (gratis — en Google AI Studio)",
       keyPlaceholder: "Pega tu clave aquí...",
       rememberLabel: "Recordar la clave en este dispositivo (sin volver a pegarla)",
@@ -377,7 +384,7 @@ const LANGS = {
       browserNoSpeech: "Este navegador no admite reconocimiento de voz. Usa Chrome en un ordenador, o escribe a mano y pulsa el botón de crear.",
       textLabel: "Lo que dijiste (editable)",
       textPlaceholder: "Ej.: Reunión mañana a las 8pm, recuérdame 30 minutos antes",
-      groundingLabel: "🔎 Buscar la hora real en internet (para eventos reales como F1, partidos... si no dices la hora)",
+      groundingLabel: "Buscar la hora real en internet (para eventos reales como F1, partidos... si no dices la hora)",
       parseBtn: "Crear calendario",
       howSummary: "¿Cómo funciona esta página?",
       howBody: "1. Tu navegador (Chrome) convierte <b>tu voz</b> en texto — gratis, sin instalar nada.<br>2. El texto se envía a <b>Gemini</b> con instrucciones para extraer un calendario (JSON).<br>3. La página <b>expande las repeticiones</b> (ej. « cada lunes durante 4 semanas » → 4 sesiones) y las muestra para confirmar.",
@@ -398,7 +405,7 @@ const LANGS = {
       unnamed: "(sin título)",
       remindBefore: "🔔 avisar {n} min antes",
       toLocal: "→ tu hora",
-      addGcalBtn: "📅 Añadir directamente a Google Calendar",
+      addGcalBtn: "Añadir directamente a Google Calendar",
       cancelBtn: "Cancelar",
       gcalHint: "Pulsa el botón de arriba y los eventos aparecen en Google Calendar (la primera vez pide iniciar sesión &amp; autorizar). O {link} para importar manualmente si hace falta.",
       gcalLink: "descargar el archivo .ics",
@@ -429,7 +436,7 @@ const LANGS = {
     ui: {
       title: "我的日历",
       sub: "说一句话，剩下的交给 AI。",
-      langLabel: "🌐 语言",
+      langLabel: "语言",
       keyLabel: "Gemini API 密钥（免费 — 在 Google AI Studio 获取）",
       keyPlaceholder: "在此粘贴密钥...",
       rememberLabel: "在此设备记住密钥（无需再次粘贴）",
@@ -440,7 +447,7 @@ const LANGS = {
       browserNoSpeech: "此浏览器不支持语音识别。请在电脑上使用 Chrome，或手动输入后点击创建按钮。",
       textLabel: "你说的话（可编辑）",
       textPlaceholder: "例如：明天晚上8点开会，提前30分钟提醒我",
-      groundingLabel: "🔎 在线查询真实时间（用于 F1、比赛等真实事件，当你没说时间时）",
+      groundingLabel: "在线查询真实时间（用于 F1、比赛等真实事件，当你没说时间时）",
       parseBtn: "创建日程",
       howSummary: "这个页面怎么工作？",
       howBody: "1. 你的浏览器（Chrome）把<b>你的语音</b>转成文字 — 免费，无需安装。<br>2. 文字连同提取日程的指令一起发送给 <b>Gemini</b>（JSON）。<br>3. 页面会<b>展开重复</b>（例如“每周一连续4周”→4次）并显示出来供你确认。",
@@ -461,7 +468,7 @@ const LANGS = {
       unnamed: "（无标题）",
       remindBefore: "🔔 提前 {n} 分钟提醒",
       toLocal: "→ 你的时间",
-      addGcalBtn: "📅 直接添加到 Google 日历",
+      addGcalBtn: "直接添加到 Google 日历",
       cancelBtn: "取消",
       gcalHint: "点击上方按钮，事件会直接出现在 Google 日历中（第一次会要求登录并授权）。或 {link} 手动导入。",
       gcalLink: "下载 .ics 文件",
@@ -811,7 +818,7 @@ function render(parsed) {
   }
   const link = '<a href="#" onclick="downloadICS();return false;">' + esc(t("gcalLink")) + '</a>';
   html += '<div class="row" style="margin-top:6px">' +
-          '<button onclick="addToGoogleCalendar()">' + esc(t("addGcalBtn")) + '</button>' +
+          '<button onclick="addToGoogleCalendar()"><span class="btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5" stroke="#fff" stroke-width="2"/><line x1="4" y1="10" x2="20" y2="10" stroke="#fff" stroke-width="2"/><line x1="9" y1="3" x2="9" y2="7" stroke="#fff" stroke-width="2"/><line x1="15" y1="3" x2="15" y2="7" stroke="#fff" stroke-width="2"/><line x1="12" y1="12" x2="12" y2="18" stroke="#fff" stroke-width="2"/><line x1="9" y1="15" x2="15" y2="15" stroke="#fff" stroke-width="2"/></svg></span>' + esc(t("addGcalBtn")) + '</button>' +
           '<button class="ghost" onclick="document.getElementById(\'result\').innerHTML=\'\'">' + esc(t("cancelBtn")) + '</button>' +
           '</div>' +
           '<div class="muted" style="margin-top:8px;font-size:13px;line-height:1.5">' +
@@ -888,10 +895,14 @@ if (!SR) {
 
   micBtn.addEventListener("click", () => listening ? endByUser() : startRec());
 }
+const ICON = {
+  mic: '<svg viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="4" width="14" height="16" rx="7" fill="#fff"/><path d="M8 18 a12 12 0 0 0 24 0" stroke="#fff" stroke-width="2.5"/><line x1="20" y1="28" x2="20" y2="33" stroke="#fff" stroke-width="2.5"/><line x1="15" y1="33" x2="27" y2="33" stroke="#fff" stroke-width="2.5"/></svg>',
+  stop: '<svg viewBox="0 0 40 40"><rect x="12" y="12" width="16" height="16" rx="4" fill="#fff"/></svg>'
+};
 function startRec() {
   listening = true; userStopped = false; finalText = "";
   micBtn.classList.add("rec");
-  micBtn.textContent = "⏹";
+  micBtn.innerHTML = ICON.stop;
   micLabel.textContent = t("micListening");
   setStatus(t("micStartHint"));
   document.getElementById("text").value = "";
@@ -904,7 +915,7 @@ function endByUser() {
 function stopRec() {
   listening = false;
   micBtn.classList.remove("rec");
-  micBtn.textContent = "🎤";
+  micBtn.innerHTML = ICON.mic;
   micLabel.textContent = t("micIdle");
   setStatus(t("micStopped"));
 }
