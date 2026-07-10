@@ -84,6 +84,16 @@
   .ev .tag { display:inline-block; background:#FDE3D7; color:var(--accent-dark); font-size:11px;
     padding:2px 9px; border-radius:20px; margin-left:6px; }
   .ev.warn { border-left-color: var(--danger); }
+  .ev.rec { border-left-width: 3px; }
+  .ev-row { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+  .rec-badge { display:inline-flex; align-items:center; gap:4px; background:var(--accent); color:#fff;
+    font-size:11px; padding:2px 9px; border-radius:20px; margin-bottom:6px; }
+  .rec-badge svg { width:12px; height:12px; }
+  .delbtn { background:transparent; border:1.5px solid #E7B9A5; color:var(--accent);
+    border-radius:9px; padding:4px 9px; font-size:12px; font-weight:500; cursor:pointer;
+    display:inline-flex; align-items:center; gap:4px; flex-shrink:0; }
+  .delbtn svg { width:12px; height:12px; }
+  .just-added { color:var(--accent2); font-size:12px; }
   .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
   .chip {
     background: #FFF1E9; border:1px solid var(--line); color: var(--accent-dark);
@@ -786,40 +796,100 @@ async function doInsertAll() {
 }
 
 // ====================== HIỂN THỊ ======================
+// ====================== BỘ NHỚ TẠM CỦA LỊCH (buffer) ======================
+let buffer = [];          // danh sách sự kiện đang chờ tạo (mỗi phần tử = 1 ev)
+let lastAddedCount = 0;   // số sự kiện vừa thêm ở lần bấm gần nhất
+
+const UIX = {
+  vi: { buf:"Bộ nhớ tạm", willMake:"sẽ tạo", events:"sự kiện", justAdded:"+ vừa thêm {n}", del:"Xoá", clearAll:"Xoá tất cả", repeat:"Lặp lại {n} lần", weekly:"{wd} hằng tuần", range:"từ {a} đến {b}", empty:"Chưa có lịch nào trong bộ nhớ tạm." },
+  en: { buf:"Draft list", willMake:"will create", events:"event(s)", justAdded:"+ added {n}", del:"Delete", clearAll:"Clear all", repeat:"Repeats {n}×", weekly:"{wd} weekly", range:"from {a} to {b}", empty:"No events in the draft list yet." },
+  fr: { buf:"Liste temporaire", willMake:"va créer", events:"événement(s)", justAdded:"+ ajouté {n}", del:"Supprimer", clearAll:"Tout effacer", repeat:"Répété {n}×", weekly:"{wd} chaque semaine", range:"du {a} au {b}", empty:"Aucun événement pour l'instant." },
+  es: { buf:"Lista temporal", willMake:"creará", events:"evento(s)", justAdded:"+ añadido {n}", del:"Eliminar", clearAll:"Borrar todo", repeat:"Se repite {n}×", weekly:"{wd} cada semana", range:"del {a} al {b}", empty:"Aún no hay eventos." },
+  zh: { buf:"临时列表", willMake:"将创建", events:"个事件", justAdded:"+ 新增 {n}", del:"删除", clearAll:"全部清除", repeat:"重复 {n} 次", weekly:"每周{wd}", range:"从 {a} 到 {b}", empty:"暂无事件。" }
+};
+function tx(k){ return (UIX[curLang] || UIX.vi)[k]; }
+
+const SVG_REPEAT = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2 5"/><path d="M20 5v6h-6"/></svg>';
+const SVG_X = '<svg viewBox="0 0 24 24" fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linecap="round"><line x1="7" y1="7" x2="17" y2="17"/><line x1="17" y1="7" x2="7" y2="17"/></svg>';
+const SVG_CAL_WHITE = '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5" stroke="#fff" stroke-width="2"/><line x1="4" y1="10" x2="20" y2="10" stroke="#fff" stroke-width="2"/><line x1="9" y1="3" x2="9" y2="7" stroke="#fff" stroke-width="2"/><line x1="15" y1="3" x2="15" y2="7" stroke="#fff" stroke-width="2"/><line x1="12" y1="12" x2="12" y2="18" stroke="#fff" stroke-width="2"/><line x1="9" y1="15" x2="15" y2="15" stroke="#fff" stroke-width="2"/></svg>';
+
+// render(parsed) giờ CỘNG DỒN sự kiện vào buffer thay vì thay thế
 function render(parsed) {
+  const evs = (parsed && parsed.events) ? parsed.events : [];
+  buffer.push(...evs);
+  lastAddedCount = evs.length;
+  renderBuffer();
+}
+
+function removeEvent(i) {
+  buffer.splice(i, 1);
+  lastAddedCount = 0;
+  renderBuffer();
+}
+
+function clearBuffer() {
+  buffer = [];
+  lastAddedCount = 0;
+  document.getElementById("result").innerHTML = "";
+}
+
+function delButtonHTML(i) {
+  return '<button class="delbtn" onclick="removeEvent(' + i + ')">' + SVG_X + esc(tx("del")) + '</button>';
+}
+
+function renderBuffer() {
   const box = document.getElementById("result");
-  const occ = expandEvents(parsed);
-  lastOcc = occ;
-  if (occ.length === 0) {
-    box.innerHTML = '<div class="card"><div class="ev warn">' + esc(t("noEvents")) + '</div></div>';
-    return;
-  }
-  const total = occ.length;
-  let html = '<div class="card"><div style="margin-bottom:10px;color:var(--muted);font-size:13px">' +
-             fmt(t("willCreate"), { n: total }) + '</div>';
-  for (const { day, ev } of occ) {
+  lastOcc = expandEvents({ events: buffer });   // để nút thêm-vào-lịch / .ics dùng đủ mọi buổi
+  if (buffer.length === 0) { box.innerHTML = ""; return; }
+  const total = lastOcc.length;
+
+  let head = tx("buf") + ' · ' + tx("willMake") + ' <b style="color:var(--text)">' + total + '</b> ' + tx("events");
+  if (lastAddedCount > 0) head += ' &nbsp; <span class="just-added">' + esc(fmt(tx("justAdded"), { n: lastAddedCount })) + '</span>';
+  let html = '<div class="card"><div style="margin-bottom:10px;color:var(--muted);font-size:13px">' + head + '</div>';
+
+  buffer.forEach((ev, i) => {
     const title = ev.title || t("unnamed");
-    if (day === null) {
-      html += '<div class="ev warn"><div class="title">' + esc(title) + '</div>' +
-              '<div class="meta">' + esc(t("missingDateTime")) + '</div></div>';
-      continue;
-    }
+    const cat = ev.category ? ('<span class="tag">' + esc(ev.category) + '</span>') : '';
     const rm = ev.reminder_minutes_before;
     const nhac = rm ? fmt(t("remindBefore"), { n: rm }) : '';
-    const cat = ev.category ? ('<span class="tag">' + esc(ev.category) + '</span>') : '';
+
+    if (ev.recurrence) {
+      const rec = ev.recurrence;
+      const wdIdx = WEEKDAY_MAP[String(rec.weekday).toLowerCase().slice(0,3)];
+      const first = nextWeekday(parseDate(rec.start_date), wdIdx);
+      const count = rec.count || 1;
+      const last = addWeeks(first, count - 1);
+      const badge = '<span class="rec-badge">' + SVG_REPEAT + esc(fmt(tx("repeat"), { n: count })) + '</span>';
+      const meta = esc(fmt(tx("weekly"), { wd: wd(mon0(first)) })) + ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
+                   (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') +
+                   '<br>' + esc(fmt(tx("range"), { a: fmtDate(first), b: fmtDate(last) }));
+      html += '<div class="ev rec"><div class="ev-row"><div>' + badge +
+              '<div class="title">' + esc(title) + cat + '</div>' +
+              '<div class="meta">' + meta + '</div></div>' + delButtonHTML(i) + '</div></div>';
+      return;
+    }
+
+    if (!ev.date) {
+      html += '<div class="ev warn"><div class="ev-row"><div>' +
+              '<div class="title">' + esc(title) + '</div>' +
+              '<div class="meta">' + esc(t("missingDateTime")) + '</div></div>' + delButtonHTML(i) + '</div></div>';
+      return;
+    }
+
+    const day = parseDate(ev.date);
     const goc = ev._local ? (' &nbsp;·&nbsp; 🌍 ' + esc(ev._local) + ' ' + esc(t("toLocal"))) : '';
-    html += '<div class="ev"><div class="title">' + esc(title) + cat + '</div>' +
-            '<div class="meta">' +
-            wd(mon0(day)) + ', ' + fmtDate(day) +
-            ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
-            (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') +
-            goc +
-            '</div></div>';
-  }
+    const meta = wd(mon0(day)) + ', ' + fmtDate(day) +
+                 ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
+                 (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') + goc;
+    html += '<div class="ev"><div class="ev-row"><div>' +
+            '<div class="title">' + esc(title) + cat + '</div>' +
+            '<div class="meta">' + meta + '</div></div>' + delButtonHTML(i) + '</div></div>';
+  });
+
   const link = '<a href="#" onclick="downloadICS();return false;">' + esc(t("gcalLink")) + '</a>';
   html += '<div class="row" style="margin-top:6px">' +
-          '<button onclick="addToGoogleCalendar()"><span class="btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5" stroke="#fff" stroke-width="2"/><line x1="4" y1="10" x2="20" y2="10" stroke="#fff" stroke-width="2"/><line x1="9" y1="3" x2="9" y2="7" stroke="#fff" stroke-width="2"/><line x1="15" y1="3" x2="15" y2="7" stroke="#fff" stroke-width="2"/><line x1="12" y1="12" x2="12" y2="18" stroke="#fff" stroke-width="2"/><line x1="9" y1="15" x2="15" y2="15" stroke="#fff" stroke-width="2"/></svg></span>' + esc(t("addGcalBtn")) + '</button>' +
-          '<button class="ghost" onclick="document.getElementById(\'result\').innerHTML=\'\'">' + esc(t("cancelBtn")) + '</button>' +
+          '<button onclick="addToGoogleCalendar()"><span class="btn-ico">' + SVG_CAL_WHITE + '</span>' + esc(t("addGcalBtn")) + '</button>' +
+          '<button class="ghost" onclick="clearBuffer()">' + esc(tx("clearAll")) + '</button>' +
           '</div>' +
           '<div class="muted" style="margin-top:8px;font-size:13px;line-height:1.5">' +
           fmt(t("gcalHint"), { link }) +
