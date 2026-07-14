@@ -767,7 +767,9 @@ function addToGoogleCalendar() {
   setStatus(t("requestingPermission"));
   tokenClient.requestAccessToken();
 }
-async function insertEvent(day, ev) {
+// Bảng màu dịu của Google Calendar (colorId) cho từng sự kiện — xoay vòng
+const EVENT_COLORS = ["1","2","7","5","3","6","10","9"]; // Lavender, Sage, Peacock, Banana, Grape, Tangerine, Basil, Blueberry
+async function insertEvent(day, ev, colorId) {
   const [h, m] = String(ev.start_time || "09:00").split(":").map(Number);
   const s = new Date(day); s.setHours(h||0, m||0, 0, 0);
   const e = new Date(s.getTime() + (ev.duration_minutes || 60) * 60000);
@@ -776,6 +778,7 @@ async function insertEvent(day, ev) {
     start: { dateTime: fmtLocalRFC(s), timeZone: LOCAL_TZ },
     end:   { dateTime: fmtLocalRFC(e), timeZone: LOCAL_TZ }
   };
+  if (colorId) body.colorId = colorId;
   if (ev.location) body.location = ev.location;
   const rm = ev.reminder_minutes_before;
   if (rm) body.reminders = { useDefault: false, overrides: [{ method: "popup", minutes: rm }] };
@@ -790,8 +793,10 @@ async function doInsertAll() {
   const real = lastOcc.filter(o => o.day);
   setStatus(fmt(t("addingEvents"), { n: real.length }));
   let ok = 0, err = 0;
+  const colorOf = new Map(); let ci = 0;   // mỗi sự kiện 1 màu; buổi cùng lịch lặp chung màu
   for (const { day, ev } of real) {
-    try { await insertEvent(day, ev); ok++; }
+    if (!colorOf.has(ev)) colorOf.set(ev, EVENT_COLORS[ci++ % EVENT_COLORS.length]);
+    try { await insertEvent(day, ev, colorOf.get(ev)); ok++; }
     catch (e) { err++; console.error(e); }
   }
   if (err === 0) setStatus(fmt(t("addedSuccess"), { n: ok }));
