@@ -532,8 +532,9 @@ function buildPrompt() {
     "Relative-date rules: " + L.relRules + "\n" +
     "If it is a repeating timetable, use 'recurrence'. " +
     "recurrence.weekday MUST be an English 3-letter code: Mon/Tue/Wed/Thu/Fri/Sat/Sun.\n" +
+    "If the user mentions a place/venue/address, put it in 'location' as spoken; otherwise set 'location' = \"\".\n" +
     '{ "events": [ { "title": "", "start_time": "HH:MM", "duration_minutes": 60, ' +
-    '"category": "", "reminder_minutes_before": 30, ' +
+    '"category": "", "location": "", "reminder_minutes_before": 30, ' +
     '"recurrence": {"weekday": "Mon", "count": 4, "start_date": "YYYY-MM-DD"}, ' +
     '"date": "YYYY-MM-DD" } ] }\n' +
     "One-off event: use 'date', set 'recurrence' = null. " +
@@ -580,7 +581,7 @@ function buildPromptGrounded() {
     "3) If unsure of the time, set local_time = null and need_confirm = true.\n" +
     "Keep 'title' in " + L.promptLang + ". Return ONLY JSON, nothing else:\n" +
     '{ "events": [ { "title": "", "local_time": "HH:MM", "timezone": "IANA", ' +
-    '"duration_minutes": 60, "category": "", "reminder_minutes_before": null, ' +
+    '"duration_minutes": 60, "category": "", "location": "", "reminder_minutes_before": null, ' +
     '"date": "YYYY-MM-DD", "recurrence": null } ], "need_confirm": false, "source": "" }'
   );
 }
@@ -711,6 +712,7 @@ function buildICS(occ) {
     L.push("DTSTART:" + icsStamp(s));
     L.push("DTEND:" + icsStamp(e));
     L.push("SUMMARY:" + icsEsc(ev.title || "Su kien"));
+    if (ev.location) L.push("LOCATION:" + icsEsc(ev.location));
     if (ev.category) L.push("CATEGORIES:" + icsEsc(ev.category));
     const rm = ev.reminder_minutes_before;
     if (rm) {
@@ -774,6 +776,7 @@ async function insertEvent(day, ev) {
     start: { dateTime: fmtLocalRFC(s), timeZone: LOCAL_TZ },
     end:   { dateTime: fmtLocalRFC(e), timeZone: LOCAL_TZ }
   };
+  if (ev.location) body.location = ev.location;
   const rm = ev.reminder_minutes_before;
   if (rm) body.reminders = { useDefault: false, overrides: [{ method: "popup", minutes: rm }] };
   const resp = await fetch(
@@ -852,6 +855,7 @@ function renderBuffer() {
     const cat = ev.category ? ('<span class="tag">' + esc(ev.category) + '</span>') : '';
     const rm = ev.reminder_minutes_before;
     const nhac = rm ? fmt(t("remindBefore"), { n: rm }) : '';
+    const loc = ev.location ? ('<br>📍 ' + esc(ev.location)) : '';
 
     if (ev.recurrence) {
       const rec = ev.recurrence;
@@ -861,7 +865,7 @@ function renderBuffer() {
       const last = addWeeks(first, count - 1);
       const badge = '<span class="rec-badge">' + SVG_REPEAT + esc(fmt(tx("repeat"), { n: count })) + '</span>';
       const meta = esc(fmt(tx("weekly"), { wd: wd(mon0(first)) })) + ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
-                   (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') +
+                   (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') + loc +
                    '<br>' + esc(fmt(tx("range"), { a: fmtDate(first), b: fmtDate(last) }));
       html += '<div class="ev rec"><div class="ev-row"><div>' + badge +
               '<div class="title">' + esc(title) + cat + '</div>' +
@@ -880,7 +884,7 @@ function renderBuffer() {
     const goc = ev._local ? (' &nbsp;·&nbsp; 🌍 ' + esc(ev._local) + ' ' + esc(t("toLocal"))) : '';
     const meta = wd(mon0(day)) + ', ' + fmtDate(day) +
                  ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
-                 (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') + goc;
+                 (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') + goc + loc;
     html += '<div class="ev"><div class="ev-row"><div>' +
             '<div class="title">' + esc(title) + cat + '</div>' +
             '<div class="meta">' + meta + '</div></div>' + delButtonHTML(i) + '</div></div>';
