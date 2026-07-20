@@ -1,28 +1,88 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="warm" data-mode="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lịch của tôi — nói là xong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@600;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #FCF4EE;
-    --card: #FFFFFF;
-    --card2: #FFF7F2;
-    --accent: #D85A30;
-    --accent-dark: #993C1D;
-    --accent2: #3B7A57;
-    --text: #4A1B0C;
-    --muted: #9A6A55;
-    --danger: #C0392B;
-    --line: #F3DACE;
+  /* ===== ẤM · SÁNG (mặc định, bản gốc) ===== */
+  html[data-theme="warm"][data-mode="light"], :root {
+    --bg: #FCF4EE; --card: #FFFFFF; --card2: #FFF7F2;
+    --accent: #D85A30; --accent-dark: #993C1D; --accent2: #3B7A57;
+    --text: #4A1B0C; --muted: #9A6A55; --danger: #C0392B; --line: #F3DACE;
+    --chip: #FFF1E9; --tag: #FDE3D7; --micring: #F7D3C3; --btnink:#fff;
+    --st1:#E88E5A; --st2:#4E9E72; --st3:#E9B84D;
+  }
+  /* ===== ẤM · TỐI ===== */
+  html[data-theme="warm"][data-mode="dark"] {
+    --bg: #241610; --card: #33231B; --card2: #3D2A20;
+    --accent: #EC7644; --accent-dark: #F0906A; --accent2: #59A97C;
+    --text: #F6E7DE; --muted: #C6A08C; --danger: #E5654E; --line: #4A3325;
+    --chip: #3D2A20; --tag: #4A3125; --micring: #4A3325; --btnink:#241610;
+    --st1:#EC7644; --st2:#59A97C; --st3:#E0A94D;
+  }
+  /* ===== PIXEL · SÁNG ===== */
+  html[data-theme="pixel"][data-mode="light"] {
+    --bg: #E9DCC0; --card: #FBF3DF; --card2: #F3E7C8;
+    --accent: #E4572E; --accent-dark: #B23A18; --accent2: #2F8F4E;
+    --text: #26233A; --muted: #6A6480; --danger: #C0392B; --line: #26233A;
+    --chip: #FBF3DF; --tag: #F7DCC8; --micring: transparent; --btnink:#FBF3DF;
+    --shadow: #26233A; --st1:#E4572E; --st2:#2F8F4E; --st3:#E0A020;
+  }
+  /* ===== PIXEL · TỐI ===== */
+  html[data-theme="pixel"][data-mode="dark"] {
+    --bg: #141221; --card: #241F36; --card2: #2C2745;
+    --accent: #FF7A45; --accent-dark: #FF9C6E; --accent2: #6BCB77;
+    --text: #F4E6C4; --muted: #A79FC4; --danger: #FF6B5A; --line: #0C0A16;
+    --chip: #241F36; --tag: #3A2F4D; --micring: transparent; --btnink:#141221;
+    --shadow: #0C0A16; --st1:#FF7A45; --st2:#6BCB77; --st3:#FFD23F;
+  }
+  /* ===== PLANNER GIẤY (C) · SÁNG ===== */
+  html[data-theme="C"][data-mode="light"] {
+    --bg:#F4EEE1; --card:#FFFFFF; --card2:#FBF7EE;
+    --accent:#5B9A8B; --accent-dark:#3F7D6F; --accent2:#E0895D;
+    --text:#3B3B47; --muted:#8C8A80; --danger:#C0655A; --line:#E7E0D0;
+    --chip:#FBF7EE; --tag:#E7F1EE; --micring:transparent; --btnink:#fff;
+    --dash:#D5CBB6; --paper:#00000008; --st1:#B9D9CE; --st2:#F3C6A9; --st3:#EBD98A;
+  }
+  /* ===== PLANNER GIẤY (C) · TỐI ===== */
+  html[data-theme="C"][data-mode="dark"] {
+    --bg:#22242D; --card:#2C2F3A; --card2:#313543;
+    --accent:#6FB3A2; --accent-dark:#8EC9B9; --accent2:#F0997B;
+    --text:#ECEAF2; --muted:#9A99A6; --danger:#E5776A; --line:#3A3E4B;
+    --chip:#313543; --tag:#2E3D39; --micring:transparent; --btnink:#22242D;
+    --dash:#454A59; --paper:#FFFFFF08; --st1:#3B6E63; --st2:#8A5B44; --st3:#7A6A38;
+  }
+  /* ===== SOFT POP (D) · SÁNG ===== */
+  html[data-theme="D"][data-mode="light"] {
+    --bg:#F1EEFF; --card:#FFFFFF; --card2:#F7F5FF;
+    --accent:#7C6BF0; --accent-dark:#5F4FD1; --accent2:#22B6A6;
+    --text:#2E2A45; --muted:#8E88A8; --danger:#E06A8A; --line:#ECE8FA;
+    --chip:#F4F1FF; --tag:#EEEBFF; --micring:transparent; --btnink:#fff;
+    --st1:#7C6BF0; --st2:#22B6A6; --st3:#F5A6C8;
+  }
+  /* ===== SOFT POP (D) · TỐI ===== */
+  html[data-theme="D"][data-mode="dark"] {
+    --bg:#14132A; --card:#211F3C; --card2:#282647;
+    --accent:#9A8BFF; --accent-dark:#B4A8FF; --accent2:#47D6C4;
+    --text:#ECEAF8; --muted:#9691B8; --danger:#F58BB6; --line:#322F55;
+    --chip:#262247; --tag:#2C2950; --micring:transparent; --btnink:#14132A;
+    --st1:#9A8BFF; --st2:#47D6C4; --st3:#F58BB6;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    background: radial-gradient(1000px 520px at 50% -12%, #FBE1D3 0%, var(--bg) 55%);
+    background: var(--bg);
     color: var(--text); min-height: 100vh; padding: 28px 16px;
   }
+  html[data-theme="warm"][data-mode="light"] body {
+    background: radial-gradient(1000px 520px at 50% -12%, #FBE1D3 0%, var(--bg) 55%);
+  }
+  html[data-theme="D"][data-mode="light"] body { background: linear-gradient(160deg,#F3EDFF 0%,#EAF6FF 50%,#EFFBF4 100%); }
+  html[data-theme="D"][data-mode="dark"]  body { background: linear-gradient(160deg,#171334 0%,#141A32 55%,#122029 100%); }
   .wrap { max-width: 640px; margin: 0 auto; }
   .head { text-align: center; margin-bottom: 16px; }
   h1 { font-size: 25px; margin: 0 0 6px; display: inline-flex; align-items: center; gap: 9px; }
@@ -51,8 +111,9 @@
   input[type=checkbox] { accent-color: var(--accent); }
   .row { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
   button {
-    background: var(--accent); color: #fff; border: none; border-radius: 12px;
+    background: var(--accent); color: var(--btnink); border: none; border-radius: 12px;
     padding: 12px 20px; font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
     transition: transform .05s ease, filter .15s ease;
   }
   button:hover { filter: brightness(1.06); }
@@ -63,7 +124,7 @@
   .mic {
     width: 92px; height: 92px; border-radius: 50%; font-size: 34px; padding: 0;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 0 10px #F7D3C3;
+    box-shadow: 0 0 0 10px var(--micring);
   }
   .mic.rec { background: var(--danger); box-shadow: 0 0 0 0 rgba(192,57,43,.5); animation: pulse 1.2s infinite; }
   .mic-label { font-size: 13px; color: var(--muted); }
@@ -81,29 +142,29 @@
   }
   .ev .title { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
   .ev .meta { font-size: 13px; color: var(--muted); line-height: 1.7; }
-  .ev .tag { display:inline-block; background:#FDE3D7; color:var(--accent-dark); font-size:11px;
+  .ev .tag { display:inline-block; background:var(--tag); color:var(--accent-dark); font-size:11px;
     padding:2px 9px; border-radius:20px; margin-left:6px; }
   .ev.warn { border-left-color: var(--danger); }
   .ev.rec { border-left-width: 3px; }
   .ev-row { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
-  .rec-badge { display:inline-flex; align-items:center; gap:4px; background:var(--accent); color:#fff;
+  .rec-badge { display:inline-flex; align-items:center; gap:4px; background:var(--accent); color:var(--btnink);
     font-size:11px; padding:2px 9px; border-radius:20px; margin-bottom:6px; }
   .rec-badge svg { width:12px; height:12px; }
-  .delbtn { background:transparent; border:1.5px solid #E7B9A5; color:var(--accent);
+  .delbtn { background:transparent; border:1.5px solid var(--accent); color:var(--accent);
     border-radius:9px; padding:4px 9px; font-size:12px; font-weight:500; cursor:pointer;
     display:inline-flex; align-items:center; gap:4px; flex-shrink:0; }
   .delbtn svg { width:12px; height:12px; }
   .just-added { color:var(--accent2); font-size:12px; }
   .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
   .chip {
-    background: #FFF1E9; border:1px solid var(--line); color: var(--accent-dark);
+    background: var(--chip); border:1px solid var(--line); color: var(--accent-dark);
     font-size:13px; padding:8px 12px; border-radius:20px; cursor:pointer;
     transition: border-color .15s ease;
   }
   .chip:hover { border-color: var(--accent); }
   details { margin-top: 6px; }
   summary { cursor:pointer; color: var(--muted); font-size: 13px; }
-  code { background:#FDE3D7; color: var(--accent-dark); padding:1px 5px; border-radius:5px; font-size:12px; }
+  code { background:var(--tag); color: var(--accent-dark); padding:1px 5px; border-radius:5px; font-size:12px; }
   .mic svg { width:46px; height:46px; display:block; }
   h1 .heart { display:inline-flex; align-items:center; vertical-align:-6px; }
   h1 .heart svg { width:30px; height:30px; }
@@ -111,17 +172,117 @@
   .lbl-ico svg { width:20px; height:20px; }
   .btn-ico { display:inline-flex; align-items:center; vertical-align:-4px; margin-right:6px; }
   .btn-ico svg { width:18px; height:18px; }
+
+  /* ===== CÔNG TẮC THEME (góc trên phải) ===== */
+  .themebar { position: fixed; top: 10px; right: 10px; z-index: 40; display:flex; gap:8px; }
+  .themebar .grp { display:flex; border:2px solid var(--line); border-radius:10px; overflow:hidden; background:var(--card); }
+  .themebar button { background:transparent; color:var(--muted); border:none; border-radius:0;
+    padding:6px 9px; font-size:13px; font-weight:600; cursor:pointer; transition:none; box-shadow:none; }
+  .themebar button:hover { filter:none; }
+  .themebar button.on { background:var(--accent); color:var(--btnink); }
+  html[data-theme="pixel"] .themebar .grp { border-radius:0; box-shadow:3px 3px 0 var(--shadow); }
+  html[data-theme="pixel"] .themebar button { font-family:'VT323',monospace; font-size:17px; border:none; box-shadow:none; }
+  html[data-theme="pixel"] .themebar button:active { transform:none; }
+
+  /* ===== PHONG CÁCH PIXEL (chỉ khi data-theme="pixel") ===== */
+  html[data-theme="pixel"] body { font-family: 'VT323', monospace; }
+  html[data-theme="pixel"] .sub, html[data-theme="pixel"] .mic-label,
+  html[data-theme="pixel"] label, html[data-theme="pixel"] .hint,
+  html[data-theme="pixel"] .status, html[data-theme="pixel"] .chip,
+  html[data-theme="pixel"] .ev .meta, html[data-theme="pixel"] summary,
+  html[data-theme="pixel"] textarea, html[data-theme="pixel"] select,
+  html[data-theme="pixel"] input, html[data-theme="pixel"] button { font-size: 19px; letter-spacing:.4px; }
+  html[data-theme="pixel"] h1 { font-size: 34px; letter-spacing:1px; text-shadow:3px 3px 0 var(--accent); }
+  html[data-theme="pixel"] .ev .title { font-size: 20px; }
+  html[data-theme="pixel"] .card { border:3px solid var(--line); border-radius:0; box-shadow:6px 6px 0 var(--shadow); }
+  html[data-theme="pixel"] select, html[data-theme="pixel"] textarea,
+  html[data-theme="pixel"] input[type=password] { border:2px solid var(--line); border-radius:0; }
+  html[data-theme="pixel"] button { border:3px solid var(--line); border-radius:0; box-shadow:4px 4px 0 var(--shadow); }
+  html[data-theme="pixel"] button:active { transform:translate(2px,2px); box-shadow:2px 2px 0 var(--shadow); }
+  html[data-theme="pixel"] button.ghost { border-width:3px; }
+  html[data-theme="pixel"] .chip { border:2px solid var(--line); border-radius:0; box-shadow:3px 3px 0 var(--shadow); }
+  html[data-theme="pixel"] .ev { border:3px solid var(--line); border-radius:0; border-left-width:8px; box-shadow:4px 4px 0 var(--shadow); }
+  html[data-theme="pixel"] .tag, html[data-theme="pixel"] .rec-badge,
+  html[data-theme="pixel"] .delbtn, html[data-theme="pixel"] code { border-radius:0; }
+  html[data-theme="pixel"] .delbtn { border-width:2px; box-shadow:none; }
+  html[data-theme="pixel"] .mic { border:4px solid var(--line); border-radius:0; box-shadow:6px 6px 0 var(--shadow); }
+  html[data-theme="pixel"] .mic.rec { animation:none; box-shadow:6px 6px 0 var(--shadow); }
+  html[data-theme="pixel"] svg { shape-rendering:crispEdges; }
+  /* màu icon pixel theo currentColor */
+  html[data-theme="pixel"] #ic-title { color:var(--accent); }
+  html[data-theme="pixel"] .mic svg { color:var(--btnink); }
+  html[data-theme="pixel"] #ic-globe, html[data-theme="pixel"] #ic-search { color:var(--accent); }
+
+  /* ===== PLANNER GIẤY (C) ===== */
+  html[data-theme="C"] body { font-family:'Quicksand',sans-serif; }
+  html[data-theme="C"] h1 { font-weight:700; letter-spacing:.3px; }
+  html[data-theme="C"] .card { border:1.5px solid var(--line); border-radius:14px;
+    box-shadow:0 6px 18px rgba(60,50,30,.07); position:relative; }
+  html[data-theme="C"][data-mode="dark"] .card { box-shadow:0 6px 18px rgba(0,0,0,.25); }
+  html[data-theme="C"] .card::before { content:""; position:absolute; top:14px; bottom:14px; left:22px; width:2px; background:var(--accent2); opacity:.22; pointer-events:none; }
+  html[data-theme="C"] .card::after { content:""; position:absolute; inset:14px 14px 14px 34px; pointer-events:none; border-radius:8px;
+    background-image:repeating-linear-gradient(var(--paper) 0 27px, var(--dash) 27px 28px); opacity:.45; }
+  html[data-theme="C"] .card > * { position:relative; z-index:1; }
+  html[data-theme="C"] select, html[data-theme="C"] textarea, html[data-theme="C"] input[type=password] { border-radius:10px; }
+  html[data-theme="C"] button { border-radius:11px; }
+  html[data-theme="C"] .chip { border-radius:9px; }
+  html[data-theme="C"] .ev { border-radius:11px; }
+  html[data-theme="C"] .mic { border-radius:22px; transform:rotate(-3deg); box-shadow:0 8px 20px rgba(91,154,139,.35); }
+  html[data-theme="C"] .ev .title::before { content:""; display:inline-block; width:12px; height:12px; margin-right:8px; vertical-align:1px;
+    border:2px solid var(--accent); border-radius:3px;
+    background:linear-gradient(45deg,transparent 45%,var(--accent) 45% 55%,transparent 55%),linear-gradient(-45deg,transparent 45%,var(--accent) 45% 55%,transparent 55%); }
+
+  /* ===== SOFT POP (D) ===== */
+  html[data-theme="D"] body { font-family:'Nunito',sans-serif; }
+  html[data-theme="D"] h1 { font-family:'Be Vietnam Pro','Nunito',sans-serif; font-weight:700; letter-spacing:.2px; line-height:1.25; }
+  html[data-theme="D"] .card { border:none; border-radius:24px; box-shadow:0 14px 40px rgba(90,70,200,.14); }
+  html[data-theme="D"][data-mode="dark"] .card { box-shadow:0 14px 44px rgba(0,0,0,.4); }
+  html[data-theme="D"] select, html[data-theme="D"] textarea, html[data-theme="D"] input[type=password] { border-radius:16px; }
+  html[data-theme="D"] button { border-radius:16px; }
+  html[data-theme="D"] button:not(.ghost) { background:linear-gradient(135deg,var(--accent),var(--accent2)); }
+  html[data-theme="D"] .chip { border-radius:20px; }
+  html[data-theme="D"] .ev { border-radius:18px; border-left:none; box-shadow:0 6px 18px rgba(90,70,200,.08); }
+  html[data-theme="D"] .mic { box-shadow:0 10px 26px rgba(124,107,240,.4); }
+
+  /* icon line (C & D) tô theo currentColor */
+  html[data-theme="C"] #ic-title, html[data-theme="D"] #ic-title { color:var(--accent); }
+  html[data-theme="C"] #ic-globe, html[data-theme="C"] #ic-search,
+  html[data-theme="D"] #ic-globe, html[data-theme="D"] #ic-search { color:var(--accent); }
+  html[data-theme="C"] .mic svg, html[data-theme="D"] .mic svg { color:#fff; }
+
+  /* ===== STICKER TRANG TRÍ (C & D) ===== */
+  #decor { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  #decor .sticker { position:absolute; filter:drop-shadow(0 3px 4px rgba(0,0,0,.16)); }
+  #decor .sticker svg { display:block; }
+  html[data-theme="pixel"] #decor .sticker svg { shape-rendering:crispEdges; }
+  #decor .handnote { position:absolute; font-family:'Dancing Script','Quicksand',cursive; font-weight:700; font-size:28px; color:var(--accent2); transform:rotate(-6deg); }
+  #decor .washi { position:absolute; height:26px; width:100px; opacity:.85;
+    background:repeating-linear-gradient(45deg,var(--st1) 0 8px,color-mix(in srgb,var(--st1) 70%,#fff) 8px 16px); }
+  .wrap { position:relative; z-index:1; }
 </style>
 </head>
 <body>
+<div id="decor"></div>
+<div class="themebar">
+  <div class="grp" id="themeGrp">
+    <button data-theme="warm" title="Ấm">●</button>
+    <button data-theme="pixel" title="Pixel">◼</button>
+    <button data-theme="C" title="Planner giấy">📓</button>
+    <button data-theme="D" title="Soft Pop">🫧</button>
+  </div>
+  <div class="grp" id="modeGrp">
+    <button data-mode="light" title="Sáng">☀</button>
+    <button data-mode="dark" title="Tối">🌙</button>
+  </div>
+</div>
 <div class="wrap">
   <div class="head">
-    <h1><span class="heart"><svg viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="4" width="14" height="16" rx="7" fill="#D85A30"/><path d="M8 18 a12 12 0 0 0 24 0" stroke="#D85A30" stroke-width="2.5"/><line x1="20" y1="28" x2="20" y2="33" stroke="#D85A30" stroke-width="2.5"/><line x1="15" y1="33" x2="27" y2="33" stroke="#D85A30" stroke-width="2.5"/></svg></span> <span id="uiTitle">Lịch của tôi</span></h1>
+    <h1><span class="heart" id="ic-title"></span> <span id="uiTitle">Lịch của tôi</span></h1>
     <p class="sub" id="uiSub">Nói một câu, để phần còn lại cho AI lo.</p>
   </div>
 
   <div class="langbar">
-    <label for="lang"><span class="lbl-ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="10" fill="#D85A30"/><ellipse cx="12" cy="12" rx="4.5" ry="10" stroke="#fff" stroke-width="1.2"/><line x1="2" y1="12" x2="22" y2="12" stroke="#fff" stroke-width="1.2"/><line x1="4" y1="7.5" x2="20" y2="7.5" stroke="#fff" stroke-width="1.2"/><line x1="4" y1="16.5" x2="20" y2="16.5" stroke="#fff" stroke-width="1.2"/></svg></span><span id="uiLangLabel">Ngôn ngữ</span></label>
+    <label for="lang"><span class="lbl-ico" id="ic-globe"></span><span id="uiLangLabel">Ngôn ngữ</span></label>
     <select id="lang"></select>
   </div>
 
@@ -137,7 +298,7 @@
 
   <div class="card">
     <div class="mic-wrap">
-      <button id="micBtn" class="mic" title="Bấm để nói"><svg viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="4" width="14" height="16" rx="7" fill="#fff"/><path d="M8 18 a12 12 0 0 0 24 0" stroke="#fff" stroke-width="2.5"/><line x1="20" y1="28" x2="20" y2="33" stroke="#fff" stroke-width="2.5"/><line x1="15" y1="33" x2="27" y2="33" stroke="#fff" stroke-width="2.5"/></svg></button>
+      <button id="micBtn" class="mic" title="Bấm để nói"></button>
       <span class="mic-label" id="micLabel">Bấm để nói</span>
     </div>
     <div class="status" id="status"></div>
@@ -146,7 +307,7 @@
     <textarea id="text" placeholder="Ví dụ: Mai 8 giờ tối họp nhóm, nhắc tôi trước 30 phút"></textarea>
 
     <label style="display:flex; align-items:center; gap:8px; margin-top:10px; cursor:pointer;">
-      <input id="grounding" type="checkbox" style="width:auto;"> <span class="lbl-ico"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="11" fill="#FFE6DA"/><circle cx="11" cy="11" r="6" fill="#fff" stroke="#993C1D" stroke-width="2"/><line x1="15.5" y1="15.5" x2="19" y2="19" stroke="#993C1D" stroke-width="2.5"/></svg></span><span id="uiGrounding">Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)</span>
+      <input id="grounding" type="checkbox" style="width:auto;"> <span class="lbl-ico" id="ic-search"></span><span id="uiGrounding">Tự tra giờ trên mạng (cho sự kiện có thật như F1, trận đấu... khi mình không nói giờ)</span>
     </label>
 
     <div class="row" style="margin-top:12px; justify-content:center;">
@@ -817,9 +978,64 @@ const UIX = {
 };
 function tx(k){ return (UIX[curLang] || UIX.vi)[k]; }
 
-const SVG_REPEAT = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2 5"/><path d="M20 5v6h-6"/></svg>';
-const SVG_X = '<svg viewBox="0 0 24 24" fill="none" stroke="#D85A30" stroke-width="2.5" stroke-linecap="round"><line x1="7" y1="7" x2="17" y2="17"/><line x1="17" y1="7" x2="7" y2="17"/></svg>';
-const SVG_CAL_WHITE = '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5" stroke="#fff" stroke-width="2"/><line x1="4" y1="10" x2="20" y2="10" stroke="#fff" stroke-width="2"/><line x1="9" y1="3" x2="9" y2="7" stroke="#fff" stroke-width="2"/><line x1="15" y1="3" x2="15" y2="7" stroke="#fff" stroke-width="2"/><line x1="12" y1="12" x2="12" y2="18" stroke="#fff" stroke-width="2"/><line x1="9" y1="15" x2="15" y2="15" stroke="#fff" stroke-width="2"/></svg>';
+// ====================== ICON THEO THEME (Ấm = tròn, Pixel = ô vuông) ======================
+function isPixel(){ return document.documentElement.dataset.theme === "pixel"; }
+// -- Dữ liệu icon pixel (ô vuông trên lưới 16×16) --
+const PX = {
+  mic:[[6,1,4,1],[5,2,6,6],[6,8,4,1],[4,6,1,2],[11,6,1,2],[4,9,1,1],[11,9,1,1],[5,10,6,1],[7,8,2,3],[5,13,6,1],[7,11,2,2]],
+  globe:[[6,2,4,1],[4,3,2,1],[10,3,2,1],[3,4,1,1],[12,4,1,1],[2,5,1,6],[13,5,1,6],[3,11,1,1],[12,11,1,1],[4,12,2,1],[10,12,2,1],[6,13,4,1],[7,3,2,10],[3,7,10,1],[4,4,8,1],[4,11,8,1]],
+  search:[[3,2,7,1],[2,3,1,5],[10,3,1,5],[3,8,7,1],[11,9,1,1],[12,10,1,1],[13,11,1,1],[14,12,1,2]],
+  cal:[[4,1,2,3],[11,1,2,3],[2,3,12,4],[2,7,1,7],[13,7,1,7],[2,13,12,1],[5,9,2,2],[9,9,2,2]],
+  pin:[[6,1,4,1],[5,2,6,1],[4,3,8,1],[4,4,8,3],[5,7,6,1],[6,8,4,1],[7,9,2,2],[7,12,2,3],[6,4,4,2]],
+  clock:[[6,2,4,1],[4,3,2,1],[10,3,2,1],[3,4,1,1],[12,4,1,1],[2,5,1,6],[13,5,1,6],[3,11,1,1],[12,11,1,1],[4,12,2,1],[10,12,2,1],[6,13,4,1],[8,5,1,4],[8,8,4,1]],
+  rep:[[5,3,6,1],[4,4,1,1],[3,5,1,4],[9,2,1,1],[10,3,1,1],[8,3,1,1],[10,4,1,1],[6,12,6,1],[12,7,1,4],[7,13,1,1],[6,11,1,1],[5,11,1,1]],
+  x:[[3,3,2,2],[5,5,2,2],[7,7,2,2],[9,9,2,2],[11,11,2,2],[11,3,2,2],[9,5,2,2],[5,9,2,2],[3,11,2,2]],
+  stop:[[4,4,8,8]]
+};
+function pxSVG(name){
+  const r = PX[name].map(a => '<rect x="'+a[0]+'" y="'+a[1]+'" width="'+a[2]+'" height="'+a[3]+'"/>').join("");
+  return '<svg viewBox="0 0 16 16" fill="currentColor" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">'+r+'</svg>';
+}
+// -- Icon tròn (bản Ấm) --
+const ROUND_TITLE  = '<svg viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="4" width="14" height="16" rx="7" fill="#D85A30"/><path d="M8 18 a12 12 0 0 0 24 0" stroke="#D85A30" stroke-width="2.5"/><line x1="20" y1="28" x2="20" y2="33" stroke="#D85A30" stroke-width="2.5"/><line x1="15" y1="33" x2="27" y2="33" stroke="#D85A30" stroke-width="2.5"/></svg>';
+const ROUND_GLOBE  = '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="10" fill="#D85A30"/><ellipse cx="12" cy="12" rx="4.5" ry="10" stroke="#fff" stroke-width="1.2"/><line x1="2" y1="12" x2="22" y2="12" stroke="#fff" stroke-width="1.2"/><line x1="4" y1="7.5" x2="20" y2="7.5" stroke="#fff" stroke-width="1.2"/><line x1="4" y1="16.5" x2="20" y2="16.5" stroke="#fff" stroke-width="1.2"/></svg>';
+const ROUND_SEARCH = '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="11" fill="#FFE6DA"/><circle cx="11" cy="11" r="6" fill="#fff" stroke="#993C1D" stroke-width="2"/><line x1="15.5" y1="15.5" x2="19" y2="19" stroke="#993C1D" stroke-width="2.5"/></svg>';
+const ROUND_MIC_W  = '<svg viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="4" width="14" height="16" rx="7" fill="#fff"/><path d="M8 18 a12 12 0 0 0 24 0" stroke="#fff" stroke-width="2.5"/><line x1="20" y1="28" x2="20" y2="33" stroke="#fff" stroke-width="2.5"/><line x1="15" y1="33" x2="27" y2="33" stroke="#fff" stroke-width="2.5"/></svg>';
+const ROUND_STOP   = '<svg viewBox="0 0 40 40"><rect x="12" y="12" width="16" height="16" rx="4" fill="#fff"/></svg>';
+const ROUND_REPEAT = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2 5"/><path d="M20 5v6h-6"/></svg>';
+const ROUND_X      = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="7" y1="7" x2="17" y2="17"/><line x1="17" y1="7" x2="7" y2="17"/></svg>';
+const ROUND_CAL_W  = '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5" stroke="#fff" stroke-width="2"/><line x1="4" y1="10" x2="20" y2="10" stroke="#fff" stroke-width="2"/><line x1="9" y1="3" x2="9" y2="7" stroke="#fff" stroke-width="2"/><line x1="15" y1="3" x2="15" y2="7" stroke="#fff" stroke-width="2"/><line x1="12" y1="12" x2="12" y2="18" stroke="#fff" stroke-width="2"/><line x1="9" y1="15" x2="15" y2="15" stroke="#fff" stroke-width="2"/></svg>';
+// -- Icon nét mảnh (bản Planner C & Soft Pop D), tô theo currentColor --
+const LINE = {
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="9" y1="21" x2="15" y2="21"/></svg>',
+  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>',
+  rep:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2 5"/><path d="M20 5v6h-6"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="7" y1="7" x2="17" y2="17"/><line x1="17" y1="7" x2="7" y2="17"/></svg>',
+  stop:'<svg viewBox="0 0 24 24" fill="none"><rect x="7" y="7" width="10" height="10" rx="2.5" fill="currentColor"/></svg>'
+};
+// -- Chọn bộ icon theo theme: pixel / line (C,D) / round (Ấm) --
+function themeKind(){ const th = document.documentElement.dataset.theme;
+  return th === "pixel" ? "pixel" : (th === "C" || th === "D") ? "line" : "round"; }
+function pick(name, roundVal){ const k = themeKind();
+  return k === "pixel" ? pxSVG(name) : k === "line" ? LINE[name] : roundVal; }
+// -- Getters đổi theo theme --
+function svgRepeat(){ return pick("rep", ROUND_REPEAT); }
+function svgX(){ return pick("x", ROUND_X); }
+function svgCalWhite(){ return pick("cal", ROUND_CAL_W); }
+function iconMicWhite(){ return pick("mic", ROUND_MIC_W); }
+function iconStop(){ return pick("stop", ROUND_STOP); }
+function paintIcons(){
+  const set = (id,html) => { const el=document.getElementById(id); if(el) el.innerHTML=html; };
+  set("ic-title",  pick("mic",    ROUND_TITLE));
+  set("ic-globe",  pick("globe",  ROUND_GLOBE));
+  set("ic-search", pick("search", ROUND_SEARCH));
+  if (typeof listening === "undefined" || !listening) {
+    const mb = document.getElementById("micBtn");
+    if (mb) mb.innerHTML = iconMicWhite();
+  }
+}
 
 // render(parsed) giờ CỘNG DỒN sự kiện vào buffer thay vì thay thế
 function render(parsed) {
@@ -842,7 +1058,7 @@ function clearBuffer() {
 }
 
 function delButtonHTML(i) {
-  return '<button class="delbtn" onclick="removeEvent(' + i + ')">' + SVG_X + esc(tx("del")) + '</button>';
+  return '<button class="delbtn" onclick="removeEvent(' + i + ')">' + svgX() + esc(tx("del")) + '</button>';
 }
 
 function renderBuffer() {
@@ -868,7 +1084,7 @@ function renderBuffer() {
       const first = nextWeekday(parseDate(rec.start_date), wdIdx);
       const count = rec.count || 1;
       const last = addWeeks(first, count - 1);
-      const badge = '<span class="rec-badge">' + SVG_REPEAT + esc(fmt(tx("repeat"), { n: count })) + '</span>';
+      const badge = '<span class="rec-badge">' + svgRepeat() + esc(fmt(tx("repeat"), { n: count })) + '</span>';
       const meta = esc(fmt(tx("weekly"), { wd: wd(mon0(first)) })) + ' &nbsp;·&nbsp; 🕐 ' + (ev.start_time || "??:??") +
                    (nhac ? ' &nbsp;·&nbsp; ' + nhac : '') + loc +
                    '<br>' + esc(fmt(tx("range"), { a: fmtDate(first), b: fmtDate(last) }));
@@ -897,7 +1113,7 @@ function renderBuffer() {
 
   const link = '<a href="#" onclick="downloadICS();return false;">' + esc(t("gcalLink")) + '</a>';
   html += '<div class="row" style="margin-top:6px">' +
-          '<button onclick="addToGoogleCalendar()"><span class="btn-ico">' + SVG_CAL_WHITE + '</span>' + esc(t("addGcalBtn")) + '</button>' +
+          '<button onclick="addToGoogleCalendar()"><span class="btn-ico">' + svgCalWhite() + '</span>' + esc(t("addGcalBtn")) + '</button>' +
           '<button class="ghost" onclick="clearBuffer()">' + esc(tx("clearAll")) + '</button>' +
           '</div>' +
           '<div class="muted" style="margin-top:8px;font-size:13px;line-height:1.5">' +
@@ -975,14 +1191,10 @@ if (!SR) {
 
   micBtn.addEventListener("click", () => listening ? endByUser() : startRec());
 }
-const ICON = {
-  mic: '<svg viewBox="0 0 40 40" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="4" width="14" height="16" rx="7" fill="#fff"/><path d="M8 18 a12 12 0 0 0 24 0" stroke="#fff" stroke-width="2.5"/><line x1="20" y1="28" x2="20" y2="33" stroke="#fff" stroke-width="2.5"/><line x1="15" y1="33" x2="27" y2="33" stroke="#fff" stroke-width="2.5"/></svg>',
-  stop: '<svg viewBox="0 0 40 40"><rect x="12" y="12" width="16" height="16" rx="4" fill="#fff"/></svg>'
-};
 function startRec() {
   listening = true; userStopped = false; finalText = "";
   micBtn.classList.add("rec");
-  micBtn.innerHTML = ICON.stop;
+  micBtn.innerHTML = iconStop();
   micLabel.textContent = t("micListening");
   setStatus(t("micStartHint"));
   document.getElementById("text").value = "";
@@ -995,7 +1207,7 @@ function endByUser() {
 function stopRec() {
   listening = false;
   micBtn.classList.remove("rec");
-  micBtn.innerHTML = ICON.mic;
+  micBtn.innerHTML = iconMicWhite();
   micLabel.textContent = t("micIdle");
   setStatus(t("micStopped"));
 }
@@ -1165,8 +1377,96 @@ langSel.addEventListener("change", () => {
   applyLang();
 });
 
+// ====================== STICKER TRANG TRÍ (chỉ Planner C & Soft Pop D) ======================
+function stSVG(inner){ return '<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>'; }
+const STK = {
+  check: c => stSVG('<circle cx="20" cy="20" r="17" fill="'+c+'"/><path d="M12 21l5 5 11-13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>'),
+  star:  c => stSVG('<path d="M20 4l4.6 9.7 10.7 1.1-7.9 7.2 2.2 10.5L20 37l-9.6 5.5 2.2-10.5-7.9-7.2 10.7-1.1z" fill="'+c+'"/>'),
+  spark: c => stSVG('<path d="M20 3c1 10 7 16 17 17-10 1-16 7-17 17-1-10-7-16-17-17 10-1 16-7 17-17z" fill="'+c+'"/>'),
+  pin:   c => stSVG('<circle cx="20" cy="15" r="9" fill="'+c+'"/><rect x="18.5" y="22" width="3" height="13" rx="1.5" fill="'+c+'"/><circle cx="17" cy="12" r="2.5" fill="#fff" opacity=".55"/>'),
+  clip:  c => stSVG('<path d="M14 10v18a6 6 0 0 0 12 0V12" fill="none" stroke="'+c+'" stroke-width="3.4" stroke-linecap="round"/><path d="M26 12v14a4 4 0 0 1-8 0V13" fill="none" stroke="'+c+'" stroke-width="3.4" stroke-linecap="round" opacity=".55"/>'),
+  note:  c => stSVG('<path d="M6 6h24a2 2 0 0 1 2 2v18l-8 8H8a2 2 0 0 1-2-2z" fill="'+c+'"/><path d="M32 26l-8 8v-6a2 2 0 0 1 2-2z" fill="#000" opacity=".14"/>'),
+  bookmark: c => stSVG('<path d="M11 5h18v31l-9-7-9 7z" fill="'+c+'"/>')
+};
+// -- sticker PIXEL 8-bit (lưới 16×16) --
+const PXS = {
+  star:[[7,1,2,2],[6,3,4,1],[1,4,14,2],[2,6,12,1],[3,7,10,1],[4,8,8,1],[3,9,3,2],[10,9,3,2],[2,11,3,2],[11,11,3,2]],
+  heart:[[3,3,4,2],[9,3,4,2],[2,4,12,2],[2,6,12,1],[3,7,10,1],[4,8,8,1],[5,9,6,1],[6,10,4,1],[7,11,2,1]],
+  check:[[3,8,2,2],[5,10,2,2],[7,8,2,2],[9,6,2,2],[11,4,2,2],[13,2,2,2]],
+  spark:[[7,2,2,4],[7,10,2,4],[2,7,4,2],[10,7,4,2],[6,6,4,4]],
+  bookmark:[[4,2,8,1],[4,2,1,11],[11,2,1,11],[5,3,6,7],[5,10,2,2],[9,10,2,2]],
+  pin:[[6,2,4,1],[5,3,6,1],[4,4,8,4],[5,8,6,1],[6,9,4,1],[7,10,2,4]]
+};
+function pxst(name,c){ const r = PXS[name].map(a => '<rect x="'+a[0]+'" y="'+a[1]+'" width="'+a[2]+'" height="'+a[3]+'"/>').join("");
+  return '<svg viewBox="0 0 16 16" fill="'+c+'" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">'+r+'</svg>'; }
+function cssVar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function buildDecor() {
+  const box = document.getElementById("decor");
+  if (!box) return;
+  const th = document.documentElement.dataset.theme;
+  const c1 = cssVar("--st1"), c2 = cssVar("--st2"), c3 = cssVar("--st3");
+  let h = "";
+  if (th === "warm") {
+    h += '<div class="sticker" style="top:80px; left:5%; width:44px; transform:rotate(-7deg)">'+STK.check(c1)+'</div>';
+    h += '<div class="sticker" style="top:150px; right:4%; width:46px; transform:rotate(9deg)">'+STK.star(c3)+'</div>';
+    h += '<div class="sticker" style="top:46%; left:3%; width:40px; transform:rotate(-11deg)">'+STK.pin(c1)+'</div>';
+    h += '<div class="sticker" style="top:64%; right:4%; width:44px; transform:rotate(8deg)">'+STK.spark(c2)+'</div>';
+    h += '<div class="sticker" style="bottom:11%; left:5%; width:40px; transform:rotate(-6deg)">'+STK.note(c3)+'</div>';
+    h += '<div class="sticker" style="bottom:8%; right:6%; width:38px; transform:rotate(13deg)">'+STK.bookmark(c2)+'</div>';
+  } else if (th === "pixel") {
+    h += '<div class="sticker" style="top:80px; left:5%; width:44px; transform:rotate(-6deg)">'+pxst("star",c3)+'</div>';
+    h += '<div class="sticker" style="top:150px; right:4%; width:46px; transform:rotate(8deg)">'+pxst("check",c2)+'</div>';
+    h += '<div class="sticker" style="top:46%; left:3%; width:40px; transform:rotate(-10deg)">'+pxst("heart",c1)+'</div>';
+    h += '<div class="sticker" style="top:64%; right:4%; width:42px; transform:rotate(7deg)">'+pxst("spark",c3)+'</div>';
+    h += '<div class="sticker" style="bottom:11%; left:5%; width:40px; transform:rotate(-8deg)">'+pxst("bookmark",c1)+'</div>';
+    h += '<div class="sticker" style="bottom:8%; right:6%; width:40px; transform:rotate(12deg)">'+pxst("pin",c2)+'</div>';
+  } else if (th === "C") {
+    h += '<div class="washi" style="top:70px; left:5%; transform:rotate(-5deg)"></div>';
+    h += '<div class="handnote" style="top:60px; right:7%;">gọn gàng!</div>';
+    h += '<div class="sticker" style="top:150px; right:4%; width:50px; transform:rotate(9deg)">'+STK.clip(c1)+'</div>';
+    h += '<div class="sticker" style="top:46%; left:3%; width:44px; transform:rotate(-12deg)">'+STK.pin(c2)+'</div>';
+    h += '<div class="sticker" style="top:64%; right:4%; width:42px; transform:rotate(8deg)">'+STK.check(c1)+'</div>';
+    h += '<div class="sticker" style="bottom:11%; left:5%; width:40px; transform:rotate(-6deg)">'+STK.note(c3)+'</div>';
+    h += '<div class="sticker" style="bottom:8%; right:6%; width:36px; transform:rotate(14deg)">'+STK.star(c2)+'</div>';
+  } else {
+    h += '<div class="sticker" style="top:80px; left:5%; width:48px; transform:rotate(-8deg)">'+STK.spark(c3)+'</div>';
+    h += '<div class="sticker" style="top:150px; right:4%; width:50px; transform:rotate(10deg)">'+STK.check(c2)+'</div>';
+    h += '<div class="sticker" style="top:46%; left:3%; width:42px; transform:rotate(-6deg)">'+STK.star(c1)+'</div>';
+    h += '<div class="sticker" style="top:66%; right:4%; width:46px; transform:rotate(12deg)">'+STK.spark(c2)+'</div>';
+    h += '<div class="sticker" style="bottom:11%; left:5%; width:38px; transform:rotate(-10deg)">'+STK.bookmark(c1)+'</div>';
+    h += '<div class="sticker" style="bottom:8%; right:6%; width:44px; transform:rotate(6deg)">'+STK.check(c3)+'</div>';
+  }
+  box.innerHTML = h;
+}
+
+// ====================== CÔNG TẮC THEME (Ấm/Pixel/Planner/Soft Pop × Sáng/Tối) ======================
+function markOn(grpId, attr, val) {
+  document.querySelectorAll("#" + grpId + " button").forEach(b => {
+    b.classList.toggle("on", b.dataset[attr] === val);
+  });
+}
+function applyTheme(theme, mode) {
+  const h = document.documentElement;
+  if (theme) h.dataset.theme = theme;
+  if (mode)  h.dataset.mode  = mode;
+  localStorage.setItem("app_theme", h.dataset.theme);
+  localStorage.setItem("app_mode",  h.dataset.mode);
+  markOn("themeGrp", "theme", h.dataset.theme);
+  markOn("modeGrp",  "mode",  h.dataset.mode);
+  paintIcons();
+  renderBuffer();   // để icon trong thẻ (lặp / xoá / lịch) đổi theo theme
+  requestAnimationFrame(buildDecor);   // sticker đọc màu --st* sau khi theme áp
+}
+document.getElementById("themeGrp").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (b) applyTheme(b.dataset.theme, null);
+});
+document.getElementById("modeGrp").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (b) applyTheme(null, b.dataset.mode);
+});
+
 // Chạy lần đầu.
 applyLang();
+applyTheme(localStorage.getItem("app_theme") || "warm", localStorage.getItem("app_mode") || "light");
 </script>
 </body>
 </html>
